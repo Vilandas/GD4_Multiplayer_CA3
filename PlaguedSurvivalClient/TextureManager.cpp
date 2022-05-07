@@ -9,17 +9,15 @@ void TextureManager::StaticInit()
 
 TextureManager::TextureManager()
 {
-	CacheTexture("cat", "../Assets/cat.png");
-	CacheTexture("mouse", "../Assets/mouse.png");
-	CacheTexture("yarn", "../Assets/yarn.png");
+	CacheTexture(Textures::kCat, "../Assets/cat.png");
+	CacheTexture(Textures::kMouse, "../Assets/mouse.png");
+	CacheTexture(Textures::kYarn, "../Assets/yarn.png")
+	;
+	CacheTexture(Textures::kCrack, "../Assets/Textures/Tiles/crack.png");
+	CacheTexturePattern(Textures::kDirt1, Textures::kDirt9, "../Assets/Textures/Tiles/Dirt/dirt");
 }
 
-TexturePtr	TextureManager::GetTexture(const string& inTextureName)
-{
-	return mNameToTextureMap[inTextureName];
-}
-
-bool TextureManager::CacheTexture(string inTextureName, const char* inFileName)
+bool TextureManager::CacheTexture(Textures inTextureName, const char* inFileName)
 {
 	TexturePtr newTexture(new sf::Texture());
 	if (!newTexture->loadFromFile(inFileName))
@@ -30,5 +28,20 @@ bool TextureManager::CacheTexture(string inTextureName, const char* inFileName)
 	mNameToTextureMap[inTextureName] = newTexture;
 
 	return true;
+}
 
+void TextureManager::CacheTexturePattern(Textures startTexture, Textures lastTexture, const std::string& locationPrefix)
+{
+	int i = 1;
+	for (int texture = static_cast<int>(startTexture); texture <= static_cast<int>(lastTexture); texture++)
+	{
+		std::string path = locationPrefix + std::to_string(i) + ".png";
+		CacheTexture(static_cast<Textures>(texture), path.c_str());
+		i++;
+	}
+}
+
+TexturePtr TextureManager::GetTexture(const Textures inTexture)
+{
+	return mNameToTextureMap[inTexture];
 }

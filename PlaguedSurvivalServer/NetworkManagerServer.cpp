@@ -44,7 +44,7 @@ void NetworkManagerServer::ProcessPacket(InputMemoryBitStream& inInputStream, co
 }
 
 
-void NetworkManagerServer::ProcessPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::ProcessPacket(const ClientProxyPtr& inClientProxy, InputMemoryBitStream& inInputStream)
 {
 	//remember we got a packet so we know not to disconnect for a bit
 	inClientProxy->UpdateLastPacketTime();
@@ -106,7 +106,7 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 	}
 }
 
-void NetworkManagerServer::SendWelcomePacket(ClientProxyPtr inClientProxy)
+void NetworkManagerServer::SendWelcomePacket(const ClientProxyPtr& inClientProxy)
 {
 	OutputMemoryBitStream welcomePacket;
 
@@ -155,7 +155,7 @@ void NetworkManagerServer::UpdateAllClients()
 	}
 }
 
-void NetworkManagerServer::SendStatePacketToClient(ClientProxyPtr inClientProxy)
+void NetworkManagerServer::SendStatePacketToClient(const ClientProxyPtr& inClientProxy)
 {
 	//build state packet
 	OutputMemoryBitStream	statePacket;
@@ -177,7 +177,8 @@ void NetworkManagerServer::SendStatePacketToClient(ClientProxyPtr inClientProxy)
 
 }
 
-void NetworkManagerServer::WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy)
+void NetworkManagerServer::WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, const ClientProxyPtr&
+                                                         inClientProxy)
 {
 	//first, dirty?
 	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
@@ -223,7 +224,7 @@ int NetworkManagerServer::GetNewNetworkId()
 
 }
 
-void NetworkManagerServer::HandleInputPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::HandleInputPacket(const ClientProxyPtr& inClientProxy, InputMemoryBitStream& inInputStream)
 {
 	uint32_t moveCount = 0;
 	Move move;
@@ -272,7 +273,7 @@ void NetworkManagerServer::CheckForDisconnects()
 	}
 }
 
-void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy)
+void NetworkManagerServer::HandleClientDisconnected(const ClientProxyPtr& inClientProxy)
 {
 	mPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
 	mAddressToClientMap.erase(inClientProxy->GetSocketAddress());
@@ -285,7 +286,7 @@ void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy
 	}
 }
 
-void NetworkManagerServer::RegisterGameObject(GameObjectPtr inGameObject)
+void NetworkManagerServer::RegisterGameObject(const GameObjectPtr& inGameObject)
 {
 	//assign network id
 	int newNetworkId = GetNewNetworkId();

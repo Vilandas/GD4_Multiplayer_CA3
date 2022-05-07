@@ -155,12 +155,12 @@ NetworkManager::ReceivedPacket::ReceivedPacket(float inReceivedTime, InputMemory
 }
 
 
-void NetworkManager::AddNetworkIdToGameObjectMap(GameObjectPtr inGameObject)
+void NetworkManager::AddNetworkIdToGameObjectMap(const GameObjectPtr& inGameObject)
 {
 	m_network_id_to_game_object_map[inGameObject->GetNetworkId()] = inGameObject;
 }
 
-void NetworkManager::RemoveNetworkIdToGameObjectMap(GameObjectPtr inGameObject)
+void NetworkManager::RemoveNetworkIdToGameObjectMap(const GameObjectPtr& inGameObject)
 {
 	m_network_id_to_game_object_map.erase(inGameObject->GetNetworkId());
 }

@@ -16,9 +16,11 @@ bool Server::StaticInit()
 Server::Server()
 {
 
-	GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatServer::StaticCreate);
-	GameObjectRegistry::sInstance->RegisterCreationFunction('MOUS', MouseServer::StaticCreate);
-	GameObjectRegistry::sInstance->RegisterCreationFunction('YARN', YarnServer::StaticCreate);
+	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kCat, RoboCatServer::StaticCreate);
+	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kMouse, MouseServer::StaticCreate);
+	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kYarn, YarnServer::StaticCreate);
+
+	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kTile, TileServer::StaticCreate);
 
 	InitNetworkManager();
 
@@ -61,10 +63,36 @@ namespace
 		//make a mouse somewhere- where will these come from?
 		for (int i = 0; i < inMouseCount; ++i)
 		{
-			go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
+			go = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kMouse);
 			Vector3 mouseLocation = RoboMath::GetRandomVector(mouseMin, mouseMax);
 			go->SetLocation(mouseLocation);
 		}
+	}
+
+	void CreateWorldTiles()
+	{
+		const int map[][50] =
+		{
+			{0,0,0,0,0,0,2,0,0,0,0,0,0,0,1,3,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,1,5,5,5,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0},
+			{0,0,2,2,2,2,2,2,2,2,2,2,2,3,0,0,1,5,5,5,5,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0},
+			{1,2,5,5,5,5,5,5,5,5,5,5,5,6,0,0,4,5,5,5,5,5,5,3,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,5,2,2,2,2,2,2,2,3},
+			{4,5,5,5,5,5,5,5,5,5,5,5,5,6,0,0,7,8,8,8,8,8,5,5,3,0,0,0,0,0,0,0,0,0,0,1,5,5,5,5,5,5,5,5,5,5,5,5,5,6},
+			{7,8,8,8,8,8,8,8,8,8,8,8,8,9,0,0,0,0,0,0,0,0,4,5,6,0,0,0,0,0,0,0,0,1,2,5,8,8,8,8,8,8,8,8,8,8,8,8,8,6},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,8,5,3,0,0,0,0,0,0,0,4,5,9,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,2,2,2,2,2,2,2,8,8,0,0,0,0,0,0,0,0,0,0,0,0,8,8,9},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,2,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,5,3,0,0,0,5,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,2,0,0,4,0,0,0,0,4,6,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,8,0,0,4,0,0,0,0,4,6,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,4,0,0,0,0,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		};
+
+		std::unordered_map<int, Tile*> top_tiles(50);
+
+		GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
 	}
 
 
@@ -75,9 +103,7 @@ void Server::SetupWorld()
 {
 	//spawn some random mice
 	CreateRandomMice(10);
-
-	//spawn more random mice!
-	//CreateRandomMice(10);
+	CreateWorldTiles();
 }
 
 void Server::DoFrame()
@@ -94,7 +120,7 @@ void Server::DoFrame()
 
 }
 
-void Server::HandleNewClient(ClientProxyPtr inClientProxy)
+void Server::HandleNewClient(const ClientProxyPtr& inClientProxy)
 {
 
 	int playerId = inClientProxy->GetPlayerId();
@@ -105,14 +131,14 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
-	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
+	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kCat));
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
 	cat->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
 }
 
-void Server::HandleLostClient(ClientProxyPtr inClientProxy)
+void Server::HandleLostClient(const ClientProxyPtr& inClientProxy)
 {
 	//kill client's cat
 	//remove client from scoreboard

@@ -66,7 +66,7 @@ void RenderManager::Render()
 	//
 	// Clear the back buffer
 	//
-	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
+	WindowManager::sInstance->clear(sf::Color(150, 150, 150, 255));
 
 	RenderManager::sInstance->RenderComponents();
 

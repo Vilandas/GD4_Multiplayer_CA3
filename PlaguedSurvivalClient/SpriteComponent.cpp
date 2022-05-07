@@ -14,7 +14,7 @@ SpriteComponent::~SpriteComponent()
 	RenderManager::sInstance->RemoveComponent(this);
 }
 
-void SpriteComponent::SetTexture(TexturePtr inTexture)
+void SpriteComponent::SetTexture(const TexturePtr& inTexture)
 {
 	auto tSize = inTexture->getSize();
 	m_sprite.setTexture(*inTexture);

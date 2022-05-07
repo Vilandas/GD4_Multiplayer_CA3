@@ -30,9 +30,8 @@ void ReplicationManagerClient::Read(InputMemoryBitStream& inInputStream)
 
 void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
-	//need 4 cc
-	uint32_t fourCCName;
-	inInputStream.Read(fourCCName);
+	opt::ObjectType objectType;
+	inInputStream.Read(objectType);
 
 	//we might already have this object- could happen if our ack of the create got dropped so server resends create request 
 	//( even though we might have created )
@@ -40,12 +39,12 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
 	if (!gameObject)
 	{
 		//create the object and map it...
-		gameObject = GameObjectRegistry::sInstance->CreateGameObject(fourCCName);
+		gameObject = GameObjectRegistry::sInstance->CreateGameObject(static_cast<ObjectTypes>(objectType));
 		gameObject->SetNetworkId(inNetworkId);
 		NetworkManagerClient::sInstance->AddNetworkIdToGameObjectMap(gameObject);
 
 		//it had really be the rigth type...
-		assert(gameObject->GetClassId() == fourCCName);
+		assert(gameObject->GetClassId() == objectType);
 	}
 
 	//and read state

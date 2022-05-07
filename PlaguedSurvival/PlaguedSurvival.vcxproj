@@ -157,6 +157,7 @@
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="GameObjectRegistry.hpp" />
+    <ClInclude Include="GameObjects.hpp" />
     <ClInclude Include="InFlightPacket.hpp" />
     <ClInclude Include="InputAction.hpp" />
     <ClInclude Include="InputState.hpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Move.hpp" />
     <ClInclude Include="MoveList.hpp" />
     <ClInclude Include="NetworkManager.hpp" />
+    <ClInclude Include="Optimisations.hpp" />
     <ClInclude Include="ReplicationCommand.hpp" />
     <ClInclude Include="RoboCat.hpp" />
     <ClInclude Include="RoboCatPCH.hpp" />
@@ -177,6 +179,8 @@
     <ClInclude Include="SocketUtil.hpp" />
     <ClInclude Include="StringUtils.hpp" />
     <ClInclude Include="TCPSocket.hpp" />
+    <ClInclude Include="Textures.hpp" />
+    <ClInclude Include="Tile.hpp" />
     <ClInclude Include="Timing.hpp" />
     <ClInclude Include="TransmissionData.hpp" />
     <ClInclude Include="UDPSocket.hpp" />
@@ -211,6 +215,7 @@
     <ClCompile Include="SocketUtil.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timing.cpp" />
     <ClCompile Include="UDPSocket.cpp" />
     <ClCompile Include="World.cpp" />

@@ -14,14 +14,14 @@ World::World()
 }
 
 
-void World::AddGameObject(GameObjectPtr inGameObject)
+void World::AddGameObject(const GameObjectPtr& inGameObject)
 {
 	mGameObjects.push_back(inGameObject);
 	inGameObject->SetIndexInWorld(mGameObjects.size() - 1);
 }
 
 
-void World::RemoveGameObject(GameObjectPtr inGameObject)
+void World::RemoveGameObject(const GameObjectPtr& inGameObject)
 {
 	int index = inGameObject->GetIndexInWorld();
 

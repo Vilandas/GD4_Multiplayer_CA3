@@ -35,7 +35,7 @@ void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const stri
 
 void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
-	uint32_t	packetType;
+	uint32_t packetType;
 	inInputStream.Read(packetType);
 	switch (packetType)
 	{
@@ -145,16 +145,16 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
 		for (int stateIndex = 0; stateIndex < stateCount; ++stateIndex)
 		{
 			int networkId;
-			uint32_t fourCC;
+			opt::ObjectType objectType;
 
 			inInputStream.Read(networkId);
-			inInputStream.Read(fourCC);
+			inInputStream.Read(objectType);
 			GameObjectPtr go;
 			auto itGO = m_network_id_to_game_object_map.find(networkId);
 			//didn't find it, better create it!
 			if (itGO == m_network_id_to_game_object_map.end())
 			{
-				go = GameObjectRegistry::sInstance->CreateGameObject(fourCC);
+				go = GameObjectRegistry::sInstance->CreateGameObject(static_cast<ObjectTypes>(objectType));
 				go->SetNetworkId(networkId);
 				AddNetworkIdToGameObjectMap(go);
 			}

@@ -1,12 +1,12 @@
 #define CLASS_IDENTIFICATION(in_code, in_class) \
 enum {kClassId = in_code}; \
-virtual uint32_t GetClassId() const {return kClassId;} \
+virtual opt::ObjectType GetClassId() const {return kClassId;} \
 static GameObject* CreateInstance() { return static_cast<GameObject*>(new in_class());}\
 
 class GameObject
 {
 public:
-	CLASS_IDENTIFICATION('GOBJ', GameObject)
+	CLASS_IDENTIFICATION(static_cast<opt::ObjectType>(ObjectTypes::kGameObject), GameObject)
 
 	GameObject();
 	virtual ~GameObject() {}
@@ -69,4 +69,4 @@ private:
 
 };
 
-typedef shared_ptr< GameObject > GameObjectPtr;
+typedef shared_ptr<GameObject> GameObjectPtr;

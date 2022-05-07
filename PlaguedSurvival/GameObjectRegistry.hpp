@@ -6,16 +6,16 @@ public:
 
 	static void StaticInit();
 
-	static std::unique_ptr< GameObjectRegistry > sInstance;
+	static std::unique_ptr<GameObjectRegistry> sInstance;
 
-	void RegisterCreationFunction(uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction);
+	void RegisterCreationFunction(ObjectTypes objectType, GameObjectCreationFunc inCreationFunction);
 
-	GameObjectPtr CreateGameObject(uint32_t inFourCCName);
+	GameObjectPtr CreateGameObject(ObjectTypes objectType);
 
 private:
 
 	GameObjectRegistry();
 
-	unordered_map< uint32_t, GameObjectCreationFunc > mNameToGameObjectCreationFunctionMap;
+	unordered_map<opt::ObjectType, GameObjectCreationFunc> mNameToGameObjectCreationFunctionMap;
 };
 

@@ -54,6 +54,7 @@ class GameObject;
 #include "SFML\Graphics.hpp"
 #include "SFML\Audio.hpp"
 
+#include "Optimisations.hpp"
 #include "RoboMath.hpp"
 
 #include "StringUtils.hpp"
@@ -72,6 +73,9 @@ class GameObject;
 #include "AckRange.hpp"
 #include "DeliveryNotificationManager.hpp"
 
+#include "Textures.hpp"
+#include "GameObjects.hpp"
+
 #include "InputAction.hpp"
 #include "InputState.hpp"
 #include "Move.hpp"
@@ -82,6 +86,7 @@ class GameObject;
 #include "RoboCat.hpp"
 #include "World.hpp"
 #include "Timing.hpp"
+#include "Tile.hpp"
 #include "Mouse.hpp"
 #include "Yarn.hpp"
 #include "StringUtils.hpp"

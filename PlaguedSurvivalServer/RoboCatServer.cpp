@@ -69,7 +69,7 @@ void RoboCatServer::HandleShooting()
 		mTimeOfNextShot = time + mTimeBetweenShots;
 
 		//fire!
-		YarnPtr yarn = std::static_pointer_cast<Yarn>(GameObjectRegistry::sInstance->CreateGameObject('YARN'));
+		YarnPtr yarn = std::static_pointer_cast<Yarn>(GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kYarn));
 		yarn->InitFromShooter(this);
 	}
 }

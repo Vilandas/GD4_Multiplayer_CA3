@@ -28,8 +28,8 @@ public:
 	float GetSimulatedLatency() const { return m_simulated_latency; }
 
 	inline GameObjectPtr GetGameObject(int m_network_id) const;
-	void AddNetworkIdToGameObjectMap(GameObjectPtr in_game_object);
-	void RemoveNetworkIdToGameObjectMap(GameObjectPtr in_game_object);
+	void AddNetworkIdToGameObjectMap(const GameObjectPtr& in_game_object);
+	void RemoveNetworkIdToGameObjectMap(const GameObjectPtr& in_game_object);
 
 protected:
 	IntToGameObjectMap m_network_id_to_game_object_map;

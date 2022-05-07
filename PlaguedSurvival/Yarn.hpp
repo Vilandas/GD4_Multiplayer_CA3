@@ -2,9 +2,9 @@ class Yarn : public GameObject
 {
 public:
 
-	CLASS_IDENTIFICATION('YARN', GameObject)
+	CLASS_IDENTIFICATION(static_cast<opt::ObjectType>(ObjectTypes::kYarn), GameObject)
 
-		enum EYarnReplicationState
+	enum EYarnReplicationState
 	{
 		EYRS_Pose = 1 << 0,
 		EYRS_Color = 1 << 1,

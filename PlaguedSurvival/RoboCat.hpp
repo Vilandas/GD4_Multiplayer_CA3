@@ -1,7 +1,7 @@
 class RoboCat : public GameObject
 {
 public:
-	CLASS_IDENTIFICATION('RCAT', GameObject)
+	CLASS_IDENTIFICATION(static_cast<opt::ObjectType>(ObjectTypes::kCat), GameObject)
 
 	enum ECatReplicationState
 	{

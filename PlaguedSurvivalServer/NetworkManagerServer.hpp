@@ -11,7 +11,7 @@ public:
 	void			SendOutgoingPackets();
 	void			CheckForDisconnects();
 
-	void			RegisterGameObject(GameObjectPtr inGameObject);
+	void			RegisterGameObject(const GameObjectPtr& inGameObject);
 	inline	GameObjectPtr	RegisterAndReturn(GameObject* inGameObject);
 	void			UnregisterGameObject(GameObject* inGameObject);
 	void			SetStateDirty(int inNetworkId, uint32_t inDirtyState);
@@ -24,20 +24,20 @@ private:
 	NetworkManagerServer();
 
 	void	HandlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress);
-	void	ProcessPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream);
+	void	ProcessPacket(const ClientProxyPtr& inClientProxy, InputMemoryBitStream& inInputStream);
 
-	void	SendWelcomePacket(ClientProxyPtr inClientProxy);
+	void	SendWelcomePacket(const ClientProxyPtr& inClientProxy);
 	void	UpdateAllClients();
 
 	void	AddWorldStateToPacket(OutputMemoryBitStream& inOutputStream);
 	void	AddScoreBoardStateToPacket(OutputMemoryBitStream& inOutputStream);
 
-	void	SendStatePacketToClient(ClientProxyPtr inClientProxy);
-	void	WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy);
+	void	SendStatePacketToClient(const ClientProxyPtr& inClientProxy);
+	void	WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, const ClientProxyPtr& inClientProxy);
 
-	void	HandleInputPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream);
+	void	HandleInputPacket(const ClientProxyPtr& inClientProxy, InputMemoryBitStream& inInputStream);
 
-	void	HandleClientDisconnected(ClientProxyPtr inClientProxy);
+	void	HandleClientDisconnected(const ClientProxyPtr& inClientProxy);
 
 	int		GetNewNetworkId();
 

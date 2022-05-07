@@ -1,3 +1,5 @@
+#include <utility>
+
 class DeliveryNotificationManager;
 
 //in case we decide to change the type of the sequence number to use fewer or more bits
@@ -14,7 +16,7 @@ public:
 
 	void 				 SetTransmissionData(int inKey, TransmissionDataPtr	inTransmissionData)
 	{
-		mTransmissionDataMap[inKey] = inTransmissionData;
+		mTransmissionDataMap[inKey] = std::move(inTransmissionData);
 	}
 	const TransmissionDataPtr GetTransmissionData(int inKey) const
 	{

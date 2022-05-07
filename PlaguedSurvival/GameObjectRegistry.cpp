@@ -1,7 +1,7 @@
 #include "RoboCatPCH.hpp"
 
 
-std::unique_ptr< GameObjectRegistry >	GameObjectRegistry::sInstance;
+std::unique_ptr<GameObjectRegistry> GameObjectRegistry::sInstance;
 
 void GameObjectRegistry::StaticInit()
 {
@@ -12,15 +12,15 @@ GameObjectRegistry::GameObjectRegistry()
 {
 }
 
-void GameObjectRegistry::RegisterCreationFunction(uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction)
+void GameObjectRegistry::RegisterCreationFunction(ObjectTypes objectType, GameObjectCreationFunc inCreationFunction)
 {
-	mNameToGameObjectCreationFunctionMap[inFourCCName] = inCreationFunction;
+	mNameToGameObjectCreationFunctionMap[static_cast<opt::ObjectType>(objectType)] = inCreationFunction;
 }
 
-GameObjectPtr GameObjectRegistry::CreateGameObject(uint32_t inFourCCName)
+GameObjectPtr GameObjectRegistry::CreateGameObject(ObjectTypes objectType)
 {
 	//no error checking- if the name isn't there, exception!
-	GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];
+	GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[static_cast<opt::ObjectType>(objectType)];
 
 	GameObjectPtr gameObject = creationFunc();
 

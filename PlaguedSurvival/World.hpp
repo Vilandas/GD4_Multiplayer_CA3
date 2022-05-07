@@ -3,28 +3,25 @@
 */
 class World
 {
-
 public:
 
 	static void StaticInit();
 
-	static std::unique_ptr< World >		sInstance;
+	static std::unique_ptr<World>	sInstance;
 
-	void AddGameObject(GameObjectPtr inGameObject);
-	void RemoveGameObject(GameObjectPtr inGameObject);
+	void AddGameObject(const GameObjectPtr& inGameObject);
+	void RemoveGameObject(const GameObjectPtr& inGameObject);
 
 	void Update();
 
-	const std::vector< GameObjectPtr >& GetGameObjects()	const { return mGameObjects; }
+	const std::vector<GameObjectPtr>& GetGameObjects() const { return mGameObjects; }
 
 private:
 
 	World();
-
 	int	GetIndexOfGameObject(GameObjectPtr inGameObject);
 
-	std::vector< GameObjectPtr >	mGameObjects;
+private:
 
-
+	std::vector<GameObjectPtr> mGameObjects;
 };
-
