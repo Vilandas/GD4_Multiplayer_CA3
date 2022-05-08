@@ -1,4 +1,3 @@
-#pragma once
 class Tile : public GameObject
 {
 public:
@@ -12,9 +11,10 @@ public:
 		TRS_AllState = TRS_Pose | TRS_Health
 	};
 
-	static	GameObject* StaticCreate() { return new Tile(); }
+	static GameObject* StaticCreate() { return new Tile(); }
 
 	uint32_t GetAllStateMask()	const override { return TRS_AllState; }
+	Tile* GetAsTile() override { return this; }
 	uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 	void Read(InputMemoryBitStream& inInputStream) override;
 

@@ -21,12 +21,12 @@ public:
 	static Timing sInstance;
 
 private:
-	float		mDeltaTime;
-	uint64_t	mDeltaTick;
+	float mDeltaTime;
+	uint64_t mDeltaTick;
 
-	double		mLastFrameStartTime;
-	float		mFrameStartTimef;
-	double		mPerfCountDuration;
+	double mLastFrameStartTime;
+	float mFrameStartTimef;
+	double mPerfCountDuration;
 
 };
 

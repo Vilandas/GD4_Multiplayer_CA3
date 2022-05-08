@@ -10,9 +10,9 @@ public:
 		mIsShooting(false)
 	{}
 
-	float GetDesiredHorizontalDelta()	const { return mDesiredRightAmount - mDesiredLeftAmount; }
-	float GetDesiredVerticalDelta()		const { return mDesiredForwardAmount - mDesiredBackAmount; }
-	bool  IsShooting()					const { return mIsShooting; }
+	float GetDesiredHorizontalDelta() const { return mDesiredRightAmount - mDesiredLeftAmount; }
+	float GetDesiredVerticalDelta() const { return mDesiredForwardAmount - mDesiredBackAmount; }
+	bool IsShooting() const { return mIsShooting; }
 
 	bool Write(OutputMemoryBitStream& inOutputStream) const;
 	bool Read(InputMemoryBitStream& inInputStream);

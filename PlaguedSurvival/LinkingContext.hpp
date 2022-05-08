@@ -55,8 +55,8 @@ public:
 	}
 
 private:
-	std::unordered_map< uint32_t, GameObject* > mNetworkIdToGameObjectMap;
-	std::unordered_map< const GameObject*, uint32_t > mGameObjectToNetworkIdMap;
+	std::unordered_map<uint32_t, GameObject*> mNetworkIdToGameObjectMap;
+	std::unordered_map<const GameObject*, uint32_t> mGameObjectToNetworkIdMap;
 
 	uint32_t mNextNetworkId;
 };

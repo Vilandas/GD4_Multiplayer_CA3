@@ -14,7 +14,7 @@ public:
 	};
 
 
-	static	GameObject* StaticCreate() { return new RoboCat(); }
+	static GameObject* StaticCreate() { return new RoboCat(); }
 
 	virtual uint32_t GetAllStateMask()	const override { return ECRS_AllState; }
 
@@ -28,13 +28,13 @@ public:
 	void ProcessCollisions();
 	void ProcessCollisionsWithScreenWalls();
 
-	void		SetPlayerId(uint32_t inPlayerId) { mPlayerId = inPlayerId; }
-	uint32_t	GetPlayerId()						const { return mPlayerId; }
+	void SetPlayerId(uint32_t inPlayerId) { mPlayerId = inPlayerId; }
+	uint32_t GetPlayerId() const { return mPlayerId; }
 
-	void			SetVelocity(const Vector3& inVelocity) { mVelocity = inVelocity; }
-	const Vector3& GetVelocity()						const { return mVelocity; }
+	void SetVelocity(const Vector3& inVelocity) { mVelocity = inVelocity; }
+	const Vector3& GetVelocity() const { return mVelocity; }
 
-	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
+	virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
 protected:
 	RoboCat();
@@ -42,32 +42,32 @@ protected:
 private:
 
 
-	void	AdjustVelocityByThrust(float inDeltaTime);
+	void AdjustVelocityByThrust(float inDeltaTime);
 
-	Vector3				mVelocity;
+	Vector3	mVelocity;
 
 
-	float				mMaxLinearSpeed;
-	float				mMaxRotationSpeed;
+	float mMaxLinearSpeed;
+	float mMaxRotationSpeed;
 
 	//bounce fraction when hitting various things
-	float				mWallRestitution;
-	float				mCatRestitution;
+	float mWallRestitution;
+	float mCatRestitution;
 
 
-	uint32_t			mPlayerId;
+	uint32_t mPlayerId;
 
 protected:
 
 	///move down here for padding reasons...
 
-	float				mLastMoveTimestamp;
+	float mLastMoveTimestamp;
 
-	float				mThrustDir;
-	int					mHealth;
+	float mThrustDir;
+	int mHealth;
 
-	bool				mIsShooting;
+	bool mIsShooting;
 };
 
-typedef shared_ptr< RoboCat >	RoboCatPtr;
+typedef shared_ptr<RoboCat> RoboCatPtr;
 

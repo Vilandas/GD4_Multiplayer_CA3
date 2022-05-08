@@ -5,5 +5,5 @@ public:
 	PlayerSpriteComponent(GameObject* inGameObject);
 	virtual sf::Sprite& GetSprite() override;
 };
-typedef shared_ptr<PlayerSpriteComponent >	PlayerSpriteComponentPtr;
+typedef shared_ptr<PlayerSpriteComponent> PlayerSpriteComponentPtr;
 

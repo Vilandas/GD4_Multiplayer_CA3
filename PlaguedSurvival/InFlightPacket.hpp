@@ -12,9 +12,9 @@ public:
 	InFlightPacket(PacketSequenceNumber inSequenceNumber);
 
 	PacketSequenceNumber GetSequenceNumber() const { return mSequenceNumber; }
-	float				 GetTimeDispatched() const { return mTimeDispatched; }
+	float GetTimeDispatched() const { return mTimeDispatched; }
 
-	void 				 SetTransmissionData(int inKey, TransmissionDataPtr	inTransmissionData)
+	void SetTransmissionData(int inKey, TransmissionDataPtr	inTransmissionData)
 	{
 		mTransmissionDataMap[inKey] = std::move(inTransmissionData);
 	}
@@ -24,13 +24,13 @@ public:
 		return (it != mTransmissionDataMap.end()) ? it->second : nullptr;
 	}
 
-	void			HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const;
-	void			HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
+	void HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const;
+	void HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
 
 private:
-	PacketSequenceNumber	mSequenceNumber;
-	float			mTimeDispatched;
+	PacketSequenceNumber mSequenceNumber;
+	float mTimeDispatched;
 
-	unordered_map< int, TransmissionDataPtr >	mTransmissionDataMap;
+	unordered_map<int, TransmissionDataPtr> mTransmissionDataMap;
 };
 

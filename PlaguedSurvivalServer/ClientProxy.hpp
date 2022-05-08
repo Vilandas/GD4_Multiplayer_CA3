@@ -46,4 +46,4 @@ private:
 
 };
 
-typedef shared_ptr< ClientProxy >	ClientProxyPtr;
+typedef shared_ptr<ClientProxy> ClientProxyPtr;

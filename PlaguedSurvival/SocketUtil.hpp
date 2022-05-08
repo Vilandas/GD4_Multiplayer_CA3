@@ -8,18 +8,18 @@ class SocketUtil
 {
 public:
 
-	static bool			StaticInit();
-	static void			CleanUp();
+	static bool	StaticInit();
+	static void	CleanUp();
 
-	static void			ReportError(const char* inOperationDesc);
-	static int			GetLastError();
+	static void	ReportError(const char* inOperationDesc);
+	static int GetLastError();
 
-	static int			Select(const vector< TCPSocketPtr >* inReadSet,
-		vector< TCPSocketPtr >* outReadSet,
-		const vector< TCPSocketPtr >* inWriteSet,
-		vector< TCPSocketPtr >* outWriteSet,
-		const vector< TCPSocketPtr >* inExceptSet,
-		vector< TCPSocketPtr >* outExceptSet);
+	static int Select(const vector< TCPSocketPtr >* inReadSet,
+		vector<TCPSocketPtr>* outReadSet,
+		const vector<TCPSocketPtr>* inWriteSet,
+		vector<TCPSocketPtr>* outWriteSet,
+		const vector<TCPSocketPtr>* inExceptSet,
+		vector<TCPSocketPtr>* outExceptSet);
 
 	static UDPSocketPtr	CreateUDPSocket(SocketAddressFamily inFamily);
 	static TCPSocketPtr	CreateTCPSocket(SocketAddressFamily inFamily);

@@ -17,14 +17,14 @@ public:
 			mState(inState)
 		{}
 
-		int							GetNetworkId()		const { return mNetworkId; }
-		ReplicationAction		GetAction()			const { return mAction; }
-		uint32_t					GetState()			const { return mState; }
+		int	GetNetworkId() const { return mNetworkId; }
+		ReplicationAction GetAction() const { return mAction; }
+		uint32_t GetState() const { return mState; }
 
 	private:
-		int							mNetworkId;
-		ReplicationAction		mAction;
-		uint32_t					mState;
+		int	mNetworkId;
+		ReplicationAction mAction;
+		uint32_t mState;
 	};
 
 	void AddTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState);
@@ -43,7 +43,7 @@ private:
 
 	ReplicationManagerServer* mReplicationManagerServer;
 
-	vector< ReplicationTransmission >		mTransmissions;
+	vector<ReplicationTransmission> mTransmissions;
 
 };
 

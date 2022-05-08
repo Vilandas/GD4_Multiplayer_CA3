@@ -43,8 +43,8 @@ public:
 
 private:
 
-	float			mTimeLastEntryMade;
-	float			mValue;
-	float			mDuration;
+	float mTimeLastEntryMade;
+	float mValue;
+	float mDuration;
 
 };

@@ -7,7 +7,7 @@ public:
 
 	static void StaticInit();
 
-	static std::unique_ptr<World>	sInstance;
+	static std::unique_ptr<World> sInstance;
 
 	void AddGameObject(const GameObjectPtr& inGameObject);
 	void RemoveGameObject(const GameObjectPtr& inGameObject);

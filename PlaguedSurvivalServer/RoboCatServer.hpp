@@ -7,7 +7,7 @@ enum ECatControlType
 class RoboCatServer : public RoboCat
 {
 public:
-	static GameObjectPtr	StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer()); }
+	static GameObjectPtr StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer()); }
 	virtual void HandleDying() override;
 
 	virtual void Update() override;
@@ -26,8 +26,8 @@ private:
 	ECatControlType	mCatControlType;
 
 
-	float		mTimeOfNextShot;
-	float		mTimeBetweenShots;
+	float mTimeOfNextShot;
+	float mTimeBetweenShots;
 
 };
 

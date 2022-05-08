@@ -12,6 +12,6 @@ private:
 
 	bool CacheFont(const string& inName, const char* inFileName);
 
-	unordered_map< string, FontPtr >	mNameToFontMap;
+	unordered_map<string, FontPtr> mNameToFontMap;
 };
 

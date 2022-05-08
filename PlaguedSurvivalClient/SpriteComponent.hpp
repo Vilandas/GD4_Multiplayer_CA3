@@ -22,5 +22,5 @@ protected:
 	GameObject* mGameObject;
 };
 
-typedef shared_ptr< SpriteComponent >	SpriteComponentPtr;
+typedef shared_ptr<SpriteComponent> SpriteComponentPtr;
 

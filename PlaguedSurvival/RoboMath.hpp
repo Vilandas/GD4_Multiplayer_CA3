@@ -2,7 +2,7 @@ class Vector3
 {
 public:
 
-	float		mX, mY, mZ;
+	float mX, mY, mZ;
 
 	Vector3(float x, float y, float z) :
 		mX(x),
@@ -144,7 +144,7 @@ class Quaternion
 {
 public:
 
-	float		mX, mY, mZ, mW;
+	float mX, mY, mZ, mW;
 
 };
 

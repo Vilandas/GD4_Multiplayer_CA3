@@ -11,15 +11,15 @@ public:
 	void HandleNewClient(const ClientProxyPtr& inClientProxy);
 	void HandleLostClient(const ClientProxyPtr& inClientProxy);
 
-	RoboCatPtr	GetCatForPlayer(int inPlayerId);
-	void	SpawnCatForPlayer(int inPlayerId);
+	RoboCatPtr GetCatForPlayer(int inPlayerId);
+	void SpawnCatForPlayer(int inPlayerId);
 
 
 private:
 	Server();
 
-	bool	InitNetworkManager();
-	void	SetupWorld();
+	bool InitNetworkManager();
+	void SetupWorld();
 
 };
 
