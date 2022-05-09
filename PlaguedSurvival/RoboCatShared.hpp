@@ -47,6 +47,7 @@ using std::string;
 using std::unordered_set;
 
 class RoboCat;
+class Tile;
 class GameObject;
 
 #include "SFML\System.hpp"
@@ -73,8 +74,11 @@ class GameObject;
 #include "AckRange.hpp"
 #include "DeliveryNotificationManager.hpp"
 
-#include "Textures.hpp"
+#include "ReadWritePatterns.hpp"
 #include "GameObjects.hpp"
+#include "Layers.hpp"
+#include "Textures.hpp"
+#include "WorldInfo.hpp"
 
 #include "InputAction.hpp"
 #include "InputState.hpp"

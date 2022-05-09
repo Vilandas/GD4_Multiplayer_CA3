@@ -1,10 +1,10 @@
 #include "RoboCatClientPCH.hpp"
 
-std::unique_ptr< RenderManager >	RenderManager::sInstance;
+std::unique_ptr<RenderManager> RenderManager::sInstance;
 
 RenderManager::RenderManager()
 {
-	view.reset(sf::FloatRect(0, 0, 1280, 720));
+	view.reset(sf::FloatRect(0, 0, 1920, 1080));
 	WindowManager::sInstance->setView(view);
 }
 
@@ -57,7 +57,8 @@ void RenderManager::RenderComponents()
 	//Get the logical viewport so we can pass this to the SpriteComponents when it's draw time
 	for (SpriteComponent* c : mComponents)
 	{	
-		WindowManager::sInstance->draw(c->GetSprite());	
+		WindowManager::sInstance->draw(c->GetSprite());
+		WindowManager::sInstance->draw(c->GetDebugBounds());
 	}
 }
 

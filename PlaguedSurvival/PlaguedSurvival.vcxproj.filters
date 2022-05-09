@@ -126,6 +126,15 @@
     <ClInclude Include="Optimisations.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WorldInfo.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers.hpp">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadWritePatterns.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -204,6 +213,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadWritePatterns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

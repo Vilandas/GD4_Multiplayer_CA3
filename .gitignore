@@ -33,6 +33,9 @@ bld/
 [Ll]ogs/
 
 # Custom
+PlaguedSurvival/Debug/
+PlaguedSurvivalClient/Debug/
+PlaguedSurvivalServer/Debug/
 ![Dd]ebug/*.dll
 
 # Visual Studio 2015/2017 cache/options directory

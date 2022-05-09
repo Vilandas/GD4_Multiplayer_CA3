@@ -28,12 +28,15 @@ void ReplicationManagerServer::HandleCreateAckd(int inNetworkId)
 
 void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissionData)
 {
+	int count = 0;
+
 	//run through each replication command and do something...
 	for (auto& pair : mNetworkIdToReplicationCommand)
 	{
 		ReplicationCommand& replicationCommand = pair.second;
 		if (replicationCommand.HasDirtyState())
 		{
+			count++;
 			int networkId = pair.first;
 
 			//well, first write the network id...
@@ -69,6 +72,9 @@ void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, Repl
 			//let's pretend everything was written- don't make this too hard
 			replicationCommand.ClearDirtyState(writtenState);
 
+			// buffer - prevents creating an packet that is too big to send
+			// (relative to the amount of data in an object, buffer limit may need adjustment)
+			if (count > 50) return;
 		}
 	}
 }

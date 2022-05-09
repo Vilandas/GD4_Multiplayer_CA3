@@ -18,9 +18,3 @@ bool TileServer::HandleCollisionWithCat(RoboCat* inCat)
 
 	return false;
 }
-
-
-
-
-
-

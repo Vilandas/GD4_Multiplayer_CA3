@@ -24,20 +24,23 @@ public:
 	virtual void HandleDying() {}
 
 	void SetIndexInWorld(int inIndex) { mIndexInWorld = inIndex; }
-	int	GetIndexInWorld()				const { return mIndexInWorld; }
+	int	GetIndexInWorld() const { return mIndexInWorld; }
 
 	void SetRotation(float inRotation);
-	float GetRotation()					const { return mRotation; }
+	float GetRotation() const { return mRotation; }
 
 	void SetScale(float inScale) { mScale = inScale; }
-	float GetScale()						const { return mScale; }
+	float GetScale() const { return mScale; }
 
 
 	const Vector3& GetLocation() const { return mLocation; }
-	void SetLocation(const Vector3& inLocation) { mLocation = inLocation; }
+	void SetLocation(const Vector3& inLocation);
 
 	float GetCollisionRadius() const { return mCollisionRadius; }
 	void SetCollisionRadius(float inRadius) { mCollisionRadius = inRadius; }
+
+	sf::FloatRect GetBounds() const { return mBounds; }
+	void SetBounds(sf::FloatRect bounds) { mBounds = bounds; }
 
 	Vector3	GetForwardVector() const;
 
@@ -59,6 +62,7 @@ private:
 	Vector3	mColor;
 
 	float mCollisionRadius;
+	sf::FloatRect mBounds;
 
 	float mRotation;
 	float mScale;

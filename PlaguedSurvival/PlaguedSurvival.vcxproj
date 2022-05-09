@@ -161,6 +161,7 @@
     <ClInclude Include="InFlightPacket.hpp" />
     <ClInclude Include="InputAction.hpp" />
     <ClInclude Include="InputState.hpp" />
+    <ClInclude Include="Layers.hpp" />
     <ClInclude Include="LinkingContext.hpp" />
     <ClInclude Include="MemoryBitStream.hpp" />
     <ClInclude Include="Mouse.hpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="MoveList.hpp" />
     <ClInclude Include="NetworkManager.hpp" />
     <ClInclude Include="Optimisations.hpp" />
+    <ClInclude Include="ReadWritePatterns.hpp" />
     <ClInclude Include="ReplicationCommand.hpp" />
     <ClInclude Include="RoboCat.hpp" />
     <ClInclude Include="RoboCatPCH.hpp" />
@@ -186,6 +188,7 @@
     <ClInclude Include="UDPSocket.hpp" />
     <ClInclude Include="WeightedTimedMovingAverage.hpp" />
     <ClInclude Include="World.hpp" />
+    <ClInclude Include="WorldInfo.hpp" />
     <ClInclude Include="Yarn.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +204,7 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="ReadWritePatterns.cpp" />
     <ClCompile Include="RoboCat.cpp" />
     <ClCompile Include="RoboCatPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

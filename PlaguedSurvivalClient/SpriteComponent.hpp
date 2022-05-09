@@ -11,12 +11,11 @@ public:
 
 	void SetTexture(const TexturePtr& inTexture);
 	virtual sf::Sprite& GetSprite();
-	
-
+	sf::RectangleShape GetDebugBounds() const;
 
 protected:
 
-	sf::Sprite m_sprite;
+	sf::Sprite mSprite;
 
 	//don't want circular reference...
 	GameObject* mGameObject;

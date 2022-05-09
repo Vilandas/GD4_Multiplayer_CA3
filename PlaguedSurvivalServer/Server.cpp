@@ -1,4 +1,3 @@
-
 #include "RoboCatServerPCH.hpp"
 #include <iostream>
 
@@ -90,20 +89,100 @@ namespace
 			{0,0,0,0,0,4,0,0,0,0,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		};
 
-		std::unordered_map<int, Tile*> top_tiles(50);
+		std::unordered_map<int, Tile*> top_tiles;
+		int count = 0;
 
-		GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
+		for (int i = 0; i < 15; i++)
+		{
+			Tile* lastTile = nullptr;
+			for (int j = 0; j < 50; j++)
+			{
+				const int id = map[i][j];
+				const bool skip = id == 0;
+
+				if (!skip)
+				{
+					count++;
+					const Textures textureId = static_cast<Textures>(static_cast<int>(Textures::kDirt1) + id - 1);
+
+					GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
+					Tile* tile = gameObject->GetAsTile();
+
+					tile->SetTexture(textureId);
+					tile->SetScale(0.5f);
+
+					tile->SetLocation(
+						Vector3(
+							32 + WorldInfo::TILE_SIZE + j * WorldInfo::TILE_SIZE,
+							32 + (WorldInfo::WORLD_HEIGHT - WorldInfo::TILE_SIZE * 17) + i * WorldInfo::TILE_SIZE,
+							0)
+					);
+
+					const auto result = top_tiles.emplace(j, tile);
+					if (result.second)
+					{
+						tile->SetIsTop(true);
+						//m_scene_layers[static_cast<int>(Layers::kActivePlatforms)]->AttachChild(std::move(tile));
+					}
+					else
+					{
+						top_tiles[j]->AddBelowTile(tile);
+						//m_scene_layers[static_cast<int>(Layers::kPlatforms)]->AttachChild(std::move(tile));
+					}
+
+					if (lastTile != nullptr)
+					{
+						tile->SetLeftTile(lastTile);
+						lastTile->SetRightTile(tile);
+					}
+					else //last_node was air so this node is exposed
+					{
+						tile->SetActiveCollision();
+					}
+
+					lastTile = tile;
+				}
+				else
+				{
+					if (lastTile != nullptr)
+					{
+						lastTile->SetActiveCollision();
+					}
+
+					lastTile = nullptr;
+				}
+
+			}
+		}
 	}
-
-
 }
 
 
 void Server::SetupWorld()
 {
 	//spawn some random mice
-	CreateRandomMice(10);
+	//CreateRandomMice(10);
 	CreateWorldTiles();
+
+	//GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
+	//Tile* tile = gameObject->GetAsTile();
+	//tile->SetTexture(Textures::kDirt5);
+	//tile->SetLocation(Vector3(
+	//	32,
+	//	32,
+	//	0)
+	//);
+
+	//gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
+	//tile = gameObject->GetAsTile();
+	//tile->SetScale(0.5f);
+	//tile->SetLocation(Vector3(
+	//	WorldInfo::TILE_SIZE + 1 * WorldInfo::TILE_SIZE,
+	//	(WorldInfo::WORLD_HEIGHT - WorldInfo::TILE_SIZE * 17) + 0 * WorldInfo::TILE_SIZE,
+	//	0)
+	//);
+
+	//tile->SetTexture(Textures::kDirt1);
 }
 
 void Server::DoFrame()

@@ -1,13 +1,14 @@
 #include "RoboCatPCH.hpp"
 
 GameObject::GameObject() :
-	mIndexInWorld(-1),
-	mCollisionRadius(1.f),
-	mDoesWantToDie(false),
-	mRotation(0.f),
-	mNetworkId(0),
 	mColor(Colors::White),
-	mScale(1.0f)
+	mCollisionRadius(1.f),
+	mBounds(0, 0, 1.f, 1.f),
+	mRotation(0.f),
+	mScale(1.0f),
+	mIndexInWorld(-1),
+	mDoesWantToDie(false),
+	mNetworkId(0)
 {
 }
 
@@ -15,7 +16,6 @@ void GameObject::Update()
 {
 	//object don't do anything by default...	
 }
-
 
 Vector3 GameObject::GetForwardVector()	const
 {
@@ -36,4 +36,11 @@ void GameObject::SetRotation(float inRotation)
 {
 	//should we normalize using fmodf?
 	mRotation = inRotation;
+}
+
+void GameObject::SetLocation(const Vector3& inLocation)
+{
+	mLocation = inLocation;
+	mBounds.left = mLocation.mX - (mBounds.width * 0.5f);
+	mBounds.top = mLocation.mY - (mBounds.height * 0.5f);
 }
