@@ -1,7 +1,7 @@
 enum class	ObjectTypes
 {
 	kGameObject,
-	kCat,
+	kCharacter,
 	kMouse,
 	kYarn,
 

@@ -7,8 +7,6 @@
 #include "NetworkManagerServer.hpp"
 #include "Server.hpp"
 
-#include "RoboCatServer.hpp"
-#include "MouseServer.hpp"
-#include "YarnServer.hpp"
+#include "CharacterServer.hpp"
 #include "TileServer.hpp"
 

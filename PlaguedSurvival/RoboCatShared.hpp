@@ -46,7 +46,7 @@ using std::unordered_map;
 using std::string;
 using std::unordered_set;
 
-class RoboCat;
+class Character;
 class Tile;
 class GameObject;
 
@@ -87,12 +87,10 @@ class GameObject;
 
 #include "GameObject.hpp"
 #include "GameObjectRegistry.hpp"
-#include "RoboCat.hpp"
+#include "Character.hpp"
 #include "World.hpp"
 #include "Timing.hpp"
 #include "Tile.hpp"
-#include "Mouse.hpp"
-#include "Yarn.hpp"
 #include "StringUtils.hpp"
 #include "ScoreBoardManager.hpp"
 

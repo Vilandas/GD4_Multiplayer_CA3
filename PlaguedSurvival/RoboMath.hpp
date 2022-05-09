@@ -28,6 +28,16 @@ public:
 		return Vector3(inLeft.mX + inRight.mX, inLeft.mY + inRight.mY, inLeft.mZ + inRight.mZ);
 	}
 
+	friend Vector3 operator+(const Vector3& inLeft, const sf::Vector2f& inRight)
+	{
+		return Vector3(inLeft.mX + inRight.x, inLeft.mY + inRight.y, inLeft.mZ);
+	}
+
+	friend Vector3 operator+(const sf::Vector2f& inLeft, const Vector3& inRight)
+	{
+		return Vector3(inLeft.x + inRight.mX, inLeft.y + inRight.mY, inRight.mZ);
+	}
+
 	friend Vector3 operator-(const Vector3& inLeft, const Vector3& inRight)
 	{
 		return Vector3(inLeft.mX - inRight.mX, inLeft.mY - inRight.mY, inLeft.mZ - inRight.mZ);
@@ -63,6 +73,13 @@ public:
 		mX += inRight.mX;
 		mY += inRight.mY;
 		mZ += inRight.mZ;
+		return *this;
+	}
+
+	Vector3& operator+=(const sf::Vector2f& inRight)
+	{
+		mX += inRight.x;
+		mY += inRight.y;;
 		return *this;
 	}
 
@@ -187,6 +204,11 @@ namespace RoboMath
 	inline float ToRadians(float inDegrees)
 	{
 		return (inDegrees / 180.0f) * PI;
+	}
+
+	inline sf::Vector2f Lerp(const sf::Vector2f& inA, const sf::Vector2f& inB, float t)
+	{
+		return sf::Vector2f(inA + t * (inB - inA));
 	}
 }
 

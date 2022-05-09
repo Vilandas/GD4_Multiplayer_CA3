@@ -27,9 +27,6 @@
     <ClInclude Include="InputManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MouseClient.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NetworkManagerClient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -37,9 +34,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ReplicationManagerClient.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RoboCatClient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComponent.hpp">
@@ -51,9 +45,6 @@
     <ClInclude Include="WindowManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="YarnClient.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FontManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -61,6 +52,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TileClient.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterClient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,9 +74,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MouseClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NetworkManagerClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReplicationManagerClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RoboCatClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
@@ -104,9 +92,6 @@
     <ClCompile Include="WindowManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="YarnClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FontManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -114,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TileClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

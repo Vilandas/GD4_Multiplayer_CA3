@@ -21,10 +21,7 @@ bool Client::StaticInit()
 
 Client::Client()
 {
-	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kCat, RoboCatClient::StaticCreate);
-	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kMouse, MouseClient::StaticCreate);
-	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kYarn, YarnClient::StaticCreate);
-
+	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kCharacter, CharacterClient::StaticCreate);
 	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kTile, TileClient::StaticCreate);
 
 	string destination = StringUtils::GetCommandLineArg(1);

@@ -10,9 +10,7 @@
 #include "RenderManager.hpp"
 #include "WindowManager.hpp"
 
-#include "RoboCatClient.hpp"
-#include "MouseClient.hpp"
-#include "YarnClient.hpp"
+#include "CharacterClient.hpp"
 #include "TileClient.hpp"
 
 #include "HUD.hpp"

@@ -10,7 +10,7 @@ void TileServer::HandleDying()
 }
 
 
-bool TileServer::HandleCollisionWithCat(RoboCat* inCat)
+bool TileServer::HandleCollisionWithCharacter(Character* inCharacter)
 {
 	//SetDoesWantToDie(true);
 

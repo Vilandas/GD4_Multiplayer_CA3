@@ -45,9 +45,6 @@
     <ClInclude Include="MemoryBitStream.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mouse.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Move.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,9 +52,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ReplicationCommand.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RoboCat.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScoreBoardManager.hpp">
@@ -88,9 +82,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="World.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Yarn.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WeightedTimedMovingAverage.hpp">
@@ -135,6 +126,9 @@
     <ClInclude Include="ReadWritePatterns.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Character.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -155,16 +149,10 @@
     <ClCompile Include="MemoryBitStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mouse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Move.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MoveList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RoboCat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScoreBoardManager.cpp">
@@ -197,9 +185,6 @@
     <ClCompile Include="World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Yarn.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RoboCatPCH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -216,6 +201,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReadWritePatterns.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

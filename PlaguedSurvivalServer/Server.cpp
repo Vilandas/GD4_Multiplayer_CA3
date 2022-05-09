@@ -15,10 +15,7 @@ bool Server::StaticInit()
 Server::Server()
 {
 
-	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kCat, RoboCatServer::StaticCreate);
-	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kMouse, MouseServer::StaticCreate);
-	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kYarn, YarnServer::StaticCreate);
-
+	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kCharacter, CharacterServer::StaticCreate);
 	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kTile, TileServer::StaticCreate);
 
 	InitNetworkManager();
@@ -205,16 +202,16 @@ void Server::HandleNewClient(const ClientProxyPtr& inClientProxy)
 	int playerId = inClientProxy->GetPlayerId();
 
 	ScoreBoardManager::sInstance->AddEntry(playerId, inClientProxy->GetName());
-	SpawnCatForPlayer(playerId);
+	SpawnCharacterForPlayer(playerId);
 }
 
-void Server::SpawnCatForPlayer(int inPlayerId)
+void Server::SpawnCharacterForPlayer(int inPlayerId)
 {
-	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kCat));
-	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
-	cat->SetPlayerId(inPlayerId);
+	CharacterPtr character = std::static_pointer_cast<Character>(GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kCharacter));
+	character->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
+	character->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
+	character->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
 }
 
 void Server::HandleLostClient(const ClientProxyPtr& inClientProxy)
@@ -224,14 +221,14 @@ void Server::HandleLostClient(const ClientProxyPtr& inClientProxy)
 	int playerId = inClientProxy->GetPlayerId();
 
 	ScoreBoardManager::sInstance->RemoveEntry(playerId);
-	RoboCatPtr cat = GetCatForPlayer(playerId);
-	if (cat)
+	CharacterPtr character = GetCharacterForPlayer(playerId);
+	if (character)
 	{
-		cat->SetDoesWantToDie(true);
+		character->SetDoesWantToDie(true);
 	}
 }
 
-RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
+CharacterPtr Server::GetCharacterForPlayer(int inPlayerId)
 {
 	//run through the objects till we find the cat...
 	//it would be nice if we kept a pointer to the cat on the clientproxy
@@ -241,10 +238,10 @@ RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
 	for (int i = 0, c = gameObjects.size(); i < c; ++i)
 	{
 		GameObjectPtr go = gameObjects[i];
-		RoboCat* cat = go->GetAsCat();
-		if (cat && cat->GetPlayerId() == inPlayerId)
+		Character* character = go->GetAsCharacter();
+		if (character && character->GetPlayerId() == inPlayerId)
 		{
-			return std::static_pointer_cast<RoboCat>(go);
+			return std::static_pointer_cast<Character>(go);
 		}
 	}
 

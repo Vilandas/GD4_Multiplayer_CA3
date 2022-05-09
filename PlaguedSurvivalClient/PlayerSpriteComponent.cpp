@@ -11,7 +11,7 @@ sf::Sprite& PlayerSpriteComponent::GetSprite()
 	auto rot = mGameObject->GetRotation();
 	mSprite.setPosition(pos.mX, pos.mY);
 	mSprite.setRotation(rot);
-	RoboCat* player = dynamic_cast<RoboCat*>(mGameObject);
+	Character* player = dynamic_cast<Character*>(mGameObject);
 	Vector3 playerColor = player->GetColor();
 	mSprite.setColor(sf::Color(playerColor.mX, playerColor.mY, playerColor.mZ, 255));
 
