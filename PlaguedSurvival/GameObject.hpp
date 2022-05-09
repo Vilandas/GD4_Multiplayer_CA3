@@ -16,6 +16,9 @@ public:
 
 	virtual uint32_t GetAllStateMask() const { return 0; }
 
+	Layers GetLayer() const { return mLayer; }
+	void SetLayer(const Layers layer) { mLayer = layer; }
+
 	//return whether to keep processing collision
 	virtual bool HandleCollisionWithCharacter(Character* inChar) { (void)inChar; return true; }
 
@@ -24,7 +27,7 @@ public:
 	virtual void HandleDying() {}
 
 	void SetIndexInWorld(int inIndex) { mIndexInWorld = inIndex; }
-	int	GetIndexInWorld() const { return mIndexInWorld; }
+	int GetIndexInWorld() const { return mIndexInWorld; }
 
 	void SetRotation(float inRotation);
 	float GetRotation() const { return mRotation; }
@@ -58,6 +61,7 @@ public:
 	virtual void Read(InputMemoryBitStream& inInputStream) { (void)inInputStream; }
 
 private:
+	Layers mLayer;
 	Vector3	mLocation;
 	Vector3	mColor;
 
@@ -66,7 +70,7 @@ private:
 
 	float mRotation;
 	float mScale;
-	int	mIndexInWorld;
+	int mIndexInWorld;
 
 	bool mDoesWantToDie;
 

@@ -10,6 +10,7 @@ Tile::Tile()
 	, mBelowTiles()
 {
 	SetScale(0.5f);
+	SetLayer(Layers::kPlatforms);
 }
 
 uint32_t Tile::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const //35 bits total

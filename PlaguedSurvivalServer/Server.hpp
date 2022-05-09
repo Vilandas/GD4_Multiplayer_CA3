@@ -11,8 +11,8 @@ public:
 	void HandleNewClient(const ClientProxyPtr& inClientProxy);
 	void HandleLostClient(const ClientProxyPtr& inClientProxy);
 
-	CharacterPtr GetCharacterForPlayer(int inPlayerId);
-	void SpawnCharacterForPlayer(int inPlayerId);
+	CharacterPtr GetCharacterForPlayer(opt::PlayerId inPlayerId);
+	void SpawnCharacterForPlayer(opt::PlayerId inPlayerId);
 
 
 private:

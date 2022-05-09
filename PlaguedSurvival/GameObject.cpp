@@ -1,6 +1,7 @@
 #include "RoboCatPCH.hpp"
 
 GameObject::GameObject() :
+	mLayer(),
 	mColor(Colors::White),
 	mCollisionRadius(1.f),
 	mBounds(0, 0, 1.f, 1.f),

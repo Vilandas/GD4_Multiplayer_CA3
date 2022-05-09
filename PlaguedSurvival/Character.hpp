@@ -25,8 +25,8 @@ public:
 	void ProcessCollisions();
 	void ProcessCollisionsWithScreenWalls();
 
-	void SetPlayerId(uint32_t inPlayerId) { mPlayerId = inPlayerId; }
-	uint32_t GetPlayerId() const { return mPlayerId; }
+	void SetPlayerId(opt::PlayerId inPlayerId) { mPlayerId = inPlayerId; }
+	opt::PlayerId GetPlayerId() const { return mPlayerId; }
 
 	void SetVelocity(const sf::Vector2f& inVelocity) { mVelocity = inVelocity; }
 	const sf::Vector2f& GetVelocity() const { return mVelocity; }
@@ -47,7 +47,7 @@ private:
 	//float mLastMoveTimestamp;
 
 protected:
-	uint32_t mPlayerId;
+	opt::PlayerId mPlayerId;
 	float mHorizontalDirection;
 	bool mIsJumping;
 	float mAccelerationSpeed;

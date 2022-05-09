@@ -15,6 +15,7 @@ Character::Character() :
 	mCameraMoveConstraint(),
 	mIsCameraTarget()
 {
+	SetLayer(Layers::kPlayers);
 	//SetCollisionRadius(60.f);
 }
 
@@ -71,7 +72,7 @@ void Character::ValidateVelocity()
 
 void Character::ProcessInput(float inDeltaTime, const InputState& inInputState)
 {
-	mHorizontalDirection = inInputState.GetDesiredVerticalDelta();
+	mHorizontalDirection = inInputState.GetDesiredHorizontalDelta();
 	mIsJumping = inInputState.IsJumping();
 
 }

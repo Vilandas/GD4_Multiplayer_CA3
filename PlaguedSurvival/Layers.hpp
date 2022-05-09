@@ -1,5 +1,6 @@
 enum class Layers
 {
+	kDefault,
 	kPlatforms,
 	kActivePlatforms,
 	kDangers,

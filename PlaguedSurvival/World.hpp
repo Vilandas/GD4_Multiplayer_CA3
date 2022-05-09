@@ -4,7 +4,6 @@
 class World
 {
 public:
-
 	static void StaticInit();
 
 	static std::unique_ptr<World> sInstance;
@@ -14,14 +13,12 @@ public:
 
 	void Update();
 
-	const std::vector<GameObjectPtr>& GetGameObjects() const { return mGameObjects; }
+	const std::vector<GameObjectPtr>& GetGameObjectsInLayer(const Layers layer) const { return mGameObjects.at(layer); }
 
 private:
-
 	World();
 	int	GetIndexOfGameObject(GameObjectPtr inGameObject);
 
 private:
-
-	std::vector<GameObjectPtr> mGameObjects;
+	std::unordered_map<Layers, std::vector<GameObjectPtr>> mGameObjects;
 };

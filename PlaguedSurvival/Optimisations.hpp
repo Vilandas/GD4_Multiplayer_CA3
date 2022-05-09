@@ -1,5 +1,6 @@
 namespace opt
 {
+	typedef uint32_t PlayerId;
 	typedef sf::Uint8 ObjectType;
 	typedef sf::Uint8 Texture;
 

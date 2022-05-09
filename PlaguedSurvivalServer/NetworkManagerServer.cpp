@@ -193,17 +193,18 @@ void NetworkManagerServer::WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& 
 //should we ask the server for this? or run through the world ourselves?
 void NetworkManagerServer::AddWorldStateToPacket(OutputMemoryBitStream& inOutputStream)
 {
-	const auto& gameObjects = World::sInstance->GetGameObjects();
+	LOG("NOT IMPLEMENTED (AddWorldStateToPacket", 0);
+	//const auto& gameObjects = World::sInstance->GetGameObjects();
 
-	//now start writing objects- do we need to remember how many there are? we can check first...
-	inOutputStream.Write(gameObjects.size());
+	////now start writing objects- do we need to remember how many there are? we can check first...
+	//inOutputStream.Write(gameObjects.size());
 
-	for (GameObjectPtr gameObject : gameObjects)
-	{
-		inOutputStream.Write(gameObject->GetNetworkId());
-		inOutputStream.Write(gameObject->GetClassId());
-		gameObject->Write(inOutputStream, 0xffffffff);
-	}
+	//for (GameObjectPtr gameObject : gameObjects)
+	//{
+	//	inOutputStream.Write(gameObject->GetNetworkId());
+	//	inOutputStream.Write(gameObject->GetClassId());
+	//	gameObject->Write(inOutputStream, 0xffffffff);
+	//}
 }
 
 void NetworkManagerServer::AddScoreBoardStateToPacket(OutputMemoryBitStream& inOutputStream)

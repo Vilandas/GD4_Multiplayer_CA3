@@ -205,7 +205,7 @@ void Server::HandleNewClient(const ClientProxyPtr& inClientProxy)
 	SpawnCharacterForPlayer(playerId);
 }
 
-void Server::SpawnCharacterForPlayer(int inPlayerId)
+void Server::SpawnCharacterForPlayer(opt::PlayerId inPlayerId)
 {
 	CharacterPtr character = std::static_pointer_cast<Character>(GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kCharacter));
 	character->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
@@ -228,20 +228,19 @@ void Server::HandleLostClient(const ClientProxyPtr& inClientProxy)
 	}
 }
 
-CharacterPtr Server::GetCharacterForPlayer(int inPlayerId)
+CharacterPtr Server::GetCharacterForPlayer(opt::PlayerId inPlayerId)
 {
 	//run through the objects till we find the cat...
 	//it would be nice if we kept a pointer to the cat on the clientproxy
 	//but then we'd have to clean it up when the cat died, etc.
 	//this will work for now until it's a perf issue
-	const auto& gameObjects = World::sInstance->GetGameObjects();
-	for (int i = 0, c = gameObjects.size(); i < c; ++i)
+	const auto& players = World::sInstance->GetGameObjectsInLayer(Layers::kPlayers);
+	for (const auto& gameObject : players)
 	{
-		GameObjectPtr go = gameObjects[i];
-		Character* character = go->GetAsCharacter();
+		Character* character = gameObject->GetAsCharacter();
 		if (character && character->GetPlayerId() == inPlayerId)
 		{
-			return std::static_pointer_cast<Character>(go);
+			return std::static_pointer_cast<Character>(gameObject);
 		}
 	}
 
