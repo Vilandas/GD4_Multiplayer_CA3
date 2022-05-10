@@ -16,7 +16,7 @@ Character::Character() :
 	mIsCameraTarget()
 {
 	SetLayer(Layers::kPlayers);
-	//SetCollisionRadius(60.f);
+	SetBounds(sf::FloatRect(0, 0, 95, 128));
 }
 
 void Character::Accelerate(float inDeltaTime)
@@ -87,8 +87,8 @@ void Character::SimulateMovement(float inDeltaTime)
 	ApplyGravity(inDeltaTime);
 
 	ValidateVelocity();
-	ProcessCollisions();
-	
+
+	ProcessCollisions(inDeltaTime);
 	SetLocation(GetLocation() + mVelocity * inDeltaTime);
 }
 
@@ -97,119 +97,85 @@ void Character::Update()
 
 }
 
-void Character::ProcessCollisions()
+void Character::ProcessCollisions(float inDeltaTime)
 {
-	////right now just bounce off the sides..
-	//ProcessCollisionsWithScreenWalls();
+	std::set<GameObject*> collisions;
 
-	//float sourceRadius = GetCollisionRadius();
-	//Vector3 sourceLocation = GetLocation();
+	PredictCollisionsWithChunks(inDeltaTime, Layers::kActivePlatforms, collisions);
 
-	////now let's iterate through the world and see what we hit...
-	////note: since there's a small number of objects in our game, this is fine.
-	////but in a real game, brute-force checking collisions against every other object is not efficient.
-	////it would be preferable to use a quad tree or some other structure to minimize the
-	////number of collisions that need to be tested.
-	//for (auto goIt = World::sInstance->GetGameObjects().begin(), end = World::sInstance->GetGameObjects().end(); goIt != end; ++goIt)
-	//{
-	//	GameObject* target = goIt->get();
-	//	if (target != this && !target->DoesWantToDie())
-	//	{
-	//		//simple collision test for spheres- are the radii summed less than the distance?
-	//		Vector3 targetLocation = target->GetLocation();
-	//		float targetRadius = target->GetCollisionRadius();
-
-	//		Vector3 delta = targetLocation - sourceLocation;
-	//		float distSq = delta.LengthSq2D();
-	//		float collisionDist = (sourceRadius + targetRadius);
-	//		if (distSq < (collisionDist * collisionDist))
-	//		{
-	//			//first, tell the other guy there was a collision with a cat, so it can do something...
-
-	//			if (target->HandleCollisionWithCharacter(this))
-	//			{
-	//				//okay, you hit something!
-	//				//so, project your location far enough that you're not colliding
-	//				Vector3 dirToTarget = delta;
-	//				dirToTarget.Normalize2D();
-	//				Vector3 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
-	//				//important note- we only move this cat. the other cat can take care of moving itself
-	//				SetLocation(targetLocation - acceptableDeltaFromSourceToTarget);
-
-
-	//				Vector3 relVel = mVelocity;
-
-	//				//if other object is a cat, it might have velocity, so there might be relative velocity...
-	//				Character* targetChar = target->GetAsCharacter();
-	//				if (targetChar)
-	//				{
-	//					relVel -= targetChar->mVelocity;
-	//				}
-
-	//				//got vel with dir between objects to figure out if they're moving towards each other
-	//				//and if so, the magnitude of the impulse ( since they're both just balls )
-	//				float relVelDotDir = Dot2D(relVel, dirToTarget);
-
-	//				if (relVelDotDir > 0.f)
-	//				{
-	//					Vector3 impulse = relVelDotDir * dirToTarget;
-
-	//					if (targetChar)
-	//					{
-	//						mVelocity -= impulse;
-	//						mVelocity *= mCatRestitution;
-	//					}
-	//					else
-	//					{
-	//						mVelocity -= impulse * 2.f;
-	//						mVelocity *= mWallRestitution;
-	//					}
-
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-
+	for (const GameObject* gameObject : collisions)
+	{
+		const CollisionLocation location = Collision::CollisionLocation(inDeltaTime, *this, *gameObject);
+		BlockingCollision(location, gameObject);
+	}
 }
 
-void Character::ProcessCollisionsWithScreenWalls()
+void Character::BlockingCollision(CollisionLocation location, const GameObject* collider)
 {
-	//Vector3 location = GetLocation();
-	//float x = location.mX;
-	//float y = location.mY;
+	const sf::Vector2f velocity = GetVelocity();
 
-	//float vx = mVelocity.x;
-	//float vy = mVelocity.y;
+	switch (location)
+	{
+	case CollisionLocation::kLeft:
+		if (velocity.x < 0)
+		{
+			mVelocity.x = 0;
+		}
+		break;
 
-	//float radius = GetCollisionRadius();
+	case CollisionLocation::kRight:
+		if (velocity.x > 0)
+		{
+			mVelocity.x = 0;
+		}
+		break;
 
-	////if the cat collides against a wall, the quick solution is to push it off
-	//if ((y + radius) >= WorldInfo::WORLD_HEIGHT && vy > 0)
-	//{
-	//	mVelocity.mY = -vy * mWallRestitution;
-	//	location.mY = WorldInfo::WORLD_HEIGHT - radius;
-	//	SetLocation(location);
-	//}
-	//else if (y - radius <= 0 && vy < 0)
-	//{
-	//	mVelocity.mY = -vy * mWallRestitution;
-	//	location.mY = radius;
-	//	SetLocation(location);
-	//}
+	case CollisionLocation::kTop:
+		if (velocity.y < 0)
+		{
+			mVelocity.y = 0;
+		}
+		break;
 
-	//if ((x + radius) >= WorldInfo::WORLD_WIDTH && vx > 0)
-	//{
-	//	mVelocity.mX = -vx * mWallRestitution;
-	//	location.mX = WorldInfo::WORLD_WIDTH - radius;
-	//	SetLocation(location);
-	//}
-	//else if (x - radius <= 0 && vx < 0)
-	//{
-	//	mVelocity.mX = -vx * mWallRestitution;
-	//	location.mX = radius;
-	//	SetLocation(location);
-	//}
+	case CollisionLocation::kBottom:
+		ResetJump();
+
+		if (velocity.y > 0)
+		{
+			mVelocity.y = 0;
+		}
+		break;
+
+	case CollisionLocation::kNone:
+		break;
+	}
+}
+
+void Character::Jump()
+{
+	if (!IsJumping() && mAirTime <= mCoyoteTime)
+	{
+		mIsJumping = true;
+		const sf::Vector2f velocity = GetVelocity();
+
+		SetVelocity(GetVelocity().x, mJumpForce);
+	}
+}
+
+void Character::ResetJump()
+{
+	mAirTime = 0.f;
+	mIsJumping = false;
+}
+
+bool Character::IsGrounded() const
+{
+	return mAirTime > 0;
+}
+
+bool Character::IsJumping() const
+{
+	return mIsJumping;
 }
 
 uint32_t Character::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const

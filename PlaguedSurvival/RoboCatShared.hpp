@@ -74,6 +74,9 @@ class GameObject;
 #include "AckRange.hpp"
 #include "DeliveryNotificationManager.hpp"
 
+#include "CollisionLocation.hpp"
+#include "Collision.hpp"
+
 #include "ReadWritePatterns.hpp"
 #include "GameObjects.hpp"
 #include "Layers.hpp"
@@ -86,6 +89,7 @@ class GameObject;
 #include "MoveList.hpp"
 
 #include "GameObject.hpp"
+#include "WorldChunks.hpp"
 #include "GameObjectRegistry.hpp"
 #include "Character.hpp"
 #include "World.hpp"

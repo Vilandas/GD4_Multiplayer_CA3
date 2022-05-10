@@ -1,5 +1,5 @@
 /*
-* the world tracks all the live game objects. Failry inefficient for now, but not that much of a problem
+* the world tracks all the live game objects. Fairly inefficient for now, but not that much of a problem
 */
 class World
 {
@@ -10,6 +10,8 @@ public:
 
 	void AddGameObject(const GameObjectPtr& inGameObject);
 	void RemoveGameObject(const GameObjectPtr& inGameObject);
+	void SwapGameObjectLayer(const GameObjectPtr& inGameObject, Layers newLayer);
+	void SwapGameObjectLayer(const GameObject& inGameObject, Layers newLayer);
 
 	void Update();
 

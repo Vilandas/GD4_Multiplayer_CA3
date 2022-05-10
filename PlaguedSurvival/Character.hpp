@@ -22,14 +22,21 @@ public:
 	void ProcessInput(float inDeltaTime, const InputState& inInputState);
 	void SimulateMovement(float inDeltaTime);
 
-	void ProcessCollisions();
-	void ProcessCollisionsWithScreenWalls();
+	void ProcessCollisions(float inDeltaTime);
+
+	void BlockingCollision(CollisionLocation location, const GameObject* collider);
 
 	void SetPlayerId(opt::PlayerId inPlayerId) { mPlayerId = inPlayerId; }
 	opt::PlayerId GetPlayerId() const { return mPlayerId; }
 
-	void SetVelocity(const sf::Vector2f& inVelocity) { mVelocity = inVelocity; }
-	const sf::Vector2f& GetVelocity() const { return mVelocity; }
+	void SetVelocity(const sf::Vector2f inVelocity) { mVelocity = inVelocity; }
+	void SetVelocity(const float x, const float y) { mVelocity = sf::Vector2f(x, y); }
+	sf::Vector2f GetVelocity() const override { return mVelocity; }
+
+	void Jump();
+	void ResetJump();
+	bool IsGrounded() const;
+	bool IsJumping() const;
 
 	uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
@@ -41,8 +48,6 @@ private:
 	void Decelerate(float inDeltaTime);
 	void ApplyGravity(float inDeltaTime);
 	void ValidateVelocity();
-
-	void AdjustVelocityByThrust(float inDeltaTime);
 
 	//float mLastMoveTimestamp;
 

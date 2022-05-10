@@ -33,6 +33,19 @@ void GameObject::SetNetworkId(int inNetworkId)
 
 }
 
+void GameObject::PredictCollisionsWithChunks(float inDeltaTime, Layers layer, std::set<GameObject*>& collisions)
+{
+	WorldChunks::sInstance->CheckCollision(inDeltaTime, this, layer, collisions);
+}
+
+void GameObject::PredictCollisionWithObject(float inDeltaTime, GameObject& otherObject, std::set<GameObject*>& collisions)
+{
+	if (this != &otherObject && Collision::Intersects(inDeltaTime, *this, otherObject) && !DoesWantToDie() && !otherObject.DoesWantToDie())
+	{
+		collisions.insert(&otherObject);
+	}
+}
+
 void GameObject::SetRotation(float inRotation)
 {
 	//should we normalize using fmodf?

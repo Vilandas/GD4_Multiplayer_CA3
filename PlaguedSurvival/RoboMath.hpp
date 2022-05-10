@@ -210,6 +210,11 @@ namespace RoboMath
 	{
 		return sf::Vector2f(inA + t * (inB - inA));
 	}
+
+	inline sf::Vector2f GetRectCenter(const sf::FloatRect& rect)
+	{
+		return { rect.left + rect.width / 2, rect.top + rect.height / 2 };
+	}
 }
 
 namespace Colors

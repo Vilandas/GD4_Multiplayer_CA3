@@ -8,6 +8,7 @@ public:
 	SpriteComponent(GameObject* inGameObject);
 	~SpriteComponent();
 
+	GameObject& GetGameObject() const { return *mGameObject; }
 
 	void SetTexture(const TexturePtr& inTexture);
 	virtual sf::Sprite& GetSprite();

@@ -5,14 +5,24 @@ static GameObject* CreateInstance() { return static_cast<GameObject*>(new in_cla
 
 class GameObject
 {
+//public:
+//	struct GameObjectHash {
+//		size_t operator()(const GameObject& gameObject) const
+//		{
+//			return std::hash<int>{}(gameObject.GetNetworkId());
+//		}
+//	};
 public:
 	CLASS_IDENTIFICATION(static_cast<opt::ObjectType>(ObjectTypes::kGameObject), GameObject)
 
 	GameObject();
 	virtual ~GameObject() {}
 
+	virtual bool operator==(const GameObject& otherObject) const { return GetNetworkId() == otherObject.GetNetworkId(); }
+
 	virtual Character* GetAsCharacter() { return nullptr; }
 	virtual Tile* GetAsTile() { return nullptr; }
+	virtual sf::Vector2f GetVelocity() const { return {}; }
 
 	virtual uint32_t GetAllStateMask() const { return 0; }
 
@@ -36,6 +46,7 @@ public:
 	float GetScale() const { return mScale; }
 
 
+	sf::Vector2f GetLocationV2() const { return sf::Vector2f(mLocation.mX, mLocation.mY); }
 	const Vector3& GetLocation() const { return mLocation; }
 	void SetLocation(const Vector3& inLocation);
 
@@ -47,7 +58,6 @@ public:
 
 	Vector3	GetForwardVector() const;
 
-
 	void SetColor(const Vector3& inColor) { mColor = inColor; }
 	const Vector3& GetColor() const { return mColor; }
 
@@ -56,6 +66,10 @@ public:
 
 	int	GetNetworkId() const { return mNetworkId; }
 	void SetNetworkId(int inNetworkId);
+
+	//void PredictCollisionsWithScene(GameObject& otherObject, std::set<GameObject*, GameObjectHash>& collisions);
+	void PredictCollisionsWithChunks(float inDeltaTime, Layers layer, std::set<GameObject*>& collisions);
+	void PredictCollisionWithObject(float inDeltaTime, GameObject& otherObject, std::set<GameObject*>& collisions);
 
 	virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const { (void)inOutputStream; (void)inDirtyState; return 0; }
 	virtual void Read(InputMemoryBitStream& inInputStream) { (void)inInputStream; }
@@ -75,7 +89,6 @@ private:
 	bool mDoesWantToDie;
 
 	int	mNetworkId;
-
 };
 
 typedef shared_ptr<GameObject> GameObjectPtr;

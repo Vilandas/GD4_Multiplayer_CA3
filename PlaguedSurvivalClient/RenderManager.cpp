@@ -58,7 +58,11 @@ void RenderManager::RenderComponents()
 	for (SpriteComponent* c : mComponents)
 	{	
 		WindowManager::sInstance->draw(c->GetSprite());
-		WindowManager::sInstance->draw(c->GetDebugBounds());
+
+		if (c->GetGameObject().GetLayer() == Layers::kActivePlatforms)
+		{
+			WindowManager::sInstance->draw(c->GetDebugBounds());
+		}
 	}
 }
 

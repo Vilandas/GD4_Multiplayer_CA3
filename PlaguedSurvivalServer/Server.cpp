@@ -86,6 +86,7 @@ namespace
 			{0,0,0,0,0,4,0,0,0,0,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		};
 
+		vector<Tile*> allTiles = vector<Tile*>();
 		std::unordered_map<int, Tile*> top_tiles;
 		int count = 0;
 
@@ -104,6 +105,7 @@ namespace
 
 					GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
 					Tile* tile = gameObject->GetAsTile();
+					allTiles.emplace_back(tile);
 
 					tile->SetTexture(textureId);
 					tile->SetScale(0.5f);
@@ -148,7 +150,14 @@ namespace
 
 					lastTile = nullptr;
 				}
+			}
+		}
 
+		for (Tile* tile : allTiles)
+		{
+			if (tile->GetLayer() == Layers::kActivePlatforms)
+			{
+				WorldChunks::sInstance->AddToChunk(tile, Layers::kActivePlatforms);
 			}
 		}
 	}
@@ -198,7 +207,6 @@ void Server::DoFrame()
 
 void Server::HandleNewClient(const ClientProxyPtr& inClientProxy)
 {
-
 	int playerId = inClientProxy->GetPlayerId();
 
 	ScoreBoardManager::sInstance->AddEntry(playerId, inClientProxy->GetName());
@@ -211,7 +219,7 @@ void Server::SpawnCharacterForPlayer(opt::PlayerId inPlayerId)
 	character->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	character->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	character->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
+	character->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 500.f, 0.f));
 }
 
 void Server::HandleLostClient(const ClientProxyPtr& inClientProxy)

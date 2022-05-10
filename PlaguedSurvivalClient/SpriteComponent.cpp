@@ -20,13 +20,6 @@ void SpriteComponent::SetTexture(const TexturePtr& inTexture)
 	mSprite.setTexture(*inTexture);
 	mSprite.setOrigin(tSize.x / 2, tSize.y / 2);
 	mSprite.setScale(sf::Vector2f(1.f * mGameObject->GetScale(), 1.f * mGameObject->GetScale()));
-
-	sf::FloatRect bounds = mSprite.getGlobalBounds();
-	const Vector3 location = mGameObject->GetLocation();
-
-	bounds.left = location.mX - (bounds.width * 0.5f);
-	bounds.top = location.mY - (bounds.height * 0.5f);
-	mGameObject->SetBounds(bounds);
 }
 
 sf::Sprite& SpriteComponent::GetSprite()

@@ -43,6 +43,19 @@ void World::RemoveGameObject(const GameObjectPtr& inGameObject)
 	mGameObjects[layer].pop_back();
 }
 
+void World::SwapGameObjectLayer(const GameObjectPtr& inGameObject, const Layers newLayer)
+{
+	RemoveGameObject(inGameObject);
+	inGameObject->SetLayer(newLayer);
+	AddGameObject(inGameObject);
+}
+
+void World::SwapGameObjectLayer(const GameObject& inGameObject, const Layers newLayer)
+{
+	auto x = inGameObject.GetIndexInWorld();
+	SwapGameObjectLayer(GetGameObjectsInLayer(inGameObject.GetLayer())[inGameObject.GetIndexInWorld()], newLayer);
+}
+
 
 void World::Update()
 {

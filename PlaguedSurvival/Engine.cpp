@@ -11,6 +11,7 @@ Engine::Engine() : m_should_keep_running(true)
 	GameObjectRegistry::StaticInit();
 
 	World::StaticInit();
+	WorldChunks::StaticInit();
 
 	ScoreBoardManager::StaticInit();
 }

@@ -4,6 +4,7 @@ CharacterClient::CharacterClient() :
 	mTimeLocationBecameOutOfSync(0.f),
 	mTimeVelocityBecameOutOfSync(0.f)
 {
+	SetScale(0.5f);
 	mSpriteComponent.reset(new PlayerSpriteComponent(this));
 	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture(Textures::kCat));
 }

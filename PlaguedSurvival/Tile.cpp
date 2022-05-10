@@ -11,6 +11,7 @@ Tile::Tile()
 {
 	SetScale(0.5f);
 	SetLayer(Layers::kPlatforms);
+	SetBounds(sf::FloatRect(0, 0, 64, 64));
 }
 
 uint32_t Tile::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const //35 bits total
@@ -51,6 +52,16 @@ uint32_t Tile::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyStat
 		inOutputStream.Write(false);
 	}
 
+	if (inDirtyState & TRS_State)
+	{
+		inOutputStream.Write(true);
+		inOutputStream.Write(static_cast<opt::Layer>(GetLayer()), opt::LayerBits);
+		writtenState |= TRS_State;
+	}
+	else
+	{
+		inOutputStream.Write(false);
+	}
 
 	return writtenState;
 }
@@ -80,6 +91,24 @@ void Tile::Read(InputMemoryBitStream& inInputStream)
 		inInputStream.Read(texture, opt::TextureBits);
 		SetTexture(static_cast<Textures>(texture));
 	}
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		opt::Layer inLayer;
+		inInputStream.Read(inLayer, opt::LayerBits);
+
+		const auto layer = static_cast<Layers>(inLayer);
+		if (GetLayer() == Layers::kPlatforms && layer == Layers::kActivePlatforms)
+		{
+			World::sInstance->SwapGameObjectLayer(*this, layer);
+		}
+
+		if (GetLayer() == Layers::kActivePlatforms)
+		{
+			WorldChunks::sInstance->AddToChunk(this, GetLayer());
+		}
+	}
 }
 
 void Tile::AddBelowTile(Tile* tile)
@@ -97,7 +126,9 @@ void Tile::SetIsTop(bool is_new)
 	if (is_new)
 	{
 		mActiveCollision = true;
-		//WorldChunks::Instance().AddToChunk(this, Layers::kActivePlatforms);
+		SetLayer(Layers::kActivePlatforms);
+		//World::sInstance->SwapGameObjectLayer(*this, Layers::kActivePlatforms);
+		//WorldChunks::sInstance->AddToChunk(this, Layers::kActivePlatforms);
 	}
 	else
 	{
@@ -116,9 +147,9 @@ void Tile::SetActiveCollision()
 	if (mActiveCollision) return;
 
 	mActiveCollision = true;
-	//Ptr tile = GetSceneLayers()[static_cast<int>(Layers::kPlatforms)]->DetachChild(*this);
-	//GetSceneLayers()[static_cast<int>(Layers::kActivePlatforms)]->AttachChild(std::move(tile));
-	//WorldChunks::Instance().AddToChunk(this, Layers::kActivePlatforms);
+	SetLayer(Layers::kActivePlatforms);
+	//World::sInstance->SwapGameObjectLayer(*this, Layers::kActivePlatforms);
+	//WorldChunks::sInstance->AddToChunk(this, Layers::kActivePlatforms);
 }
 
 void Tile::SetLeftTile(Tile* tile)

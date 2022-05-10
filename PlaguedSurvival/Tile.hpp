@@ -8,8 +8,9 @@ public:
 		TRS_Pose = 1 << 0,
 		TRS_Health = 1 << 1,
 		TRS_Texture = 1 << 2,
+		TRS_State = 1 << 3,
 
-		TRS_AllState = TRS_Pose | TRS_Health | TRS_Texture
+		TRS_AllState = TRS_Pose | TRS_Health | TRS_Texture | TRS_State
 	};
 
 	static GameObject* StaticCreate() { return new Tile(); }
