@@ -43,7 +43,11 @@ void Character::Decelerate(float inDeltaTime)
 
 void Character::ApplyGravity(float inDeltaTime)
 {
-	mVelocity.y += mGravity * inDeltaTime;
+	if (mVelocity.y > -300)
+	{
+		mVelocity.y += mGravity * inDeltaTime * 4;
+	}
+	else mVelocity.y += mGravity * inDeltaTime;
 }
 
 /// <summary>
@@ -73,7 +77,10 @@ void Character::ValidateVelocity()
 void Character::ProcessInput(float inDeltaTime, const InputState& inInputState)
 {
 	mHorizontalDirection = inInputState.GetDesiredHorizontalDelta();
-	mIsJumping = inInputState.IsJumping();
+	if (inInputState.IsJumping())
+	{
+		Jump();
+	}
 
 }
 
@@ -99,6 +106,8 @@ void Character::Update()
 
 void Character::ProcessCollisions(float inDeltaTime)
 {
+	KeepInWorldBounds(inDeltaTime);
+
 	std::set<GameObject*> collisions;
 
 	PredictCollisionsWithChunks(inDeltaTime, Layers::kActivePlatforms, collisions);
@@ -151,14 +160,37 @@ void Character::BlockingCollision(CollisionLocation location, const GameObject* 
 	}
 }
 
+void Character::KeepInWorldBounds(float inDeltaTime)
+{
+	sf::FloatRect bounds = GetBounds();
+	bounds.left += mVelocity.x * inDeltaTime;
+	bounds.top += mVelocity.y * inDeltaTime;
+
+	if (bounds.left <= 0)
+	{
+		mVelocity.x = 0;
+	}
+	else if (bounds.left + bounds.width >= WorldInfo::WORLD_WIDTH)
+	{
+		mVelocity.x = 0;
+	}
+
+	if (bounds.top <= 0)
+	{
+		mVelocity.y = 0;
+	}
+	else if (bounds.top + bounds.height >= WorldInfo::WORLD_HEIGHT)
+	{
+		mVelocity.y = 0;
+	}
+}
+
 void Character::Jump()
 {
 	if (!IsJumping() && mAirTime <= mCoyoteTime)
 	{
 		mIsJumping = true;
-		const sf::Vector2f velocity = GetVelocity();
-
-		SetVelocity(GetVelocity().x, mJumpForce);
+		SetVelocity(GetVelocity().x, -mJumpForce);
 	}
 }
 
@@ -199,13 +231,9 @@ uint32_t Character::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirt
 	{
 		inOutputStream.Write(true);
 
-		sf::Vector2f velocity = mVelocity;
-		inOutputStream.Write(velocity.x);
-		inOutputStream.Write(velocity.y);
-
-		Vector3 location = GetLocation();
-		inOutputStream.Write(location.mX);
-		inOutputStream.Write(location.mY);
+		ReadWritePatterns::WriteFloat(inOutputStream, mVelocity.x, 10);
+		ReadWritePatterns::WriteFloat(inOutputStream, mVelocity.y, 11);
+		ReadWritePatterns::WriteLocation(inOutputStream, GetLocation());
 
 		writtenState |= CRS_Pose;
 	}

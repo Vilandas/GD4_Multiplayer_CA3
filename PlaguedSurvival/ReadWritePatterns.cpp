@@ -55,3 +55,37 @@ Vector3 ReadWritePatterns::ReadLocationRounded(InputMemoryBitStream& inInputStre
 		0
 	};
 }
+
+void ReadWritePatterns::WriteFloat(OutputMemoryBitStream& inOutputStream, float inValue, uint32_t bits) //9 + inBits
+{
+	const bool negative = inValue < 0;
+	float delta = negative
+		? inValue * -1
+		: inValue;
+
+	const auto value = static_cast<uint32_t>(delta);
+	const auto decimal = static_cast<uint32_t>((delta - value) * FLOAT_PRECISION);
+
+	inOutputStream.Write(negative);
+	inOutputStream.Write(value, bits);
+	inOutputStream.Write(decimal, DECIMAL_BITS);
+}
+
+float ReadWritePatterns::ReadFloat(InputMemoryBitStream& inInputStream, uint32_t bits)
+{
+	bool negative = false;
+	uint32_t value = 0;
+	uint32_t decimal = 0;
+	inInputStream.Read(negative);
+	inInputStream.Read(value, bits);
+	inInputStream.Read(decimal, DECIMAL_BITS);
+
+	float outValue = static_cast<float>(value) + (static_cast<float>(decimal) / FLOAT_PRECISION);
+
+	if (negative)
+	{
+		outValue *= -1;
+	}
+
+	return outValue;
+}

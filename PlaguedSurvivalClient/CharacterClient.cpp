@@ -79,14 +79,11 @@ void CharacterClient::Read(InputMemoryBitStream& inInputStream)
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{
-		inInputStream.Read(replicatedVelocity.x);
-		inInputStream.Read(replicatedVelocity.y);
-
+		replicatedVelocity.x = ReadWritePatterns::ReadFloat(inInputStream, 10);
+		replicatedVelocity.y = ReadWritePatterns::ReadFloat(inInputStream, 11);
 		SetVelocity(replicatedVelocity);
 
-		inInputStream.Read(replicatedLocation.mX);
-		inInputStream.Read(replicatedLocation.mY);
-
+		replicatedLocation = ReadWritePatterns::ReadLocation(inInputStream);
 		SetLocation(replicatedLocation);
 
 		readState |= CRS_Pose;

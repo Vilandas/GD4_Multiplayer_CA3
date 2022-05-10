@@ -10,4 +10,7 @@ public:
 
 	static void WriteLocationRounded(OutputMemoryBitStream& inOutputStream, const Vector3& location);
 	static Vector3 ReadLocationRounded(InputMemoryBitStream& inInputStream);
+
+	static void WriteFloat(OutputMemoryBitStream& inOutputStream, float inValue, uint32_t bits);
+	static float ReadFloat(InputMemoryBitStream& inInputStream, uint32_t bits);
 };

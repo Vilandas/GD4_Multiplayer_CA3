@@ -25,6 +25,7 @@ public:
 	void ProcessCollisions(float inDeltaTime);
 
 	void BlockingCollision(CollisionLocation location, const GameObject* collider);
+	void KeepInWorldBounds(float inDeltaTime);
 
 	void SetPlayerId(opt::PlayerId inPlayerId) { mPlayerId = inPlayerId; }
 	opt::PlayerId GetPlayerId() const { return mPlayerId; }
