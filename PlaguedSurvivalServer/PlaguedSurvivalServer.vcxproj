@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="CharacterServer.hpp" />
     <ClInclude Include="ClientProxy.hpp" />
+    <ClInclude Include="DangerTrigger.hpp" />
     <ClInclude Include="NetworkManagerServer.hpp" />
     <ClInclude Include="ReplicationManagerServer.hpp" />
     <ClInclude Include="ReplicationManagerTransmissionData.hpp" />
@@ -171,6 +172,7 @@
   <ItemGroup>
     <ClCompile Include="CharacterServer.cpp" />
     <ClCompile Include="ClientProxy.cpp" />
+    <ClCompile Include="DangerTrigger.cpp" />
     <ClCompile Include="NetworkManagerServer.cpp" />
     <ClCompile Include="ReplicationManagerServer.cpp" />
     <ClCompile Include="ReplicationManagerTransmissionData.cpp" />

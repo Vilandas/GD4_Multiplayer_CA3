@@ -19,6 +19,7 @@ Server::Server()
 	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kTile, TileServer::StaticCreate);
 
 	InitNetworkManager();
+	DangerTrigger::StaticInit();
 
 	// Setup latency
 	float latency = 0.0f;
@@ -158,6 +159,11 @@ namespace
 			if (tile->GetLayer() == Layers::kActivePlatforms)
 			{
 				WorldChunks::sInstance->AddToChunk(tile, Layers::kActivePlatforms);
+
+				if (tile->GetIsTop())
+				{
+					DangerTrigger::sInstance->AddDangerObject(tile);
+				}
 			}
 		}
 	}
@@ -198,6 +204,8 @@ void Server::DoFrame()
 	NetworkManagerServer::sInstance->CheckForDisconnects();
 
 	NetworkManagerServer::sInstance->RespawnCats();
+
+	DangerTrigger::sInstance->Update(Timing::sInstance.GetDeltaTime());
 
 	Engine::DoFrame();
 

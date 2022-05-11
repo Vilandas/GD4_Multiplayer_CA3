@@ -92,6 +92,7 @@ class GameObject;
 #include "WorldChunks.hpp"
 #include "GameObjectRegistry.hpp"
 #include "Character.hpp"
+#include "Dangerous.hpp"
 #include "World.hpp"
 #include "Timing.hpp"
 #include "Tile.hpp"

@@ -1,4 +1,4 @@
-class Tile : public GameObject
+class Tile : public GameObject, public Dangerous
 {
 public:
 	CLASS_IDENTIFICATION(static_cast<opt::ObjectType>(ObjectTypes::kTile), GameObject)
@@ -15,6 +15,8 @@ public:
 
 	static GameObject* StaticCreate() { return new Tile(); }
 
+	void Trigger() override;
+
 	uint32_t GetAllStateMask()	const override { return TRS_AllState; }
 	Tile* GetAsTile() override { return this; }
 
@@ -24,8 +26,9 @@ public:
 	virtual void SetTexture(Textures texture) { mTexture = texture; }
 
 	void AddBelowTile(Tile* tile);
-	void SetIsTop(bool is_new = false);
-	void SetIsTop(const std::queue<Tile*>& below_tiles);
+	bool GetIsTop() const { return mIsTop; }
+	virtual void SetIsTop(bool isNew = false);
+	void SetIsTop(const std::queue<Tile*>& belowTiles);
 	void SetActiveCollision();
 
 	void SetLeftTile(Tile* tile);
@@ -35,7 +38,7 @@ protected:
 	Tile();
 
 protected:
-	uint32_t mHealth;
+	int mHealth;
 	bool mIsTop;
 	bool mActiveCollision;
 	Textures mTexture;

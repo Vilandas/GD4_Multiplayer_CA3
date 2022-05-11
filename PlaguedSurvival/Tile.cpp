@@ -14,6 +14,11 @@ Tile::Tile()
 	SetBounds(sf::FloatRect(0, 0, 64, 64));
 }
 
+void Tile::Trigger()
+{
+	mHealth--;
+}
+
 uint32_t Tile::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const //35 bits total
 {
 	uint32_t writtenState = 0;
@@ -116,19 +121,17 @@ void Tile::AddBelowTile(Tile* tile)
 	mBelowTiles.push(tile);
 }
 
-void Tile::SetIsTop(bool is_new)
+void Tile::SetIsTop(bool isNew)
 {
 	if (mIsTop) return;
 
 	mIsTop = true;
 	//DangerTrigger::Instance().AddDangerObject(this);
 
-	if (is_new)
+	if (isNew)
 	{
 		mActiveCollision = true;
 		SetLayer(Layers::kActivePlatforms);
-		//World::sInstance->SwapGameObjectLayer(*this, Layers::kActivePlatforms);
-		//WorldChunks::sInstance->AddToChunk(this, Layers::kActivePlatforms);
 	}
 	else
 	{
@@ -136,10 +139,10 @@ void Tile::SetIsTop(bool is_new)
 	}
 }
 
-void Tile::SetIsTop(const std::queue<Tile*>& below_tiles)
+void Tile::SetIsTop(const std::queue<Tile*>& belowTiles)
 {
 	SetIsTop();
-	mBelowTiles = below_tiles;
+	mBelowTiles = belowTiles;
 }
 
 void Tile::SetActiveCollision()
@@ -148,8 +151,6 @@ void Tile::SetActiveCollision()
 
 	mActiveCollision = true;
 	SetLayer(Layers::kActivePlatforms);
-	//World::sInstance->SwapGameObjectLayer(*this, Layers::kActivePlatforms);
-	//WorldChunks::sInstance->AddToChunk(this, Layers::kActivePlatforms);
 }
 
 void Tile::SetLeftTile(Tile* tile)

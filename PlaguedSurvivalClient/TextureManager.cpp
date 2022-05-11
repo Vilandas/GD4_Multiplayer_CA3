@@ -10,9 +10,6 @@ void TextureManager::StaticInit()
 TextureManager::TextureManager()
 {
 	CacheTexture(Textures::kCat, "../Assets/doc.png");
-	CacheTexture(Textures::kMouse, "../Assets/mouse.png");
-	CacheTexture(Textures::kYarn, "../Assets/yarn.png")
-	;
 	CacheTexture(Textures::kCrack, "../Assets/Textures/Tiles/crack.png");
 	CacheTexturePattern(Textures::kDirt1, Textures::kDirt9, "../Assets/Textures/Tiles/Dirt/dirt");
 }

@@ -52,7 +52,6 @@ void World::SwapGameObjectLayer(const GameObjectPtr& inGameObject, const Layers 
 
 void World::SwapGameObjectLayer(const GameObject& inGameObject, const Layers newLayer)
 {
-	auto x = inGameObject.GetIndexInWorld();
 	SwapGameObjectLayer(GetGameObjectsInLayer(inGameObject.GetLayer())[inGameObject.GetIndexInWorld()], newLayer);
 }
 

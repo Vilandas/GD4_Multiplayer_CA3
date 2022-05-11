@@ -3,6 +3,8 @@ class TileClient : public Tile
 public:
 	static GameObjectPtr StaticCreate() { return GameObjectPtr(new TileClient()); }
 
+	void Trigger() override;
+
 	void SetTexture(Textures texture) override;
 
 protected:
@@ -10,4 +12,5 @@ protected:
 
 private:
 	SpriteComponentPtr mSpriteComponent;
+	SpriteComponentPtr mCrackSpriteComponent;
 };

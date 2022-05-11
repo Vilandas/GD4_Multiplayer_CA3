@@ -8,5 +8,6 @@
 #include "Server.hpp"
 
 #include "CharacterServer.hpp"
+#include "DangerTrigger.hpp"
 #include "TileServer.hpp"
 
