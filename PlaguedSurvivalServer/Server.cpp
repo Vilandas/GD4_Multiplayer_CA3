@@ -12,7 +12,7 @@ bool Server::StaticInit()
 	return true;
 }
 
-Server::Server()
+Server::Server() : mTilesActivated()
 {
 
 	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kCharacter, CharacterServer::StaticCreate);
@@ -50,23 +50,15 @@ bool Server::InitNetworkManager()
 
 namespace
 {
-
-	void CreateRandomMice(int inMouseCount)
+	void CreateWorldTiles()
 	{
-		Vector3 mouseMin(100.f, 100.f, 0.f);
-		Vector3 mouseMax(1180.f, 620.f, 0.f);
-		GameObjectPtr go;
-
-		//make a mouse somewhere- where will these come from?
-		for (int i = 0; i < inMouseCount; ++i)
+		for (int i = 0; i < 195; i++)
 		{
-			go = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kMouse);
-			Vector3 mouseLocation = RoboMath::GetRandomVector(mouseMin, mouseMax);
-			go->SetLocation(mouseLocation);
+			GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
 		}
 	}
 
-	void CreateWorldTiles()
+	void ActivateTiles()
 	{
 		const int map[][50] =
 		{
@@ -87,9 +79,9 @@ namespace
 			{0,0,0,0,0,4,0,0,0,0,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		};
 
-		vector<GameObjectPtr> allTiles = vector<GameObjectPtr>();
-		std::unordered_map<int, TileServer*> topTile;
-		int count = 0;
+		auto& gameObjects = World::sInstance->GetGameObjectsInLayer(Layers::kPlatforms);
+		std::unordered_map<int, TileServer*> topTiles;
+		int gameObjectIndex = gameObjects.size() - 1;
 
 		for (int i = 0; i < 15; i++)
 		{
@@ -101,12 +93,9 @@ namespace
 
 				if (!skip)
 				{
-					count++;
 					const Textures textureId = static_cast<Textures>(static_cast<int>(Textures::kDirt1) + id - 1);
 
-					GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
-					TileServer* tile = gameObject->GetAsTileServer();
-					allTiles.emplace_back(gameObject);
+					TileServer* tile = gameObjects[gameObjectIndex]->GetAsTileServer();
 
 					tile->SetTexture(textureId);
 					tile->SetScale(0.5f);
@@ -118,16 +107,14 @@ namespace
 							0)
 					);
 
-					const auto result = topTile.emplace(j, tile);
+					const auto result = topTiles.emplace(j, tile);
 					if (result.second)
 					{
-						tile->SetIsTop(true);
-						//m_scene_layers[static_cast<int>(Layers::kActivePlatforms)]->AttachChild(std::move(tile));
+						tile->SetIsTop();
 					}
 					else
 					{
-						topTile[j]->AddBelowTile(tile);
-						//m_scene_layers[static_cast<int>(Layers::kPlatforms)]->AttachChild(std::move(tile));
+						topTiles[j]->AddBelowTile(tile);
 					}
 
 					if (lastTile != nullptr)
@@ -141,6 +128,9 @@ namespace
 					}
 
 					lastTile = tile;
+
+					NetworkManagerServer::sInstance->SetStateDirty(tile->GetNetworkId(), tile->GetAllStateMask());
+					gameObjectIndex--;
 				}
 				else
 				{
@@ -151,53 +141,16 @@ namespace
 
 					lastTile = nullptr;
 				}
+
 			}
 		}
-
-		//for (GameObjectPtr gameObject : allTiles)
-		//{
-		//	World::sInstance->AddGameObject(gameObject);
-		//	if (gameObject->GetLayer() == Layers::kActivePlatforms)
-		//	{
-		//		TileServer* tile = gameObject->GetAsTileServer();
-		//		WorldChunks::sInstance->AddToChunk(tile, Layers::kActivePlatforms);
-
-		//		if (tile->GetIsTop())
-		//		{
-		//			//World::sInstance->SwapGameObjectLayer(*tile, Layers::kPlatforms, Layers::kActivePlatforms);
-		//			DangerTrigger::sInstance->AddDangerObject(tile);
-		//		}
-		//	}
-		//}
 	}
 }
 
 
 void Server::SetupWorld()
 {
-	//spawn some random mice
-	//CreateRandomMice(10);
 	CreateWorldTiles();
-
-	//GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
-	//Tile* tile = gameObject->GetAsTile();
-	//tile->SetTexture(Textures::kDirt5);
-	//tile->SetLocation(Vector3(
-	//	32,
-	//	32,
-	//	0)
-	//);
-
-	//gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
-	//tile = gameObject->GetAsTile();
-	//tile->SetScale(0.5f);
-	//tile->SetLocation(Vector3(
-	//	WorldInfo::TILE_SIZE + 1 * WorldInfo::TILE_SIZE,
-	//	(WorldInfo::WORLD_HEIGHT - WorldInfo::TILE_SIZE * 17) + 0 * WorldInfo::TILE_SIZE,
-	//	0)
-	//);
-
-	//tile->SetTexture(Textures::kDirt1);
 }
 
 void Server::DoFrame()
@@ -208,12 +161,17 @@ void Server::DoFrame()
 
 	NetworkManagerServer::sInstance->RespawnCats();
 
-	DangerTrigger::sInstance->Update(Timing::sInstance.GetDeltaTime());
-
 	Engine::DoFrame();
+
+	DangerTrigger::sInstance->Update(Timing::sInstance.GetDeltaTime());
 
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
 
+	if (!mTilesActivated)
+	{
+		mTilesActivated = true;
+		ActivateTiles();
+	}
 }
 
 void Server::HandleNewClient(const ClientProxyPtr& inClientProxy)
@@ -230,7 +188,7 @@ void Server::SpawnCharacterForPlayer(opt::PlayerId inPlayerId)
 	character->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	character->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	character->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 500.f, 0.f));
+	character->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 200.f, 0.f));
 }
 
 void Server::HandleLostClient(const ClientProxyPtr& inClientProxy)

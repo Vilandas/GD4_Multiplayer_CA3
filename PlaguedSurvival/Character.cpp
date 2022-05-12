@@ -110,7 +110,7 @@ void Character::ProcessCollisions(float inDeltaTime)
 
 	std::set<GameObject*> collisions;
 
-	PredictCollisionsWithChunks(inDeltaTime, Layers::kActivePlatforms, collisions);
+	PredictCollisionsWithChunks(inDeltaTime, Layers::kPlatforms, collisions);
 
 	for (const GameObject* gameObject : collisions)
 	{

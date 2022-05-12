@@ -21,7 +21,7 @@ public:
 
 private:
 	World();
-	int	GetIndexOfGameObject(GameObjectPtr inGameObject);
+	//int	GetIndexOfGameObject(GameObjectPtr inGameObject);
 
 private:
 	std::unordered_map<Layers, std::vector<GameObjectPtr>> mGameObjects;

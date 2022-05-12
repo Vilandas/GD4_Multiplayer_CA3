@@ -7,18 +7,20 @@ Tile::Tile()
 	SetScale(0.5f);
 	GameObject::SetLayer(Layers::kPlatforms);
 	SetBounds(sf::FloatRect(0, 0, 64, 64));
+
+	WorldChunks::sInstance->AddToChunk(this, Layers::kPlatforms);
 }
 
 void Tile::HandleDying()
 {
-	WorldChunks::sInstance->RemoveFromChunk(this, Layers::kActivePlatforms);
+	WorldChunks::sInstance->RemoveFromChunk(this, Layers::kPlatforms);
 }
 
 void Tile::SetLayer(const Layers layer)
 {
 	if (layer == GetLayer()) return;
 
-	World::sInstance->SwapGameObjectLayer(this, Layers::kPlatforms, Layers::kActivePlatforms);
-	GameObject::SetLayer(layer);
-	WorldChunks::sInstance->AddToChunk(this, layer);
+	//World::sInstance->SwapGameObjectLayer(this, Layers::kPlatforms, Layers::kActivePlatforms);
+	//GameObject::SetLayer(layer);
+	//WorldChunks::sInstance->AddToChunk(this, layer);
 }

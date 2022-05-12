@@ -2,7 +2,7 @@ enum class Layers
 {
 	kDefault,
 	kPlatforms,
-	kActivePlatforms,
+	//kActivePlatforms,
 	kDangers,
 	kPlayers,
 	kLayerCount

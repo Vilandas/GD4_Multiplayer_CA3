@@ -21,5 +21,6 @@ private:
 	bool InitNetworkManager();
 	void SetupWorld();
 
+	bool mTilesActivated;
 };
 

@@ -41,8 +41,8 @@ void TileServer::SetLayer(Layers layer)
 {
 	if (GetLayer() == layer) return;
 
-	Tile::SetLayer(layer);
-	NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), TRS_State);
+	//Tile::SetLayer(layer);
+	//NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), TRS_State);
 }
 
 void TileServer::Trigger()
@@ -66,22 +66,13 @@ void TileServer::AddBelowTile(TileServer* tile)
 	mBelowTiles.push(tile);
 }
 
-void TileServer::SetIsTop(bool isNew)
+void TileServer::SetIsTop()
 {
 	if (mIsTop) return;
 
 	mIsTop = true;
 	DangerTrigger::sInstance->AddDangerObject(this);
-
-	if (isNew)
-	{
-		mActiveCollision = true;
-		SetLayer(Layers::kActivePlatforms);
-	}
-	else
-	{
-		SetActiveCollision();
-	}
+	SetActiveCollision();
 }
 
 void TileServer::SetIsTop(const std::queue<TileServer*>& belowTiles)
@@ -95,7 +86,7 @@ void TileServer::SetActiveCollision()
 	if (mActiveCollision) return;
 
 	mActiveCollision = true;
-	SetLayer(Layers::kActivePlatforms);
+	//SetLayer(Layers::kActivePlatforms);
 }
 
 void TileServer::SetLeftTile(TileServer* tile)

@@ -11,7 +11,7 @@ public:
 
 	void AddBelowTile(TileServer* tile);
 	bool GetIsTop() const { return mIsTop; }
-	void SetIsTop(bool isNew = false);
+	void SetIsTop();
 	void SetIsTop(const std::queue<TileServer*>& belowTiles);
 	void SetActiveCollision();
 
