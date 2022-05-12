@@ -3,9 +3,8 @@ class TileClient : public Tile
 public:
 	static GameObjectPtr StaticCreate() { return GameObjectPtr(new TileClient()); }
 
-	void Trigger() override;
-
 	void SetTexture(Textures texture) override;
+	void Read(InputMemoryBitStream& inInputStream) override;
 
 protected:
 	TileClient();

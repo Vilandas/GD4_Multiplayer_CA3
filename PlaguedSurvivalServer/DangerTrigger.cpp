@@ -34,7 +34,17 @@ void DangerTrigger::AddDangerObject(Dangerous* danger)
 
 void DangerTrigger::RemoveDangerObject(const Dangerous* danger)
 {
-	mDangers.erase(std::find(mDangers.begin(), mDangers.end(), danger));
+	int idToDelete = dynamic_cast<const GameObject*>(danger)->GetNetworkId();
+	for (auto iterator = mDangers.begin(); iterator != mDangers.end(); ++iterator)
+	{
+		int id = dynamic_cast<GameObject*>(*iterator)->GetNetworkId();
+		if (id == idToDelete)
+		{
+			mDangers.erase(iterator);
+			return;
+		}
+	}
+	//mDangers.erase(std::find(mDangers.begin(), mDangers.end(), danger));
 }
 
 void DangerTrigger::Update(float inDeltaTime)

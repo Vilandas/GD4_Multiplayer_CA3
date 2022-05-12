@@ -21,14 +21,23 @@ World::World()
 void World::AddGameObject(const GameObjectPtr& inGameObject)
 {
 	const Layers layer = inGameObject->GetLayer();
+	AddGameObject(inGameObject, layer);
+}
+
+void World::AddGameObject(const GameObjectPtr& inGameObject, Layers layer)
+{
 	mGameObjects[layer].push_back(inGameObject);
 	inGameObject->SetIndexInWorld(mGameObjects[layer].size() - 1);
 }
 
-
 void World::RemoveGameObject(const GameObjectPtr& inGameObject)
 {
 	const Layers layer = inGameObject->GetLayer();
+	RemoveGameObject(inGameObject, layer);
+}
+
+void World::RemoveGameObject(const GameObjectPtr& inGameObject, Layers layer)
+{
 	const int index = inGameObject->GetIndexInWorld();
 	const int lastIndex = mGameObjects[layer].size() - 1;
 
@@ -43,16 +52,15 @@ void World::RemoveGameObject(const GameObjectPtr& inGameObject)
 	mGameObjects[layer].pop_back();
 }
 
-void World::SwapGameObjectLayer(const GameObjectPtr& inGameObject, const Layers newLayer)
+void World::SwapGameObjectLayer(const GameObjectPtr& inGameObject, Layers fromLayer, Layers toLayer)
 {
-	RemoveGameObject(inGameObject);
-	inGameObject->SetLayer(newLayer);
-	AddGameObject(inGameObject);
+	RemoveGameObject(inGameObject, fromLayer);
+	AddGameObject(inGameObject, toLayer);
 }
 
-void World::SwapGameObjectLayer(const GameObject& inGameObject, const Layers newLayer)
+void World::SwapGameObjectLayer(const GameObject* inGameObject, Layers fromLayer, Layers toLayer)
 {
-	SwapGameObjectLayer(GetGameObjectsInLayer(inGameObject.GetLayer())[inGameObject.GetIndexInWorld()], newLayer);
+	SwapGameObjectLayer(GetGameObjectsInLayer(fromLayer)[inGameObject->GetIndexInWorld()], fromLayer, toLayer);
 }
 
 
@@ -73,10 +81,15 @@ void World::Update()
 			{
 				gameObject->Update();
 			}
+
 			//you might suddenly want to die after your update, so check again
 			if (gameObject->DoesWantToDie())
 			{
-				RemoveGameObject(gameObject);
+				if (gameObject->GetIndexInWorld() != -1)
+				{
+					RemoveGameObject(gameObject);
+				}
+
 				gameObject->HandleDying();
 				--j;
 				--c;

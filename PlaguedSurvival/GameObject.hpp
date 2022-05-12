@@ -22,18 +22,18 @@ public:
 
 	virtual Character* GetAsCharacter() { return nullptr; }
 	virtual Tile* GetAsTile() { return nullptr; }
+	virtual TileServer* GetAsTileServer() { return nullptr; }
 	virtual sf::Vector2f GetVelocity() const { return {}; }
 
 	virtual uint32_t GetAllStateMask() const { return 0; }
 
 	Layers GetLayer() const { return mLayer; }
-	void SetLayer(const Layers layer) { mLayer = layer; }
+	virtual void SetLayer(const Layers layer) { mLayer = layer; }
 
 	//return whether to keep processing collision
 	virtual bool HandleCollisionWithCharacter(Character* inChar) { (void)inChar; return true; }
 
 	virtual void Update();
-
 	virtual void HandleDying() {}
 
 	void SetIndexInWorld(int inIndex) { mIndexInWorld = inIndex; }

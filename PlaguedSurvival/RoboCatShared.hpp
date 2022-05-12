@@ -47,6 +47,7 @@ using std::string;
 using std::unordered_set;
 
 class Character;
+class TileServer;
 class Tile;
 class GameObject;
 

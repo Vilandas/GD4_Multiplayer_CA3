@@ -1,9 +1,3 @@
-enum CharacterControlType
-{
-	CCT_Human,
-	CCT_AI
-};
-
 class CharacterServer : public Character
 {
 public:

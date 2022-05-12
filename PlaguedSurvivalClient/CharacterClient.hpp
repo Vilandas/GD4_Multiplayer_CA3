@@ -3,10 +3,10 @@ class CharacterClient : public Character
 public:
 	static GameObjectPtr StaticCreate() { return GameObjectPtr(new CharacterClient()); }
 
-	virtual void Update();
-	virtual void HandleDying() override;
+	void Update();
+	void HandleDying() override;
 
-	virtual void Read(InputMemoryBitStream& inInputStream) override;
+	void Read(InputMemoryBitStream& inInputStream) override;
 
 	void DoClientSidePredictionAfterReplicationForLocalCharacter(uint32_t inReadState);
 	void DoClientSidePredictionAfterReplicationForRemoteCharacter(uint32_t inReadState);
