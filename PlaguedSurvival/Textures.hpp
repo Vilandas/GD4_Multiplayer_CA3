@@ -1,10 +1,7 @@
 enum class Textures
 {
 	kDefault,
-
-	kMouse,
 	kCat,
-	kYarn,
 
 	kTitleScreen,
 	kButtons,

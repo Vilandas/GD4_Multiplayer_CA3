@@ -47,6 +47,7 @@ using std::string;
 using std::unordered_set;
 
 class Character;
+class TileServer;
 class Tile;
 class GameObject;
 
@@ -92,6 +93,7 @@ class GameObject;
 #include "WorldChunks.hpp"
 #include "GameObjectRegistry.hpp"
 #include "Character.hpp"
+#include "Dangerous.hpp"
 #include "World.hpp"
 #include "Timing.hpp"
 #include "Tile.hpp"

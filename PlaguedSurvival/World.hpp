@@ -9,9 +9,11 @@ public:
 	static std::unique_ptr<World> sInstance;
 
 	void AddGameObject(const GameObjectPtr& inGameObject);
+	void AddGameObject(const GameObjectPtr& inGameObject, Layers layer);
 	void RemoveGameObject(const GameObjectPtr& inGameObject);
-	void SwapGameObjectLayer(const GameObjectPtr& inGameObject, Layers newLayer);
-	void SwapGameObjectLayer(const GameObject& inGameObject, Layers newLayer);
+	void RemoveGameObject(const GameObjectPtr& inGameObject, Layers layer);
+	void SwapGameObjectLayer(const GameObjectPtr& inGameObject, Layers fromLayer, Layers toLayer);
+	void SwapGameObjectLayer(const GameObject* inGameObject, Layers fromLayer, Layers toLayer);
 
 	void Update();
 

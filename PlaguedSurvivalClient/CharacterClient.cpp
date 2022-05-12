@@ -11,7 +11,7 @@ CharacterClient::CharacterClient() :
 
 void CharacterClient::HandleDying()
 {
-	CharacterClient::HandleDying();
+	Character::HandleDying();
 
 	//and if we're local, tell the hud so our health goes away!
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())

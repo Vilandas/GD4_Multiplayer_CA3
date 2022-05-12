@@ -19,6 +19,7 @@ Server::Server()
 	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kTile, TileServer::StaticCreate);
 
 	InitNetworkManager();
+	DangerTrigger::StaticInit();
 
 	// Setup latency
 	float latency = 0.0f;
@@ -49,22 +50,6 @@ bool Server::InitNetworkManager()
 
 namespace
 {
-
-	void CreateRandomMice(int inMouseCount)
-	{
-		Vector3 mouseMin(100.f, 100.f, 0.f);
-		Vector3 mouseMax(1180.f, 620.f, 0.f);
-		GameObjectPtr go;
-
-		//make a mouse somewhere- where will these come from?
-		for (int i = 0; i < inMouseCount; ++i)
-		{
-			go = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kMouse);
-			Vector3 mouseLocation = RoboMath::GetRandomVector(mouseMin, mouseMax);
-			go->SetLocation(mouseLocation);
-		}
-	}
-
 	void CreateWorldTiles()
 	{
 		const int map[][50] =
@@ -86,13 +71,13 @@ namespace
 			{0,0,0,0,0,4,0,0,0,0,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		};
 
-		vector<Tile*> allTiles = vector<Tile*>();
-		std::unordered_map<int, Tile*> top_tiles;
+		vector<GameObjectPtr> allTiles = vector<GameObjectPtr>();
+		std::unordered_map<int, TileServer*> topTile;
 		int count = 0;
 
 		for (int i = 0; i < 15; i++)
 		{
-			Tile* lastTile = nullptr;
+			TileServer* lastTile = nullptr;
 			for (int j = 0; j < 50; j++)
 			{
 				const int id = map[i][j];
@@ -104,8 +89,8 @@ namespace
 					const Textures textureId = static_cast<Textures>(static_cast<int>(Textures::kDirt1) + id - 1);
 
 					GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
-					Tile* tile = gameObject->GetAsTile();
-					allTiles.emplace_back(tile);
+					TileServer* tile = gameObject->GetAsTileServer();
+					allTiles.emplace_back(gameObject);
 
 					tile->SetTexture(textureId);
 					tile->SetScale(0.5f);
@@ -117,7 +102,9 @@ namespace
 							0)
 					);
 
-					const auto result = top_tiles.emplace(j, tile);
+					WorldChunks::sInstance->AddToChunk(tile, Layers::kPlatforms);
+
+					const auto result = topTile.emplace(j, tile);
 					if (result.second)
 					{
 						tile->SetIsTop(true);
@@ -125,7 +112,7 @@ namespace
 					}
 					else
 					{
-						top_tiles[j]->AddBelowTile(tile);
+						topTile[j]->AddBelowTile(tile);
 						//m_scene_layers[static_cast<int>(Layers::kPlatforms)]->AttachChild(std::move(tile));
 					}
 
@@ -153,42 +140,28 @@ namespace
 			}
 		}
 
-		for (Tile* tile : allTiles)
-		{
-			if (tile->GetLayer() == Layers::kActivePlatforms)
-			{
-				WorldChunks::sInstance->AddToChunk(tile, Layers::kActivePlatforms);
-			}
-		}
+		//for (GameObjectPtr gameObject : allTiles)
+		//{
+		//	World::sInstance->AddGameObject(gameObject);
+		//	if (gameObject->GetLayer() == Layers::kActivePlatforms)
+		//	{
+		//		TileServer* tile = gameObject->GetAsTileServer();
+		//		WorldChunks::sInstance->AddToChunk(tile, Layers::kActivePlatforms);
+
+		//		if (tile->GetIsTop())
+		//		{
+		//			//World::sInstance->SwapGameObjectLayer(*tile, Layers::kPlatforms, Layers::kActivePlatforms);
+		//			DangerTrigger::sInstance->AddDangerObject(tile);
+		//		}
+		//	}
+		//}
 	}
 }
 
 
 void Server::SetupWorld()
 {
-	//spawn some random mice
-	//CreateRandomMice(10);
 	CreateWorldTiles();
-
-	//GameObjectPtr gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
-	//Tile* tile = gameObject->GetAsTile();
-	//tile->SetTexture(Textures::kDirt5);
-	//tile->SetLocation(Vector3(
-	//	32,
-	//	32,
-	//	0)
-	//);
-
-	//gameObject = GameObjectRegistry::sInstance->CreateGameObject(ObjectTypes::kTile);
-	//tile = gameObject->GetAsTile();
-	//tile->SetScale(0.5f);
-	//tile->SetLocation(Vector3(
-	//	WorldInfo::TILE_SIZE + 1 * WorldInfo::TILE_SIZE,
-	//	(WorldInfo::WORLD_HEIGHT - WorldInfo::TILE_SIZE * 17) + 0 * WorldInfo::TILE_SIZE,
-	//	0)
-	//);
-
-	//tile->SetTexture(Textures::kDirt1);
 }
 
 void Server::DoFrame()
@@ -198,6 +171,8 @@ void Server::DoFrame()
 	NetworkManagerServer::sInstance->CheckForDisconnects();
 
 	NetworkManagerServer::sInstance->RespawnCats();
+
+	DangerTrigger::sInstance->Update(Timing::sInstance.GetDeltaTime());
 
 	Engine::DoFrame();
 
