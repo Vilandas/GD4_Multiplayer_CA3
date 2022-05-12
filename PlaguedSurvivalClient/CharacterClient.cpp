@@ -2,7 +2,8 @@
 
 CharacterClient::CharacterClient() :
 	mTimeLocationBecameOutOfSync(0.f),
-	mTimeVelocityBecameOutOfSync(0.f)
+	mTimeVelocityBecameOutOfSync(0.f),
+	mView(sf::FloatRect(0, 0, 1920, 1080))
 {
 	SetScale(0.5f);
 	mSpriteComponent.reset(new PlayerSpriteComponent(this));
@@ -42,6 +43,9 @@ void CharacterClient::Update()
 
 			//LOG( "Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", latestMove.GetTimestamp(), deltaTime, GetRotation() );
 		}
+
+		UpdateCamera();
+		WindowManager::sInstance->setView(mView);
 	}
 	else
 	{
@@ -51,6 +55,24 @@ void CharacterClient::Update()
 		{
 			//we're in sync if our velocity is 0
 			mTimeLocationBecameOutOfSync = 0.f;
+		}
+	}
+}
+
+void CharacterClient::UpdateCamera()
+{
+	const sf::Vector2f distance = GetLocationV2() - mView.getCenter();
+
+	if (mCameraMoveConstraint || RoboMath::Length(distance) > 100)
+	{
+		mCameraMoveConstraint = true;
+
+		const sf::Vector2f newPosition = distance * 0.02f;
+		mView.setCenter(mView.getCenter() + newPosition);
+
+		if (RoboMath::Length(newPosition) <= 0.2f)
+		{
+			mCameraMoveConstraint = false;
 		}
 	}
 }

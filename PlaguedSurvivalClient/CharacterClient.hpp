@@ -4,6 +4,7 @@ public:
 	static GameObjectPtr StaticCreate() { return GameObjectPtr(new CharacterClient()); }
 
 	void Update();
+	void UpdateCamera();
 	void HandleDying() override;
 
 	void Read(InputMemoryBitStream& inInputStream) override;
@@ -21,5 +22,7 @@ private:
 	float mTimeVelocityBecameOutOfSync;
 
 	SpriteComponentPtr mSpriteComponent;
+	sf::View mView;
+	bool mCameraMoveConstraint;
 };
 

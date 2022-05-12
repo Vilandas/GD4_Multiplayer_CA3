@@ -215,6 +215,11 @@ namespace RoboMath
 	{
 		return { rect.left + rect.width / 2, rect.top + rect.height / 2 };
 	}
+
+	inline float Length(const sf::Vector2f& vector)
+	{
+		return sqrtf(powf(vector.x, 2) + powf(vector.y, 2));
+	}
 }
 
 namespace Colors
