@@ -12,8 +12,7 @@ Character::Character() :
 	mJumpForce(400),
 	mCoyoteTime(0.25f),
 	mAirTime(),
-	mCameraMoveConstraint(),
-	mIsCameraTarget()
+	mIsDead()
 {
 	SetLayer(Layers::kPlayers);
 	SetBounds(sf::FloatRect(0, 0, 95, 128));
@@ -77,7 +76,7 @@ void Character::ValidateVelocity()
 void Character::ProcessInput(float inDeltaTime, const InputState& inInputState)
 {
 	mHorizontalDirection = inInputState.GetDesiredHorizontalDelta();
-	if (inInputState.IsJumping())
+	if (inInputState.IsJumping() && !mIsDead)
 	{
 		Jump();
 	}
@@ -86,13 +85,21 @@ void Character::ProcessInput(float inDeltaTime, const InputState& inInputState)
 
 void Character::SimulateMovement(float inDeltaTime)
 {
-	//simulate us...
-	//AdjustVelocityByThrust(inDeltaTime);
+	if (mIsDead)
+	{
+		Accelerate(inDeltaTime);
+		Decelerate(inDeltaTime);
+		ValidateVelocity();
+		KeepInWorldBounds(inDeltaTime);
+		mVelocity.y = 0;
+		SetLocation(GetLocation() + mVelocity * inDeltaTime);
+		return;
+	}
 
 	Accelerate(inDeltaTime);
 	Decelerate(inDeltaTime);
-	ApplyGravity(inDeltaTime);
 
+	ApplyGravity(inDeltaTime);
 	ValidateVelocity();
 
 	ProcessCollisions(inDeltaTime);
@@ -231,6 +238,7 @@ uint32_t Character::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirt
 	{
 		inOutputStream.Write(true);
 
+		inOutputStream.Write(mIsDead);
 		ReadWritePatterns::WriteFloat(inOutputStream, mVelocity.x, 10);
 		ReadWritePatterns::WriteFloat(inOutputStream, mVelocity.y, 11);
 		ReadWritePatterns::WriteLocation(inOutputStream, GetLocation());

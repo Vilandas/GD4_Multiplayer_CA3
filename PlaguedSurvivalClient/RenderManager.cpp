@@ -59,29 +59,39 @@ void RenderManager::AddArtist(AnimatedSpriteArtist* inArtist, bool priorityRende
 
 void RenderManager::RemoveArtist(AnimatedSpriteArtist* inArtist)
 {
-	auto& artist = mArtists;
 	int index = GetArtistIndex(inArtist, false);
 
 	if (index == -1)
 	{
-		artist = mPriorityArtists;
 		index = GetArtistIndex(inArtist, true);
+
+		if (index != -1)
+		{
+			int lastIndex = mPriorityArtists.size() - 1;
+			if (index != lastIndex)
+			{
+				mPriorityArtists[index] = mPriorityArtists[lastIndex];
+			}
+			mPriorityArtists.pop_back();
+		}
+
+		return;
 	}
 
 	if (index != -1)
 	{
-		int lastIndex = artist.size() - 1;
+		int lastIndex = mArtists.size() - 1;
 		if (index != lastIndex)
 		{
-			artist[index] = artist[lastIndex];
+			mArtists[index] = mArtists[lastIndex];
 		}
-		artist.pop_back();
+		mArtists.pop_back();
 	}
 }
 
 int RenderManager::GetArtistIndex(AnimatedSpriteArtist* inArtist, bool priorityRender) const
 {
-	auto& artists = priorityRender
+	const vector<AnimatedSpriteArtist*>& artists = priorityRender
 		? mPriorityArtists
 		: mArtists;
 

@@ -14,6 +14,5 @@ protected:
 private:
 	float mTimeOfNextShot;
 	float mTimeBetweenShots;
-
 };
 

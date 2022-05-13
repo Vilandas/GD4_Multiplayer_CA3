@@ -20,6 +20,7 @@ public:
 	void Flipped(bool flipped);
 
 	void SetColor(sf::Color color);
+	void SetColor(Vector3 color);
 
 private:
 	AnimatedSprite& CurrentSpriteState();

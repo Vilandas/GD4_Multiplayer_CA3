@@ -37,6 +37,14 @@ void CharacterServer::Update()
 		moveList.Clear();
 	}
 
+	sf::FloatRect bounds = GetBounds();
+
+	if (bounds.top + bounds.height > WorldInfo::WORLD_HEIGHT - 100)
+	{
+		mIsDead = true;
+		SetVelocity(0, 0);
+	}
+
 	if (!RoboMath::Is2DVectorEqual(oldLocation, GetLocation()) ||
 		oldVelocity != GetVelocity())
 	{

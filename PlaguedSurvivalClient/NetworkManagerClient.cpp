@@ -42,11 +42,16 @@ void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, co
 	case kWelcomeCC:
 		HandleWelcomePacket(inInputStream);
 		break;
+
 	case kStateCC:
 		if (mDeliveryNotificationManager.ReadAndProcessState(inInputStream))
 		{
 			HandleStatePacket(inInputStream);
 		}
+		break;
+
+	case kGameStartedCC:
+		Client::sInstance->StartGame();
 		break;
 	}
 }
@@ -61,6 +66,9 @@ void NetworkManagerClient::SendOutgoingPackets()
 		break;
 	case NCS_Welcomed:
 		UpdateSendingInputPacket();
+		break;
+	case NCS_StartGame:
+		SendStartGamePacket();
 		break;
 	}
 }
@@ -84,6 +92,16 @@ void NetworkManagerClient::SendHelloPacket()
 	helloPacket.Write(mName);
 
 	SendPacket(helloPacket, mServerAddress);
+}
+
+void NetworkManagerClient::SendStartGamePacket()
+{
+	OutputMemoryBitStream packet;
+
+	packet.Write(kStartCC);
+	packet.Write(mPlayerId);
+
+	SendPacket(packet, mServerAddress);
 }
 
 void NetworkManagerClient::HandleWelcomePacket(InputMemoryBitStream& inInputStream)

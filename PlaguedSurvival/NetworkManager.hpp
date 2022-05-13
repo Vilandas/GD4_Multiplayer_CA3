@@ -7,6 +7,8 @@ public:
 	static const uint32_t kWelcomeCC = 'WLCM';
 	static const uint32_t kStateCC = 'STAT';
 	static const uint32_t kInputCC = 'INPT';
+	static const uint32_t kStartCC = 'STRT';
+	static const uint32_t kGameStartedCC = 'GMST';
 
 	static const int kMaxPacketsPerFrameCount = 10;
 

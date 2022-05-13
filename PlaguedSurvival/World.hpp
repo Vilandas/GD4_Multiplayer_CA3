@@ -15,6 +15,8 @@ public:
 	void SwapGameObjectLayer(const GameObjectPtr& inGameObject, Layers fromLayer, Layers toLayer);
 	void SwapGameObjectLayer(const GameObject* inGameObject, Layers fromLayer, Layers toLayer);
 
+	int GetAlivePlayerCount() const;
+
 	void Update();
 
 	const std::vector<GameObjectPtr>& GetGameObjectsInLayer(const Layers layer) const { return mGameObjects.at(layer); }

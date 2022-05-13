@@ -2,7 +2,9 @@
 
 std::unique_ptr<Engine> Engine::sInstance;
 
-Engine::Engine() : m_should_keep_running(true)
+Engine::Engine() :
+	mGameStarted(),
+	mShouldKeepRunning(true)
 {
 	SocketUtil::StaticInit();
 
@@ -41,6 +43,11 @@ void Engine::ExternalDoFrame()
 {
 }
 
+void Engine::StartGame()
+{
+	mGameStarted = true;
+}
+
 int Engine::DoRunLoop()
 {
 	//Main message loop
@@ -48,7 +55,7 @@ int Engine::DoRunLoop()
 
 	sf::Event current_event;
 
-	while (!quit && m_should_keep_running)
+	while (!quit && mShouldKeepRunning)
 	{
 		while (PollEvent(current_event))
 		{

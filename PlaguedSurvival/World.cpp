@@ -63,6 +63,22 @@ void World::SwapGameObjectLayer(const GameObject* inGameObject, Layers fromLayer
 	SwapGameObjectLayer(GetGameObjectsInLayer(fromLayer)[inGameObject->GetIndexInWorld()], fromLayer, toLayer);
 }
 
+int World::GetAlivePlayerCount() const
+{
+	const vector<GameObjectPtr>& gameObjects = GetGameObjectsInLayer(Layers::kPlayers);
+
+	int aliveCount = 0;
+	for (const GameObjectPtr& gameObject : gameObjects)
+	{
+		if (gameObject->GetAsCharacter()->IsAlive())
+		{
+			aliveCount++;
+		}
+	}
+
+	return aliveCount;
+}
+
 
 void World::Update()
 {

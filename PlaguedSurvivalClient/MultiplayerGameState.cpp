@@ -24,25 +24,25 @@
 
 MultiplayerGameState::MultiplayerGameState(StateStack& stack, bool is_host)
 	: State(stack)
-	, m_lobby_gui()
+	, mLobbyGui()
 	, m_host(is_host)
-	, m_lobby(true)
+	, mLobby(true)
 {
-	//m_background_sprite.setTexture(*TextureManager::sInstance->GetTexture(Textures::kTitleScreen));
+	//mBackgroundSprite.setTexture(*TextureManager::sInstance->GetTexture(Textures::kTitleScreen));
 
-	m_lobby_text.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
-	m_lobby_text.setString("Lobby");
-	m_lobby_text.setCharacterSize(35);
-	m_lobby_text.setFillColor(sf::Color::White);
-	RoboMath::CentreOrigin(m_lobby_text);
-	m_lobby_text.setPosition(960, 200);
+	mLobbyText.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
+	mLobbyText.setString("Lobby");
+	mLobbyText.setCharacterSize(35);
+	mLobbyText.setFillColor(sf::Color::White);
+	RoboMath::CentreOrigin(mLobbyText);
+	mLobbyText.setPosition(960, 200);
 
-	m_waiting_for_host_text.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
-	m_waiting_for_host_text.setString("Waiting for host to start the game");
-	m_waiting_for_host_text.setCharacterSize(24);
-	m_waiting_for_host_text.setFillColor(sf::Color::White);
-	RoboMath::CentreOrigin(m_waiting_for_host_text);
-	m_waiting_for_host_text.setPosition(960, 800);
+	mWaitingForHostText.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
+	mWaitingForHostText.setString("Waiting for host to start the game");
+	mWaitingForHostText.setCharacterSize(24);
+	mWaitingForHostText.setFillColor(sf::Color::White);
+	RoboMath::CentreOrigin(mWaitingForHostText);
+	mWaitingForHostText.setPosition(960, 800);
 
 	if (m_host)
 	{
@@ -53,9 +53,10 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, bool is_host)
 		start_button->SetText("Start Game");
 		start_button->SetCallback([this]()
 			{
+				NetworkManagerClient::sInstance->SendStartGamePacket();
 			});
 
-		m_lobby_gui.Pack(start_button);
+		mLobbyGui.Pack(start_button);
 	}
 	else
 	{
@@ -64,77 +65,61 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, bool is_host)
 
 void MultiplayerGameState::Draw()
 {
-	//if (m_connected)
-	//{
-	//	//Show broadcast messages in default view
-	//	m_window.setView(m_window.getDefaultView());
+	if (Client::sInstance->GameStarted())
+	{
+		
+	}
+	else
+	{
+		sf::RenderWindow& renderWindow = *WindowManager::sInstance;
+		renderWindow.draw(mBackgroundSprite);
 
-	//	if (m_lobby)
-	//	{
-	//		m_window.draw(m_background_sprite);
+		sf::RectangleShape backgroundShape;
+		backgroundShape.setFillColor(sf::Color(0, 0, 0, 200));
+		backgroundShape.setSize(sf::Vector2f(600, 800));
+		RoboMath::CentreOrigin(backgroundShape);
+		backgroundShape.setPosition(960, 540);
 
-	//		sf::RectangleShape backgroundShape;
-	//		backgroundShape.setFillColor(sf::Color(0, 0, 0, 200));
-	//		backgroundShape.setSize(sf::Vector2f(600, 800));
-	//		RoboMath::CentreOrigin(backgroundShape);
-	//		backgroundShape.setPosition(960, 540);
+		renderWindow.draw(backgroundShape);
+		renderWindow.draw(mLobbyGui);
+		renderWindow.draw(mLobbyText);
 
-	//		m_window.draw(backgroundShape);
-	//		m_window.draw(m_lobby_gui);
-	//		m_window.draw(m_lobby_text);
+		const FontPtr font = FontManager::sInstance->GetFont(Fonts::kCarlito);
 
-	//		for (const auto& pair : m_players)
-	//		{
-	//			const sf::Vector2f position = pair.second.m_name->getPosition();
-	//			sf::Text text("Wins: " + std::to_string(pair.second.m_games_won), *FontManager::sInstance->GetFont(Fonts::kCarlito), 16);
-	//			RoboMath::CentreOrigin(text);
-	//			text.setFillColor(pair.second.m_name->GetFillColor());
-	//			text.setPosition(position.x + 200, position.y);
-	//			m_window.draw(text);
-	//		}
-	//	}
-	//}
-	//else
-	//{
-	//	m_window.draw(m_failed_connection_text);
-	//}
+		const vector<GameObjectPtr>& players = World::sInstance->GetGameObjectsInLayer(Layers::kPlayers);
+		int i = 0;
+		for (const GameObjectPtr& player : players)
+		{
+			const Character* character = player->GetAsCharacter();
+			const auto entry = ScoreBoardManager::sInstance->GetEntry(character->GetPlayerId());
+			const Vector3 color = entry->GetColor();
 
-	//m_window.draw(m_statistics_text);
+			sf::Text textName = sf::Text(entry->GetPlayerName(), *font);
+			textName.setPosition(960, 220 + (30 * i));
+			textName.setFillColor(sf::Color(color.mX, color.mY, color.mZ));
+			renderWindow.draw(textName);
+
+			i++;
+		}
+	}
 }
 
 bool MultiplayerGameState::Update(float inDeltaTime)
 {
-
-	Client::sInstance->ExternalDoFrame();
+	if (Client::sInstance->GameStarted())
+	{
+		Client::sInstance->ExternalDoFrame();
+	}
 
 	NetworkManagerClient::sInstance->ProcessIncomingPackets();
 
 	NetworkManagerClient::sInstance->SendOutgoingPackets();
-	//UpdateStatistics(dt);
 
-	////Connected to the Server: Handle all the network logic
-	//if (m_connected)
-	//{
-	//	if (m_lobby)
-	//	{
-	//		UpdateLobby(dt);
-	//	}
-	//	else
-	//	{
-	//		UpdateGame(dt);
-	//	}
-	//}
-
-	////Failed to connect and waited for more than 5 seconds: Back to menu
-	//else if (m_failed_connection_clock.getElapsedTime() >= sf::seconds(5.f))
-	//{
-	//	RequestStackClear();
-	//	RequestStackPush(StateID::kMenu);
-	//}
 	return true;
 }
 
 bool MultiplayerGameState::HandleEvent(const sf::Event& event)
 {
+	mLobbyGui.HandleEvent(event);
 	return true;
 }

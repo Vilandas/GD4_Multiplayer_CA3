@@ -172,6 +172,7 @@
     <ClInclude Include="MoveList.hpp" />
     <ClInclude Include="NetworkManager.hpp" />
     <ClInclude Include="Optimisations.hpp" />
+    <ClInclude Include="PlayerColors.hpp" />
     <ClInclude Include="ReadWritePatterns.hpp" />
     <ClInclude Include="ReplicationCommand.hpp" />
     <ClInclude Include="RoboCatPCH.hpp" />

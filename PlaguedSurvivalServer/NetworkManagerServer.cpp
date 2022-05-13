@@ -58,12 +58,34 @@ void NetworkManagerServer::ProcessPacket(const ClientProxyPtr& inClientProxy, In
 		//otherwise something weird is going on...
 		SendWelcomePacket(inClientProxy);
 		break;
+
 	case kInputCC:
 		if (inClientProxy->GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
 		{
 			HandleInputPacket(inClientProxy, inInputStream);
 		}
 		break;
+
+	case kStartCC:
+		int playerId;
+		inInputStream.Read(playerId);
+		if (playerId == 1)
+		{
+			OutputMemoryBitStream packet;
+
+			packet.Write(kGameStartedCC);
+
+			LOG("Server starting game", 0);
+
+			for (const auto& pair : mAddressToClientMap)
+			{
+				SendPacket(packet, pair.second->GetSocketAddress());
+			}
+
+			Server::sInstance->StartGame();
+		}
+		break;
+
 	default:
 		LOG("Unknown packet type received from %s", inClientProxy->GetSocketAddress().ToString().c_str());
 		break;

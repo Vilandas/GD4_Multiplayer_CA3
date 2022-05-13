@@ -86,6 +86,11 @@ void AnimatedSpriteArtist::SetColor(sf::Color color)
 	}
 }
 
+void AnimatedSpriteArtist::SetColor(Vector3 color)
+{
+	SetColor(sf::Color(color.mX, color.mY, color.mZ));
+}
+
 AnimatedSprite& AnimatedSpriteArtist::CurrentSpriteState()
 {
 	return mSpriteStates[mCurrentSpriteIndex];

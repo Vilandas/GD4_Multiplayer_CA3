@@ -38,6 +38,7 @@ public:
 	void ResetJump();
 	bool IsGrounded() const;
 	bool IsJumping() const;
+	bool IsAlive() const { return !mIsDead; }
 
 	uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
@@ -71,8 +72,7 @@ protected:
 	float mJumpForce;
 	float mCoyoteTime;
 	float mAirTime;
-	bool mCameraMoveConstraint;
-	bool mIsCameraTarget;
+	bool mIsDead;
 };
 
 typedef shared_ptr<Character> CharacterPtr;

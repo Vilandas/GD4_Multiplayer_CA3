@@ -3,8 +3,8 @@ class CharacterClient : public Character
 public:
 	static GameObjectPtr StaticCreate() { return GameObjectPtr(new CharacterClient()); }
 
-	void Update();
-	void UpdateAnimationState();
+	void Update() override;
+	void UpdateAnimationState() const;
 	void UpdateCamera();
 	void HandleDying() override;
 

@@ -170,9 +170,12 @@ void Server::DoFrame()
 
 	NetworkManagerServer::sInstance->CheckForDisconnects();
 
-	NetworkManagerServer::sInstance->RespawnCats();
+	//NetworkManagerServer::sInstance->RespawnCats();
 
-	DangerTrigger::sInstance->Update(Timing::sInstance.GetDeltaTime());
+	if (mGameStarted)
+	{
+		DangerTrigger::sInstance->Update(Timing::sInstance.GetDeltaTime());
+	}
 
 	Engine::DoFrame();
 

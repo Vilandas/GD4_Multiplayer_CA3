@@ -58,6 +58,7 @@ class GameObject;
 
 #include "Optimisations.hpp"
 #include "RoboMath.hpp"
+#include "PlayerColors.hpp"
 
 #include "StringUtils.hpp"
 #include "SocketAddress.hpp"

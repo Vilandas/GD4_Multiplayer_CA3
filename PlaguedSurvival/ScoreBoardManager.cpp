@@ -1,5 +1,7 @@
 #include "RoboCatPCH.hpp"
 
+#include <fstream>
+
 std::unique_ptr< ScoreBoardManager >	ScoreBoardManager::sInstance;
 
 
@@ -10,10 +12,12 @@ void ScoreBoardManager::StaticInit()
 
 ScoreBoardManager::ScoreBoardManager()
 {
-	mDefaultColors.push_back(Colors::LightYellow);
-	mDefaultColors.push_back(Colors::LightBlue);
-	mDefaultColors.push_back(Colors::LightPink);
-	mDefaultColors.push_back(Colors::LightGreen);
+	PlayerColors startColor = PlayerColors::kWhite;
+	PlayerColors endColor = PlayerColors::kTeal;
+	for (int color = static_cast<int>(startColor); color <= static_cast<int>(endColor); color++)
+	{
+		mDefaultColors.push_back(ExtraColors::GetColorV3(static_cast<PlayerColors>(color)));
+	}
 }
 
 ScoreBoardManager::Entry::Entry(uint32_t inPlayerId, const string& inPlayerName, const Vector3& inColor) :

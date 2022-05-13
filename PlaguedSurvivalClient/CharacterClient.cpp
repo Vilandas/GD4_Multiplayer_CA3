@@ -9,8 +9,6 @@ CharacterClient::CharacterClient() :
 	SetScale(0.5f);
 	mArtist.reset(new AnimatedSpriteArtist(DataTables::CharacterData.ToVector()));
 	mArtist->setScale(0.5f, 0.5f);
-	//mSpriteComponent.reset(new PlayerSpriteComponent(this));
-	//mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture(Textures::kCat));
 }
 
 void CharacterClient::HandleDying()
@@ -67,7 +65,7 @@ void CharacterClient::Update()
 	UpdateAnimationState();
 }
 
-void CharacterClient::UpdateAnimationState()
+void CharacterClient::UpdateAnimationState() const
 {
 	if (mVelocity.x != 0.f)
 	{
@@ -90,6 +88,12 @@ void CharacterClient::UpdateAnimationState()
 
 void CharacterClient::UpdateCamera()
 {
+	if (mIsDead)
+	{
+		mView.setCenter(GetLocationV2());
+		return;
+	}
+
 	const sf::Vector2f distance = GetLocationV2() - mView.getCenter();
 
 	if (mCameraMoveConstraint || RoboMath::Length(distance) > 100)
@@ -140,12 +144,20 @@ void CharacterClient::Read(InputMemoryBitStream& inInputStream)
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{
+		bool isDead = false;
+		inInputStream.Read(isDead);
 		replicatedVelocity.x = ReadWritePatterns::ReadFloat(inInputStream, 10);
 		replicatedVelocity.y = ReadWritePatterns::ReadFloat(inInputStream, 11);
 		SetVelocity(replicatedVelocity);
 
 		replicatedLocation = ReadWritePatterns::ReadLocation(inInputStream);
 		SetLocation(replicatedLocation);
+
+		if (isDead && !mIsDead)
+		{
+			mIsDead = true;
+			RenderManager::sInstance->RemoveArtist(mArtist.get());
+		}
 
 		readState |= CRS_Pose;
 	}
@@ -167,6 +179,7 @@ void CharacterClient::Read(InputMemoryBitStream& inInputStream)
 		Vector3 color;
 		inInputStream.Read(color);
 		SetColor(color);
+		mArtist->SetColor(color);
 		readState |= CRS_Color;
 	}
 

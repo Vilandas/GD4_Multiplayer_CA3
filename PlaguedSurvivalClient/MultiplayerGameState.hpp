@@ -10,12 +10,13 @@ public:
 	bool Update(float inDeltaTime) override;
 	bool HandleEvent(const sf::Event& event) override;
 
+
 private:
-	GUI::Container m_lobby_gui;
-	sf::Sprite m_background_sprite;
-	sf::Text m_lobby_text;
-	sf::Text m_waiting_for_host_text;
+	GUI::Container mLobbyGui;
+	sf::Sprite mBackgroundSprite;
+	sf::Text mLobbyText;
+	sf::Text mWaitingForHostText;
 
 	bool m_host;
-	bool m_lobby;
+	bool mLobby;
 };
