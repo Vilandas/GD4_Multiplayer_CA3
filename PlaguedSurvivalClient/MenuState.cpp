@@ -7,7 +7,8 @@ MenuState::MenuState(StateStack& stack)
 	sf::Texture& texture = *TextureManager::sInstance->GetTexture(Textures::kTitleScreen);
 
 	mBackgroundSprite.setTexture(texture);
-	//m_artist.setPosition(380.f, 380.f);
+	mArtist.reset(new AnimatedSpriteArtist(DataTables::CharacterData.ToVector()));
+	mArtist->setPosition(380.f, 380.f);
 
 	auto host_play_button = std::make_shared<GUI::Button>();
 	host_play_button->setPosition(100, 300);
@@ -48,14 +49,14 @@ void MenuState::Draw()
 	sf::RenderWindow& window = *WindowManager::sInstance;
 	window.setView(window.getDefaultView());
 	window.draw(mBackgroundSprite);
-	//window.draw(m_artist);
+	window.draw(*mArtist);
 	window.draw(mGuiContainer);
 
 }
 
 bool MenuState::Update(float inDeltaTime)
 {
-	//m_artist.UpdateCurrent(dt);
+	mArtist->UpdateCurrent(inDeltaTime);
 	return true;
 }
 

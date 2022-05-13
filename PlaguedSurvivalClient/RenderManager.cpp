@@ -48,6 +48,54 @@ int RenderManager::GetComponentIndex(SpriteComponent* inComponent) const
 	return -1;
 }
 
+void RenderManager::AddArtist(AnimatedSpriteArtist* inArtist, bool priorityRender)
+{
+	if (priorityRender)
+	{
+		mPriorityArtists.emplace_back(inArtist);
+	}
+	else mArtists.emplace_back(inArtist);
+}
+
+void RenderManager::RemoveArtist(AnimatedSpriteArtist* inArtist)
+{
+	auto& artist = mArtists;
+	int index = GetArtistIndex(inArtist, false);
+
+	if (index == -1)
+	{
+		artist = mPriorityArtists;
+		index = GetArtistIndex(inArtist, true);
+	}
+
+	if (index != -1)
+	{
+		int lastIndex = artist.size() - 1;
+		if (index != lastIndex)
+		{
+			artist[index] = artist[lastIndex];
+		}
+		artist.pop_back();
+	}
+}
+
+int RenderManager::GetArtistIndex(AnimatedSpriteArtist* inArtist, bool priorityRender) const
+{
+	auto& artists = priorityRender
+		? mPriorityArtists
+		: mArtists;
+
+	for (int i = 0, c = artists.size(); i < c; ++i)
+	{
+		if (artists[i] == inArtist)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
 
 //this part that renders the world is really a camera-
 //in a more detailed engine, we'd have a list of cameras, and then render manager would
@@ -60,13 +108,23 @@ void RenderManager::RenderComponents()
 		WindowManager::sInstance->draw(c->GetSprite());
 	}
 
-	for (SpriteComponent* c : mComponents)
+	for (const AnimatedSpriteArtist* artist : mArtists)
 	{
-		if (c->GetGameObject().GetLayer() == Layers::kPlatforms)
-		{
-			WindowManager::sInstance->draw(c->GetDebugBounds());
-		}
+		WindowManager::sInstance->draw(*artist);
 	}
+
+	for (const AnimatedSpriteArtist* artist : mPriorityArtists)
+	{
+		WindowManager::sInstance->draw(*artist);
+	}
+
+	//for (SpriteComponent* c : mComponents)
+	//{
+	//	if (c->GetGameObject().GetLayer() == Layers::kPlatforms)
+	//	{
+	//		WindowManager::sInstance->draw(c->GetDebugBounds());
+	//	}
+	//}
 }
 
 void RenderManager::Render()

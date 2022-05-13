@@ -8,6 +8,6 @@ public:
 
 private:
 	sf::Sprite mBackgroundSprite;
-	//AnimatedSpriteArtist m_artist;
+	AnimatedSpriteArtistPtr mArtist;
 	GUI::Container mGuiContainer;
 };

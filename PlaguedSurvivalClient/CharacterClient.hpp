@@ -4,6 +4,7 @@ public:
 	static GameObjectPtr StaticCreate() { return GameObjectPtr(new CharacterClient()); }
 
 	void Update();
+	void UpdateAnimationState();
 	void UpdateCamera();
 	void HandleDying() override;
 
@@ -21,7 +22,8 @@ private:
 	float mTimeLocationBecameOutOfSync;
 	float mTimeVelocityBecameOutOfSync;
 
-	SpriteComponentPtr mSpriteComponent;
+	AnimatedSpriteArtistPtr mArtist;
+	//SpriteComponentPtr mSpriteComponent;
 	sf::View mView;
 	bool mCameraMoveConstraint;
 };

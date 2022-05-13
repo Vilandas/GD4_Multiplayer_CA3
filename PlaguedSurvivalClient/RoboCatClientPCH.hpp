@@ -8,6 +8,9 @@
 
 class StateStack;
 
+#include "AnimatedSprite.hpp"
+#include "AnimatedSpriteArtist.hpp"
+
 #include "InputManager.hpp"
 #include "SpriteComponent.hpp"
 #include "PlayerSpriteComponent.hpp"
@@ -24,6 +27,10 @@ class StateStack;
 #include "Container.hpp"
 #include "Label.hpp"
 #include "Button.hpp"
+
+#include "CharacterType.hpp"
+#include "DataTables.hpp"
+#include "CharacterAnimationState.hpp"
 
 #include "CharacterClient.hpp"
 #include "TileClient.hpp"

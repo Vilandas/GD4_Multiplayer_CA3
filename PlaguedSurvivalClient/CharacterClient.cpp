@@ -3,11 +3,14 @@
 CharacterClient::CharacterClient() :
 	mTimeLocationBecameOutOfSync(0.f),
 	mTimeVelocityBecameOutOfSync(0.f),
-	mView(sf::FloatRect(0, 0, 1920, 1080))
+	mView(sf::FloatRect(0, 0, 1920, 1080)),
+	mCameraMoveConstraint()
 {
 	SetScale(0.5f);
-	mSpriteComponent.reset(new PlayerSpriteComponent(this));
-	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture(Textures::kCat));
+	mArtist.reset(new AnimatedSpriteArtist(DataTables::CharacterData.ToVector()));
+	mArtist->setScale(0.5f, 0.5f);
+	//mSpriteComponent.reset(new PlayerSpriteComponent(this));
+	//mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture(Textures::kCat));
 }
 
 void CharacterClient::HandleDying()
@@ -57,6 +60,32 @@ void CharacterClient::Update()
 			mTimeLocationBecameOutOfSync = 0.f;
 		}
 	}
+
+	mArtist->UpdateCurrent(Timing::sInstance.GetDeltaTime());
+	mArtist->setPosition(GetLocationV2());
+
+	UpdateAnimationState();
+}
+
+void CharacterClient::UpdateAnimationState()
+{
+	if (mVelocity.x != 0.f)
+	{
+		mArtist->ChangeState(static_cast<int>(CharacterAnimationState::kRun));
+
+		if (mVelocity.x > 0)
+		{
+			mArtist->Flipped(false);
+		}
+		else if (mVelocity.x < 0)
+		{
+			mArtist->Flipped(true);
+		}
+	}
+	else
+	{
+		mArtist->ChangeState(static_cast<int>(CharacterAnimationState::kIdle));
+	}
 }
 
 void CharacterClient::UpdateCamera()
@@ -88,6 +117,16 @@ void CharacterClient::Read(InputMemoryBitStream& inInputStream)
 	{
 		uint32_t playerId;
 		inInputStream.Read(playerId);
+
+		if (GetPlayerId() == 0 && playerId != 0)
+		{
+			if (NetworkManagerClient::sInstance->GetPlayerId() == playerId)
+			{
+				RenderManager::sInstance->AddArtist(mArtist.get(), true);
+			}
+			else RenderManager::sInstance->AddArtist(mArtist.get());
+		}
+
 		SetPlayerId(playerId);
 		readState |= CRS_PlayerId;
 	}

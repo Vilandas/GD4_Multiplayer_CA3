@@ -19,12 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedSprite.hpp" />
+    <ClInclude Include="AnimatedSpriteArtist.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="ButtonType.hpp" />
+    <ClInclude Include="CharacterAnimationState.hpp" />
     <ClInclude Include="CharacterClient.hpp" />
+    <ClInclude Include="CharacterType.hpp" />
     <ClInclude Include="Client.hpp" />
     <ClInclude Include="Component.hpp" />
     <ClInclude Include="Container.hpp" />
+    <ClInclude Include="DataTables.hpp" />
     <ClInclude Include="FontManager.hpp" />
     <ClInclude Include="Fonts.hpp" />
     <ClInclude Include="HUD.hpp" />
@@ -47,6 +52,8 @@
     <ClInclude Include="WindowManager.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="AnimatedSpriteArtist.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CharacterClient.cpp" />
     <ClCompile Include="Client.cpp" />

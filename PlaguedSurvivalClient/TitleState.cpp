@@ -2,23 +2,24 @@
 
 TitleState::TitleState(StateStack& stack)
 	: State(stack)
-	//, m_artist(Table[static_cast<int>(PlatformerCharacterType::kDoc)].m_animation_data.ToVector(), *context.textures)
 	, mShowText(true)
 	, mTextEffectTime(sf::Time::Zero)
 {
 	mBackgroundSprite.setTexture(*TextureManager::sInstance->GetTexture(Textures::kTitleScreen));
-	//m_artist.setPosition(380.f, 380.f);
 	mText.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
 	mText.setString("Press any key to continue");
 	RoboMath::CentreOrigin(mText);
 	mText.setPosition(WindowManager::sInstance->getView().getSize() / 2.f);
+
+	mArtist.reset(new AnimatedSpriteArtist(DataTables::CharacterData.ToVector()));
+	mArtist->setPosition(380.f, 380.f);
 }
 
 void TitleState::Draw()
 {
 	sf::RenderWindow& window = *WindowManager::sInstance;
 	window.draw(mBackgroundSprite);
-	//window.draw(m_artist);
+	window.draw(*mArtist);
 
 	if (mShowText)
 	{
@@ -28,7 +29,7 @@ void TitleState::Draw()
 
 bool TitleState::Update(float inDeltaTime)
 {
-	//m_artist.UpdateCurrent(inDeltaTime);
+	mArtist->UpdateCurrent(inDeltaTime);
 	mTextEffectTime += sf::seconds(inDeltaTime);
 
 	if (mTextEffectTime >= sf::seconds(0.5))

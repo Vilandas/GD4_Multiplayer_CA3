@@ -15,12 +15,18 @@ public:
 	void RemoveComponent(SpriteComponent* inComponent);
 	int GetComponentIndex(SpriteComponent* inComponent) const;
 
+	void AddArtist(AnimatedSpriteArtist* inArtist, bool priorityRender = false);
+	void RemoveArtist(AnimatedSpriteArtist* inArtist);
+	int GetArtistIndex(AnimatedSpriteArtist* inArtist, bool priorityRender) const;
+
 private:
 
 	RenderManager();
 
 	//this can't be only place that holds on to component- it has to live inside a GameObject in the world
 	vector<SpriteComponent*> mComponents;
+	vector<AnimatedSpriteArtist*> mArtists;
+	vector<AnimatedSpriteArtist*> mPriorityArtists;
 
 	sf::View view;
 

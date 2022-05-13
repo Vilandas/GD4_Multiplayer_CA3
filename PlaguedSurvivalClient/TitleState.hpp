@@ -9,7 +9,7 @@ public:
 private:
 	sf::Sprite mBackgroundSprite;
 	sf::Text mText;
-	//AnimatedSpriteArtist m_artist;
+	AnimatedSpriteArtistPtr mArtist;
 
 	bool mShowText;
 	sf::Time mTextEffectTime;
