@@ -209,7 +209,7 @@ void Server::SpawnCharacterForPlayer(opt::PlayerId inPlayerId)
 	character->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	character->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	character->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 500.f, 0.f));
+	character->SetLocation(Vector3(200.f + static_cast<float>(inPlayerId) * 50, 300.f, 0.f));
 }
 
 void Server::HandleLostClient(const ClientProxyPtr& inClientProxy)

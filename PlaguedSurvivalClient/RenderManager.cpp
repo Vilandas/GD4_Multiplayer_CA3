@@ -106,6 +106,39 @@ int RenderManager::GetArtistIndex(AnimatedSpriteArtist* inArtist, bool priorityR
 	return -1;
 }
 
+void RenderManager::AddText(sf::Text* inText)
+{
+	mExternalTexts.emplace_back(inText);
+}
+
+void RenderManager::RemoveText(sf::Text* inText)
+{
+	int index = GetTextIndex(inText);
+
+	if (index != -1)
+	{
+		int lastIndex = mExternalTexts.size() - 1;
+		if (index != lastIndex)
+		{
+			mExternalTexts[index] = mExternalTexts[lastIndex];
+		}
+		mExternalTexts.pop_back();
+	}
+}
+
+int RenderManager::GetTextIndex(sf::Text* inText) const
+{
+	for (int i = 0, c = mExternalTexts.size(); i < c; ++i)
+	{
+		if (mExternalTexts[i] == inText)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
 
 //this part that renders the world is really a camera-
 //in a more detailed engine, we'd have a list of cameras, and then render manager would
@@ -126,6 +159,11 @@ void RenderManager::RenderComponents()
 	for (const AnimatedSpriteArtist* artist : mPriorityArtists)
 	{
 		WindowManager::sInstance->draw(*artist);
+	}
+
+	for (const sf::Text* drawable : mExternalTexts)
+	{
+		WindowManager::sInstance->draw(*drawable);
 	}
 
 	//for (SpriteComponent* c : mComponents)

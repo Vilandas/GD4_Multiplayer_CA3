@@ -19,6 +19,10 @@ public:
 	void RemoveArtist(AnimatedSpriteArtist* inArtist);
 	int GetArtistIndex(AnimatedSpriteArtist* inArtist, bool priorityRender) const;
 
+	void AddText(sf::Text* inText);
+	void RemoveText(sf::Text* inText);
+	int GetTextIndex(sf::Text* inText) const;
+
 private:
 
 	RenderManager();
@@ -27,6 +31,7 @@ private:
 	vector<SpriteComponent*> mComponents;
 	vector<AnimatedSpriteArtist*> mArtists;
 	vector<AnimatedSpriteArtist*> mPriorityArtists;
+	vector<sf::Text*> mExternalTexts;
 
 	sf::View view;
 

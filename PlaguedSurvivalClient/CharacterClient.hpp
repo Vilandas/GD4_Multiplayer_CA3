@@ -23,7 +23,8 @@ private:
 	float mTimeVelocityBecameOutOfSync;
 
 	AnimatedSpriteArtistPtr mArtist;
-	//SpriteComponentPtr mSpriteComponent;
+	sf::Text mNameDisplay;
+	sf::Text mArrow;
 	sf::View mView;
 	bool mCameraMoveConstraint;
 };

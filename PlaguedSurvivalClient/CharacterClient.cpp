@@ -14,10 +14,12 @@ CharacterClient::CharacterClient() :
 void CharacterClient::HandleDying()
 {
 	Character::HandleDying();
+	RenderManager::sInstance->RemoveText(&mNameDisplay);
 
 	//and if we're local, tell the hud so our health goes away!
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
 	{
+		RenderManager::sInstance->RemoveText(&mArrow);
 		HUD::sInstance->SetPlayerHealth(0);
 	}
 }
@@ -61,6 +63,10 @@ void CharacterClient::Update()
 
 	mArtist->UpdateCurrent(Timing::sInstance.GetDeltaTime());
 	mArtist->setPosition(GetLocationV2());
+	mNameDisplay.setPosition(GetLocationV2() + sf::Vector2f(0, 90));
+	mArrow.setPosition(GetLocationV2() + sf::Vector2f(15, -100));
+
+	WindowManager::sInstance->draw(mNameDisplay);
 
 	UpdateAnimationState();
 }
@@ -124,8 +130,25 @@ void CharacterClient::Read(InputMemoryBitStream& inInputStream)
 
 		if (GetPlayerId() == 0 && playerId != 0)
 		{
+			const auto& entry = *ScoreBoardManager::sInstance->GetEntry(playerId);
+			mNameDisplay.setString(entry.GetPlayerName());
+			mNameDisplay.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
+			mNameDisplay.scale(0.75f, 0.75f);
+			mNameDisplay.setFillColor(entry.GetSfColor());
+
+			RoboMath::CentreOrigin(mNameDisplay);
+
+			RenderManager::sInstance->AddText(&mNameDisplay);
+
 			if (NetworkManagerClient::sInstance->GetPlayerId() == playerId)
 			{
+				mArrow.setString("V");
+				mArrow.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
+				mArrow.scale(1.f, 1.f);
+				mArrow.setFillColor(entry.GetSfColor());
+				RoboMath::CentreOrigin(mArrow);
+
+				RenderManager::sInstance->AddText(&mArrow);
 				RenderManager::sInstance->AddArtist(mArtist.get(), true);
 			}
 			else RenderManager::sInstance->AddArtist(mArtist.get());
