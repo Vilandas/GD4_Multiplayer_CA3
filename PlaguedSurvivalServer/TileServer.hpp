@@ -11,10 +11,10 @@ public:
 	bool GetIsTop() const { return mIsTop; }
 	void SetIsTop(bool isNew = false);
 	void SetIsTop(const std::queue<TileServer*>& belowTiles);
-	void SetActiveCollision();
 
 	void SetLeftTile(TileServer* tile);
 	void SetRightTile(TileServer* tile);
+	void SetCollisionActive() override;
 
 	uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
@@ -22,7 +22,6 @@ protected:
 	TileServer();
 
 	bool mIsTop;
-	bool mActiveCollision;
 
 	TileServer* mLeftTile;
 	TileServer* mRightTile;

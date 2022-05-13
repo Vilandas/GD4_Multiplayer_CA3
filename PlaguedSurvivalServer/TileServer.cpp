@@ -2,7 +2,6 @@
 
 TileServer::TileServer() :
 	mIsTop(),
-	mActiveCollision(),
 	mLeftTile(nullptr),
 	mRightTile(nullptr),
 	mBelowTiles()
@@ -21,13 +20,13 @@ void TileServer::HandleDying()
 
 	if (mLeftTile != nullptr)
 	{
-		mLeftTile->SetActiveCollision();
+		mLeftTile->SetCollisionActive();
 		mLeftTile->SetRightTile(nullptr);
 	}
 
 	if (mRightTile != nullptr)
 	{
-		mRightTile->SetActiveCollision();
+		mRightTile->SetCollisionActive();
 		mRightTile->SetLeftTile(nullptr);
 	}
 
@@ -65,27 +64,13 @@ void TileServer::SetIsTop(bool isNew)
 	mIsTop = true;
 	DangerTrigger::sInstance->AddDangerObject(this);
 
-	if (isNew)
-	{
-		mActiveCollision = true;
-	}
-	else
-	{
-		SetActiveCollision();
-	}
+	SetCollisionActive();
 }
 
 void TileServer::SetIsTop(const std::queue<TileServer*>& belowTiles)
 {
 	SetIsTop();
 	mBelowTiles = belowTiles;
-}
-
-void TileServer::SetActiveCollision()
-{
-	if (mActiveCollision) return;
-
-	mActiveCollision = true;
 }
 
 void TileServer::SetLeftTile(TileServer* tile)
@@ -96,6 +81,13 @@ void TileServer::SetLeftTile(TileServer* tile)
 void TileServer::SetRightTile(TileServer* tile)
 {
 	mRightTile = tile;
+}
+
+void TileServer::SetCollisionActive()
+{
+	Tile::SetCollisionActive();
+
+	NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), TRS_State);
 }
 
 uint32_t TileServer::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const //35 bits total
@@ -130,6 +122,17 @@ uint32_t TileServer::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
 		inOutputStream.Write(true);
 		inOutputStream.Write(static_cast<opt::Texture>(mTexture), opt::TextureBits);
 		writtenState |= TRS_Texture;
+	}
+	else
+	{
+		inOutputStream.Write(false);
+	}
+
+	if (inDirtyState & TRS_State)
+	{
+		inOutputStream.Write(true);
+		inOutputStream.Write(mActiveCollision);
+		writtenState |= TRS_State;
 	}
 	else
 	{

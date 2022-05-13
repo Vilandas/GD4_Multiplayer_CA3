@@ -68,5 +68,5 @@ void WorldChunks::CheckCollision(float inDeltaTime, GameObject* gameObject, Laye
 		}
 	}
 
-	//LOG("Collisions Checked: %d", counter);
+	LOG("Collisions Checked: %d", counter);
 }

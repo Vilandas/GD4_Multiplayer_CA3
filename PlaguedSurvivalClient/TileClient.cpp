@@ -21,7 +21,7 @@ void TileClient::Read(InputMemoryBitStream& inInputStream)
 	{
 		const Vector3 location = ReadWritePatterns::ReadLocationRounded(inInputStream);
 		SetLocation(location);
-		WorldChunks::sInstance->AddToChunk(this, GetLayer());
+		//WorldChunks::sInstance->AddToChunk(this, GetLayer());
 	}
 
 	inInputStream.Read(stateBit);
@@ -42,5 +42,14 @@ void TileClient::Read(InputMemoryBitStream& inInputStream)
 		opt::Texture texture;
 		inInputStream.Read(texture, opt::TextureBits);
 		SetTexture(static_cast<Textures>(texture));
+	}
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		bool activeCollision = false;
+		inInputStream.Read(activeCollision);
+
+		if (activeCollision) SetCollisionActive();
 	}
 }

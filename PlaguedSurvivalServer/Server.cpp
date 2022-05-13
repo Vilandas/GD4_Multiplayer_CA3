@@ -102,7 +102,7 @@ namespace
 							0)
 					);
 
-					WorldChunks::sInstance->AddToChunk(tile, Layers::kPlatforms);
+					//WorldChunks::sInstance->AddToChunk(tile, Layers::kPlatforms);
 
 					const auto result = topTile.emplace(j, tile);
 					if (result.second)
@@ -123,7 +123,7 @@ namespace
 					}
 					else //last_node was air so this node is exposed
 					{
-						tile->SetActiveCollision();
+						tile->SetCollisionActive();
 					}
 
 					lastTile = tile;
@@ -132,7 +132,7 @@ namespace
 				{
 					if (lastTile != nullptr)
 					{
-						lastTile->SetActiveCollision();
+						lastTile->SetCollisionActive();
 					}
 
 					lastTile = nullptr;
