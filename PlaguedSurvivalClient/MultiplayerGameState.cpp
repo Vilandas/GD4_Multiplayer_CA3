@@ -9,7 +9,7 @@
 //	{
 //		//Try to open existing file game_data.txt
 //		std::ifstream input_file("game_data.txt");
-//		opt::GamesWon games_won;
+//		uint32_t games_won;
 //		if (input_file >> games_won)
 //		{
 //			return games_won;
@@ -92,14 +92,22 @@ void MultiplayerGameState::Draw()
 		{
 			const Character* character = player->GetAsCharacter();
 			const auto entry = ScoreBoardManager::sInstance->GetEntry(character->GetPlayerId());
-			const Vector3 color = entry->GetColor();
 
-			sf::Text textName = sf::Text(entry->GetPlayerName(), *font);
-			textName.setPosition(960, 220 + (30 * i));
-			textName.setFillColor(sf::Color(color.mX, color.mY, color.mZ));
-			renderWindow.draw(textName);
+			if (entry != nullptr)
+			{
+				const Vector3 color = entry->GetColor();
 
-			i++;
+				sf::Text textName = sf::Text(entry->GetPlayerName(), *font);
+				textName.setPosition(760, 220 + (30 * i));
+				textName.setFillColor(sf::Color(color.mX, color.mY, color.mZ));
+				renderWindow.draw(textName);
+
+				sf::Text textScore = sf::Text(std::to_string(entry->GetScore()), *font);
+				textScore.setPosition(960, 220 + (30 * i));
+				textScore.setFillColor(textName.getFillColor());
+				renderWindow.draw(textScore);
+				i++;
+			}
 		}
 	}
 }

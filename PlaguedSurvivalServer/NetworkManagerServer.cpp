@@ -54,9 +54,11 @@ void NetworkManagerServer::ProcessPacket(const ClientProxyPtr& inClientProxy, In
 	switch (packetType)
 	{
 	case kHelloCC:
+	{
 		//need to resend welcome. to be extra safe we should check the name is the one we expect from this address,
 		//otherwise something weird is going on...
 		SendWelcomePacket(inClientProxy);
+	}
 		break;
 
 	case kInputCC:
@@ -103,7 +105,13 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 		//read the name
 		string name;
 		inInputStream.Read(name);
-		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, mNewPlayerId++);
+
+		uint32_t gamesWon;
+		inInputStream.Read(gamesWon);
+
+		LOG("G: %d", gamesWon);
+
+		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, gamesWon, mNewPlayerId++);
 		mAddressToClientMap[inFromAddress] = newClientProxy;
 		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
 
@@ -274,6 +282,28 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 	}
 
 	return nullptr;
+}
+
+void NetworkManagerServer::SendWinnerPacket(int inPlayerId)
+{
+	OutputMemoryBitStream packet;
+
+	packet.Write(kWinnerCC);
+	packet.Write(inPlayerId);
+
+	if (inPlayerId == 0)
+	{
+		LOG("Game Over. No Winners", 0);
+	}
+	else
+	{
+		LOG("Winner found: '%s', id: %d", GetClientProxy(inPlayerId)->GetName().c_str(), inPlayerId);
+	}
+
+	for (const auto& pair : mAddressToClientMap)
+	{
+		SendPacket(packet, pair.second->GetSocketAddress());
+	}
 }
 
 void NetworkManagerServer::CheckForDisconnects()

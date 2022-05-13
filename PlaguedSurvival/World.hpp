@@ -16,6 +16,7 @@ public:
 	void SwapGameObjectLayer(const GameObject* inGameObject, Layers fromLayer, Layers toLayer);
 
 	int GetAlivePlayerCount() const;
+	int GetFirstAlivePlayerId() const;
 
 	void Update();
 

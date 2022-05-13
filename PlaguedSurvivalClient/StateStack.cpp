@@ -14,6 +14,8 @@ StateStack::StateStack()
 
 	RegisterState<MultiplayerGameState>(StateId::kHostGame, true);
 	RegisterState<MultiplayerGameState>(StateId::kJoinGame, false);
+
+	RegisterState<GameOverState>(StateId::kGameOver);
 }
 
 void StateStack::Update(float inDeltaTime)

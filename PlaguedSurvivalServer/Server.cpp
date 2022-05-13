@@ -175,6 +175,18 @@ void Server::DoFrame()
 	if (mGameStarted)
 	{
 		DangerTrigger::sInstance->Update(Timing::sInstance.GetDeltaTime());
+
+		const int playerCount = World::sInstance->GetAlivePlayerCount();
+
+		if (playerCount == 1)
+		{
+			NetworkManagerServer::sInstance->SendWinnerPacket(World::sInstance->GetFirstAlivePlayerId());
+		}
+		else if (playerCount == 0)
+		{
+			NetworkManagerServer::sInstance->SendWinnerPacket(0);
+		}
+
 	}
 
 	Engine::DoFrame();
@@ -187,7 +199,7 @@ void Server::HandleNewClient(const ClientProxyPtr& inClientProxy)
 {
 	int playerId = inClientProxy->GetPlayerId();
 
-	ScoreBoardManager::sInstance->AddEntry(playerId, inClientProxy->GetName());
+	ScoreBoardManager::sInstance->AddEntry(playerId, inClientProxy->GetName(), inClientProxy->GetGamesWon());
 	SpawnCharacterForPlayer(playerId);
 }
 

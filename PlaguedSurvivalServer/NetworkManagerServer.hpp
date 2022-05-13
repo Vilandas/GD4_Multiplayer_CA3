@@ -19,6 +19,7 @@ public:
 	void RespawnCats();
 
 	ClientProxyPtr GetClientProxy(int inPlayerId) const;
+	void SendWinnerPacket(int inPlayerId);
 
 private:
 	NetworkManagerServer();

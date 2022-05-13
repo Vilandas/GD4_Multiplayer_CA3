@@ -23,26 +23,34 @@ enum class PlayerColors
 
 namespace ExtraColors
 {
-	static const sf::Color Orange(245, 130, 48);
-	static const sf::Color Teal(0, 128, 128);
-	static const sf::Color Purple(145, 30, 180);
-	static const sf::Color DeepPink(255, 20, 147);
-	static const sf::Color Apricot(255, 215, 180);
-	static const sf::Color DarkGreen(0, 100, 0);
-	static const sf::Color Brown(170, 110, 40);
-	static const sf::Color Mint(170, 255, 195);
+	static const Vector3 White(255, 255, 255);
+	static const Vector3 Blue(0, 0, 255);
+	static const Vector3 Red(255, 0, 0);
+	static const Vector3 Green(0, 255, 0);
+	static const Vector3 Magenta(255, 0, 255);
+	static const Vector3 Yellow(255, 255, 0);
+	static const Vector3 Cyan(0, 255, 255);
 
-	inline sf::Color GetColor(PlayerColors playerColor)
+	static const Vector3 Orange(245, 130, 48);
+	static const Vector3 Teal(0, 128, 128);
+	static const Vector3 Purple(145, 30, 180);
+	static const Vector3 DeepPink(255, 20, 147);
+	static const Vector3 Apricot(255, 215, 180);
+	static const Vector3 DarkGreen(0, 100, 0);
+	static const Vector3 Brown(170, 110, 40);
+	static const Vector3 Mint(170, 255, 195);
+
+	inline Vector3 GetColor(PlayerColors playerColor)
 	{
 		switch (playerColor)
 		{
-		case PlayerColors::kWhite: return sf::Color::White;
-		case PlayerColors::kBlue: return sf::Color::Blue;
-		case PlayerColors::kRed: return sf::Color::Red;
-		case PlayerColors::kGreen: return sf::Color::Green;
-		case PlayerColors::kMagenta: return sf::Color::Magenta;
-		case PlayerColors::kYellow: return sf::Color::Yellow;
-		case PlayerColors::kCyan: return sf::Color::Cyan;
+		case PlayerColors::kWhite: return White;
+		case PlayerColors::kBlue: return Blue;
+		case PlayerColors::kRed: return Red;
+		case PlayerColors::kGreen: return Green;
+		case PlayerColors::kMagenta: return Magenta;
+		case PlayerColors::kYellow: return Yellow;
+		case PlayerColors::kCyan: return Cyan;
 		case PlayerColors::kOrange: return Orange;
 		case PlayerColors::kTeal: return Teal;
 		case PlayerColors::kPurple: return Purple;
@@ -53,12 +61,6 @@ namespace ExtraColors
 		case PlayerColors::kMint: return Mint;
 		}
 
-		return sf::Color::White;
-	}
-
-	inline Vector3 GetColorV3(PlayerColors playerColor)
-	{
-		const sf::Color color = GetColor(playerColor);
-		return Vector3(color.r, color.g, color.b);
+		return White;
 	}
 }

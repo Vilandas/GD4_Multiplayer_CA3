@@ -53,6 +53,13 @@ void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, co
 	case kGameStartedCC:
 		Client::sInstance->StartGame();
 		break;
+
+	case kWinnerCC:
+		int winnerId;
+		inInputStream.Read(winnerId);
+		ScoreBoardManager::sInstance->SetWinnerId(winnerId);
+		StateStack::sInstance->PushState(StateId::kGameOver);
+		break;
 	}
 }
 
@@ -90,6 +97,7 @@ void NetworkManagerClient::SendHelloPacket()
 
 	helloPacket.Write(kHelloCC);
 	helloPacket.Write(mName);
+	helloPacket.Write(mGamesWon);
 
 	SendPacket(helloPacket, mServerAddress);
 }

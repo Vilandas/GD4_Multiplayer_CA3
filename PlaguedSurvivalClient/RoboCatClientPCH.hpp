@@ -1,6 +1,7 @@
 #include "RoboCatShared.hpp"
 
 #include "functional"
+#include "fstream"
 #include "SFML\Graphics.hpp"
 
 #include "Fonts.hpp"
@@ -45,4 +46,5 @@ class StateStack;
 #include "TitleState.hpp"
 #include "MenuState.hpp"
 #include "MultiplayerGameState.hpp"
+#include "GameOverState.hpp"
 

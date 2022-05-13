@@ -9,6 +9,7 @@ public:
 	static const uint32_t kInputCC = 'INPT';
 	static const uint32_t kStartCC = 'STRT';
 	static const uint32_t kGameStartedCC = 'GMST';
+	static const uint32_t kWinnerCC = 'WINN';
 
 	static const int kMaxPacketsPerFrameCount = 10;
 

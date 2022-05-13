@@ -24,6 +24,9 @@ public:
 
 	void SendStartGamePacket();
 
+	void SetGamesWon(uint32_t gamesWon) { mGamesWon = gamesWon; }
+	uint32_t GetGamesWon() const { return mGamesWon; }
+
 private:
 	NetworkManagerClient();
 	void Init(const SocketAddress& inServerAddress, const string& inName);
@@ -56,6 +59,7 @@ private:
 
 	string mName;
 	int	mPlayerId;
+	uint32_t mGamesWon;
 
 	float mLastMoveProcessedByServerTimestamp;
 

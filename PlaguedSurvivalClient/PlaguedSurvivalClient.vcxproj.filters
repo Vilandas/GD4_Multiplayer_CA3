@@ -123,6 +123,9 @@
     <ClInclude Include="CharacterType.hpp">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="GameOverState.hpp">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -202,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="AnimatedSpriteArtist.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverState.cpp">
+      <Filter>Source Files\States</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

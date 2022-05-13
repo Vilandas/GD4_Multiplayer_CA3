@@ -2,11 +2,12 @@ class ClientProxy
 {
 public:
 
-	ClientProxy(const SocketAddress& inSocketAddress, const string& inName, int inPlayerId);
+	ClientProxy(const SocketAddress& inSocketAddress, const string& inName, uint32_t inGamesWon, int inPlayerId);
 
 	const SocketAddress& GetSocketAddress() const { return mSocketAddress; }
 	int	GetPlayerId() const { return mPlayerId; }
 	const string& GetName() const { return mName; }
+	uint32_t GetGamesWon() const { return mGamesWon; }
 	void SetInputState(const InputState& inInputState) { mInputState = inInputState; }
 	const InputState& GetInputState() const { return mInputState; }
 
@@ -33,6 +34,7 @@ private:
 	SocketAddress mSocketAddress;
 	string mName;
 	int	mPlayerId;
+	uint32_t mGamesWon;
 
 	InputState mInputState;
 

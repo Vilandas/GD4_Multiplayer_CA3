@@ -1,5 +1,23 @@
 #include "RoboCatClientPCH.hpp"
 
+uint32_t GetGamesWonFromFile()
+{
+	{
+		//Try to open existing file game_data.txt
+		std::ifstream input_file("gameData.txt");
+		uint32_t gamesWon;
+		if (input_file >> gamesWon)
+		{
+			return gamesWon;
+		}
+	}
+
+	//If open/read failed, create a new file
+	std::ofstream outputFile("gameData.txt");
+	outputFile << 0;
+	return 0;
+}
+
 bool Client::StaticInit()
 {
 	StateStack::StaticInit();
@@ -12,7 +30,6 @@ bool Client::StaticInit()
 	FontManager::StaticInit();
 	TextureManager::StaticInit();
 	RenderManager::StaticInit();
-	
 
 	HUD::StaticInit();
 
@@ -37,6 +54,7 @@ Client::Client()
 	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString(destination);
 
 	NetworkManagerClient::StaticInit(*serverAddress, name);
+	NetworkManagerClient::sInstance->SetGamesWon(GetGamesWonFromFile());
 
 	StateStack::sInstance->PushState(StateId::kTitle);
 

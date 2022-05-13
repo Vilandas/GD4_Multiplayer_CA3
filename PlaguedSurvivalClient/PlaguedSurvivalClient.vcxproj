@@ -32,6 +32,7 @@
     <ClInclude Include="DataTables.hpp" />
     <ClInclude Include="FontManager.hpp" />
     <ClInclude Include="Fonts.hpp" />
+    <ClInclude Include="GameOverState.hpp" />
     <ClInclude Include="HUD.hpp" />
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="Label.hpp" />
@@ -61,6 +62,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Label.cpp" />

@@ -16,14 +16,15 @@ ScoreBoardManager::ScoreBoardManager()
 	PlayerColors endColor = PlayerColors::kTeal;
 	for (int color = static_cast<int>(startColor); color <= static_cast<int>(endColor); color++)
 	{
-		mDefaultColors.push_back(ExtraColors::GetColorV3(static_cast<PlayerColors>(color)));
+		mDefaultColors.push_back(ExtraColors::GetColor(static_cast<PlayerColors>(color)));
 	}
 }
 
 ScoreBoardManager::Entry::Entry(uint32_t inPlayerId, const string& inPlayerName, const Vector3& inColor) :
+	mColor(inColor),
 	mPlayerId(inPlayerId),
 	mPlayerName(inPlayerName),
-	mColor(inColor)
+	mScore()
 {
 	SetScore(0);
 }
@@ -66,12 +67,13 @@ bool ScoreBoardManager::RemoveEntry(uint32_t inPlayerId)
 	return false;
 }
 
-void ScoreBoardManager::AddEntry(uint32_t inPlayerId, const string& inPlayerName)
+void ScoreBoardManager::AddEntry(uint32_t inPlayerId, const string& inPlayerName, uint32_t inGamesWon)
 {
 	//if this player id exists already, remove it first- it would be crazy to have two of the same id
 	RemoveEntry(inPlayerId);
 
-	mEntries.emplace_back(inPlayerId, inPlayerName, mDefaultColors[inPlayerId % mDefaultColors.size()]);
+	mEntries.emplace_back(inPlayerId, inPlayerName, mDefaultColors[inPlayerId - 1 % mDefaultColors.size()]);
+	IncScore(inPlayerId, inGamesWon);
 }
 
 void ScoreBoardManager::IncScore(uint32_t inPlayerId, int inAmount)
