@@ -38,6 +38,8 @@
     <ClInclude Include="Label.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="MultiplayerGameState.hpp" />
+    <ClInclude Include="MusicPlayer.hpp" />
+    <ClInclude Include="MusicThemes.hpp" />
     <ClInclude Include="NetworkManagerClient.hpp" />
     <ClInclude Include="PlayerSpriteComponent.hpp" />
     <ClInclude Include="RenderManager.hpp" />
@@ -68,6 +70,7 @@
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MultiplayerGameState.cpp" />
+    <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="NetworkManagerClient.cpp" />
     <ClCompile Include="PlayerSpriteComponent.cpp" />
     <ClCompile Include="RenderManager.cpp" />

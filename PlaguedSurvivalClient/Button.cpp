@@ -67,7 +67,7 @@ namespace GUI
 		{
 			Deactivate();
 		}
-		//m_sounds.Play(SoundEffect::kButton);
+		//SoundManager::sInstance->PlaySound(Sounds::kButton);
 	}
 
 	void Button::Deactivate()

@@ -1,6 +1,6 @@
 #include "RoboCatClientPCH.hpp"
 
-std::unique_ptr< TextureManager >		TextureManager::sInstance;
+std::unique_ptr<TextureManager> TextureManager::sInstance;
 
 void TextureManager::StaticInit()
 {

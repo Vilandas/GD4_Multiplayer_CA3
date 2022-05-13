@@ -6,6 +6,7 @@
 
 #include "Fonts.hpp"
 #include "StateId.hpp"
+#include "MusicThemes.hpp"
 
 class StateStack;
 
@@ -16,6 +17,7 @@ class StateStack;
 #include "SpriteComponent.hpp"
 #include "PlayerSpriteComponent.hpp"
 #include "TextureManager.hpp"
+#include "MusicPlayer.hpp"
 #include "FontManager.hpp"
 #include "RenderManager.hpp"
 #include "WindowManager.hpp"
