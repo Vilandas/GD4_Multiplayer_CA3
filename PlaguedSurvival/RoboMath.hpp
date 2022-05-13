@@ -220,6 +220,19 @@ namespace RoboMath
 	{
 		return sqrtf(powf(vector.x, 2) + powf(vector.y, 2));
 	}
+
+	inline void CentreOrigin(sf::Text& text)
+	{
+		const sf::FloatRect bounds = text.getLocalBounds();
+		text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+	}
+
+	inline void CentreOrigin(sf::RectangleShape& shape)
+	{
+		const sf::FloatRect bounds = shape.getLocalBounds();
+		shape.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+	}
+
 }
 
 namespace Colors

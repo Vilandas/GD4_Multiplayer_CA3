@@ -80,9 +80,10 @@ void RenderManager::Render()
 
 	HUD::sInstance->Render();
 
+	StateStack::sInstance->Draw();
+
 	//
 	// Present our back buffer to our front buffer
 	//
 	WindowManager::sInstance->display();
-
 }

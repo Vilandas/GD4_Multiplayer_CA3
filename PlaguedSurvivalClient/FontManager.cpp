@@ -9,21 +9,21 @@ void FontManager::StaticInit()
 
 FontManager::FontManager()
 {
-	CacheFont("carlito", "../Assets/Fonts/Carlito-Regular.ttf");
+	CacheFont(Fonts::kCarlito, "../Assets/Fonts/Carlito-Regular.ttf");
 }
 
-FontPtr FontManager::GetFont(const string& p_fontName)
+FontPtr FontManager::GetFont(const Fonts font)
 {
-	return mNameToFontMap[p_fontName];
+	return mNameToFontMap[font];
 }
 
-bool FontManager::CacheFont(const string& inName, const char* inFileName)
+bool FontManager::CacheFont(const Fonts font, const char* inFileName)
 {
 	FontPtr newFont(new sf::Font());
 	if (!newFont->loadFromFile(inFileName))
 		return false;
 
-	mNameToFontMap[inName] = newFont;
+	mNameToFontMap[font] = newFont;
 	return true;
 }
 

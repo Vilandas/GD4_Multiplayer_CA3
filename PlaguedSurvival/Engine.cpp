@@ -1,6 +1,6 @@
 #include "RoboCatPCH.hpp"
 
-std::unique_ptr<Engine> Engine::s_instance;
+std::unique_ptr<Engine> Engine::sInstance;
 
 Engine::Engine() : m_should_keep_running(true)
 {
@@ -35,6 +35,10 @@ void Engine::HandleEvent(sf::Event& p_event)
 bool Engine::PollEvent(sf::Event& p_event)
 {
 	return false;
+}
+
+void Engine::ExternalDoFrame()
+{
 }
 
 int Engine::DoRunLoop()

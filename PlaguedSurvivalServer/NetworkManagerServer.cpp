@@ -88,7 +88,7 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 		//tell the server about this client, spawn a cat, etc...
 		//if we had a generic message system, this would be a good use for it...
 		//instead we'll just tell the server directly
-		static_cast<Server*> (Engine::s_instance.get())->HandleNewClient(newClientProxy);
+		static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(newClientProxy);
 
 		//and welcome the client...
 		SendWelcomePacket(newClientProxy);
@@ -276,14 +276,14 @@ void NetworkManagerServer::CheckForDisconnects()
 
 void NetworkManagerServer::HandleClientDisconnected(const ClientProxyPtr& inClientProxy)
 {
-	static_cast<Server*> (Engine::s_instance.get())->HandleLostClient(inClientProxy);
+	static_cast<Server*> (Engine::sInstance.get())->HandleLostClient(inClientProxy);
 	mPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
 	mAddressToClientMap.erase(inClientProxy->GetSocketAddress());
 
 	//was that the last client? if so, bye!
 	if (mAddressToClientMap.empty())
 	{
-		Engine::s_instance->SetShouldKeepRunning(false);
+		Engine::sInstance->SetShouldKeepRunning(false);
 	}
 }
 

@@ -2,7 +2,7 @@ class Engine
 {
 public:
 	virtual ~Engine();
-	static std::unique_ptr<Engine> s_instance;
+	static std::unique_ptr<Engine> sInstance;
 
 	virtual int Run();
 	void SetShouldKeepRunning(bool in_should_keep_running)
@@ -11,6 +11,8 @@ public:
 	}
 	virtual void HandleEvent(sf::Event& p_event);
 	virtual bool PollEvent(sf::Event& p_event);
+
+	virtual void ExternalDoFrame();
 
 protected:
 	Engine();

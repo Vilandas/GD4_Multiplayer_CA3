@@ -2,6 +2,8 @@
 
 bool Client::StaticInit()
 {
+	StateStack::StaticInit();
+
 	// Create the Client pointer first because it initializes SDL
 	Client* client = new Client();
 	InputManager::StaticInit();
@@ -14,9 +16,14 @@ bool Client::StaticInit()
 
 	HUD::StaticInit();
 
-	s_instance.reset(client);
+	sInstance.reset(client);
 
 	return true;
+}
+
+void Client::ExternalDoFrame()
+{
+	Engine::DoFrame();
 }
 
 Client::Client()
@@ -31,6 +38,8 @@ Client::Client()
 
 	NetworkManagerClient::StaticInit(*serverAddress, name);
 
+	StateStack::sInstance->PushState(StateId::kTitle);
+
 	//NetworkManagerClient::sInstance->SetSimulatedLatency(0.0f);
 }
 
@@ -40,13 +49,9 @@ void Client::DoFrame()
 {
 	InputManager::sInstance->Update();
 
-	Engine::DoFrame();
-
-	NetworkManagerClient::sInstance->ProcessIncomingPackets();
+	StateStack::sInstance->Update(Timing::sInstance.GetDeltaTime());
 
 	RenderManager::sInstance->Render();
-
-	NetworkManagerClient::sInstance->SendOutgoingPackets();
 }
 
 void Client::HandleEvent(sf::Event& p_event)
@@ -62,6 +67,8 @@ void Client::HandleEvent(sf::Event& p_event)
 	default:
 		break;
 	}
+
+	StateStack::sInstance->HandleEvent(p_event);
 }
 
 bool Client::PollEvent(sf::Event& p_event)

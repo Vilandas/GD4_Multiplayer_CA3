@@ -31,7 +31,7 @@ void ClientProxy::RespawnCatIfNecessary()
 {
 	if (mTimeToRespawn != 0.f && Timing::sInstance.GetFrameStartTime() > mTimeToRespawn)
 	{
-		static_cast<Server*> (Engine::s_instance.get())->SpawnCharacterForPlayer(mPlayerId);
+		static_cast<Server*> (Engine::sInstance.get())->SpawnCharacterForPlayer(mPlayerId);
 		mTimeToRespawn = 0.f;
 	}
 }
