@@ -23,8 +23,8 @@ void HUD::Render()
 {
 	RenderBandWidth();
 	RenderRoundTripTime();
-	RenderScoreBoard();
-	RenderHealth();
+	/*RenderScoreBoard();
+	RenderHealth();*/
 }
 
 void HUD::RenderHealth()

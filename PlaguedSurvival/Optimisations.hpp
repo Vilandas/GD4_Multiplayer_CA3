@@ -11,4 +11,6 @@ namespace opt
 
 	constexpr uint32_t TextureBits = 6;
 	constexpr uint32_t LayerBits = 4;
+
+	constexpr uint32_t NameLength = 10;
 }

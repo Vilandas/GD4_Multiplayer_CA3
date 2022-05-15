@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-std::unique_ptr< ScoreBoardManager >	ScoreBoardManager::sInstance;
+std::unique_ptr<ScoreBoardManager> ScoreBoardManager::sInstance;
 
 
 void ScoreBoardManager::StaticInit()
@@ -33,7 +33,7 @@ void ScoreBoardManager::Entry::SetScore(int32_t inScore)
 {
 	mScore = inScore;
 
-	char	buffer[256];
+	char buffer[256];
 	snprintf(buffer, 256, "%s %i", mPlayerName.c_str(), mScore);
 	mFormattedNameScore = string(buffer);
 

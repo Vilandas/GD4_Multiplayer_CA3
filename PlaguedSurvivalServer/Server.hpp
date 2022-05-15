@@ -4,7 +4,9 @@ public:
 
 	static bool StaticInit();
 
-	virtual void DoFrame() override;
+	void DoFrame() override;
+	void CheckGameOver();
+	void CheckEmptyServer();
 
 	virtual int Run();
 
@@ -20,6 +22,8 @@ private:
 
 	bool InitNetworkManager();
 	void SetupWorld();
+
+	float mTimePassedWithoutPlayers;
 
 };
 

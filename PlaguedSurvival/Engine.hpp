@@ -13,14 +13,18 @@ public:
 	virtual bool PollEvent(sf::Event& p_event);
 
 	virtual void ExternalDoFrame();
-	void StartGame();
+	void StartGame() { mGameStarted = true; }
+	void EndGame(){ mGameStarted = false; }
 
 	bool GameStarted() const { return mGameStarted; }
+	bool ShouldReset() const { return mShouldReset; }
+	void SetShouldReset() { mShouldReset = true; }
 
 protected:
 	Engine();
 	virtual void DoFrame();
 	bool mGameStarted;
+	bool mShouldReset;
 
 private:
 	int DoRunLoop();

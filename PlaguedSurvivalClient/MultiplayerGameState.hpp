@@ -15,8 +15,10 @@ private:
 	GUI::Container mLobbyGui;
 	sf::Sprite mBackgroundSprite;
 	sf::Text mLobbyText;
+	sf::Text mTopNameText;
+	sf::Text mTopGamesWonText;
 	sf::Text mWaitingForHostText;
 
-	bool m_host;
+	bool mHost;
 	bool mLobby;
 };

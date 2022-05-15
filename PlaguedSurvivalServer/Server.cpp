@@ -12,9 +12,8 @@ bool Server::StaticInit()
 	return true;
 }
 
-Server::Server()
+Server::Server() : mTimePassedWithoutPlayers()
 {
-
 	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kCharacter, CharacterServer::StaticCreate);
 	GameObjectRegistry::sInstance->RegisterCreationFunction(ObjectTypes::kTile, TileServer::StaticCreate);
 
@@ -102,18 +101,14 @@ namespace
 							0)
 					);
 
-					//WorldChunks::sInstance->AddToChunk(tile, Layers::kPlatforms);
-
 					const auto result = topTile.emplace(j, tile);
 					if (result.second)
 					{
 						tile->SetIsTop(true);
-						//m_scene_layers[static_cast<int>(Layers::kActivePlatforms)]->AttachChild(std::move(tile));
 					}
 					else
 					{
 						topTile[j]->AddBelowTile(tile);
-						//m_scene_layers[static_cast<int>(Layers::kPlatforms)]->AttachChild(std::move(tile));
 					}
 
 					if (lastTile != nullptr)
@@ -139,22 +134,6 @@ namespace
 				}
 			}
 		}
-
-		//for (GameObjectPtr gameObject : allTiles)
-		//{
-		//	World::sInstance->AddGameObject(gameObject);
-		//	if (gameObject->GetLayer() == Layers::kActivePlatforms)
-		//	{
-		//		TileServer* tile = gameObject->GetAsTileServer();
-		//		WorldChunks::sInstance->AddToChunk(tile, Layers::kActivePlatforms);
-
-		//		if (tile->GetIsTop())
-		//		{
-		//			//World::sInstance->SwapGameObjectLayer(*tile, Layers::kPlatforms, Layers::kActivePlatforms);
-		//			DangerTrigger::sInstance->AddDangerObject(tile);
-		//		}
-		//	}
-		//}
 	}
 }
 
@@ -170,29 +149,48 @@ void Server::DoFrame()
 
 	NetworkManagerServer::sInstance->CheckForDisconnects();
 
-	//NetworkManagerServer::sInstance->RespawnCats();
-
 	if (mGameStarted)
 	{
+		LOG("GAME STARTED", 0);
 		DangerTrigger::sInstance->Update(Timing::sInstance.GetDeltaTime());
 
-		const int playerCount = World::sInstance->GetAlivePlayerCount();
-
-		if (playerCount == 1)
-		{
-			NetworkManagerServer::sInstance->SendWinnerPacket(World::sInstance->GetFirstAlivePlayerId());
-		}
-		else if (playerCount == 0)
-		{
-			NetworkManagerServer::sInstance->SendWinnerPacket(0);
-		}
-
+		CheckGameOver();
 	}
 
 	Engine::DoFrame();
 
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
 
+	CheckEmptyServer();
+
+}
+
+void Server::CheckGameOver()
+{
+	const int playerCount = World::sInstance->GetAlivePlayerCount();
+
+	if (playerCount == 1)
+	{
+		NetworkManagerServer::sInstance->SendWinnerPacket(World::sInstance->GetFirstAlivePlayerId());
+	}
+	else if (playerCount == 0)
+	{
+		NetworkManagerServer::sInstance->SendWinnerPacket(0);
+	}
+}
+
+void Server::CheckEmptyServer()
+{
+	if (NetworkManagerServer::sInstance->GetClientProxyCount() == 0)
+	{
+		mTimePassedWithoutPlayers += Timing::sInstance.GetDeltaTime();
+
+		if (mTimePassedWithoutPlayers > 4)
+		{
+			SetShouldKeepRunning(false);
+		}
+	}
+	else mTimePassedWithoutPlayers = 0;
 }
 
 void Server::HandleNewClient(const ClientProxyPtr& inClientProxy)

@@ -34,6 +34,8 @@ GameOverState::GameOverState(StateStack& stack)
 	mGameOverText.setCharacterSize(70);
 	RoboMath::CentreOrigin(mGameOverText);
 	mGameOverText.setPosition(0.5f * windowSize.x, 0.4f * windowSize.y);
+
+	Client::sInstance->EndGame();
 }
 
 void GameOverState::Draw()
@@ -56,8 +58,7 @@ bool GameOverState::Update(float inDeltaTime)
 	mElapsedTime += sf::seconds(inDeltaTime);
 	if (mElapsedTime > sf::seconds(3))
 	{
-		RequestStackClear();
-		RequestStackPush(StateId::kMenu);
+		Client::sInstance->SetShouldReset();
 	}
 	return false;
 }

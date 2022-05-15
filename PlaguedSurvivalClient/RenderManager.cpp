@@ -175,6 +175,14 @@ void RenderManager::RenderComponents()
 	//}
 }
 
+void RenderManager::Reset()
+{
+	mComponents.clear();
+	mArtists.clear();
+	mPriorityArtists.clear();
+	mExternalTexts.clear();
+}
+
 void RenderManager::Render()
 {
 	//

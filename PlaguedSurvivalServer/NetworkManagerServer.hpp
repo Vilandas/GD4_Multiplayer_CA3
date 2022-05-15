@@ -19,6 +19,7 @@ public:
 	void RespawnCats();
 
 	ClientProxyPtr GetClientProxy(int inPlayerId) const;
+	uint32_t GetClientProxyCount() const { return mPlayerIdToClientMap.size(); }
 	void SendWinnerPacket(int inPlayerId);
 
 private:

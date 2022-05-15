@@ -49,7 +49,7 @@ void NetworkManagerServer::ProcessPacket(const ClientProxyPtr& inClientProxy, In
 	//remember we got a packet so we know not to disconnect for a bit
 	inClientProxy->UpdateLastPacketTime();
 
-	uint32_t	packetType;
+	uint32_t packetType;
 	inInputStream.Read(packetType);
 	switch (packetType)
 	{
@@ -105,6 +105,11 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 		//read the name
 		string name;
 		inInputStream.Read(name);
+
+		if (name.size() > opt::NameLength)
+		{
+			name = name.substr(0, opt::NameLength);
+		}
 
 		uint32_t gamesWon;
 		inInputStream.Read(gamesWon);
@@ -297,7 +302,7 @@ void NetworkManagerServer::SendWinnerPacket(int inPlayerId)
 	}
 	else
 	{
-		LOG("Winner found: '%s', id: %d", GetClientProxy(inPlayerId)->GetName().c_str(), inPlayerId);
+		LOG("Winner found: id: %d", inPlayerId);
 	}
 
 	for (const auto& pair : mAddressToClientMap)
@@ -308,7 +313,7 @@ void NetworkManagerServer::SendWinnerPacket(int inPlayerId)
 
 void NetworkManagerServer::CheckForDisconnects()
 {
-	vector< ClientProxyPtr > clientsToDC;
+	vector<ClientProxyPtr> clientsToDC;
 
 	float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTimef() - mClientDisconnectTimeout;
 	for (const auto& pair : mAddressToClientMap)

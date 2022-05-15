@@ -7,6 +7,8 @@ public:
 	static void StaticInit();
 	static std::unique_ptr<RenderManager> sInstance;
 
+	void Reset();
+
 	void Render();
 	void RenderComponents();
 

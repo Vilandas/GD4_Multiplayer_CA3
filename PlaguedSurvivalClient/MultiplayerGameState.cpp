@@ -4,38 +4,34 @@
  * Vilandas Morrissey - D00218436
  */
 
-//unsigned int GetGamesWonFromFile()
-//{
-//	{
-//		//Try to open existing file game_data.txt
-//		std::ifstream input_file("game_data.txt");
-//		uint32_t games_won;
-//		if (input_file >> games_won)
-//		{
-//			return games_won;
-//		}
-//	}
-//
-//	//If open/read failed, create a new file
-//	std::ofstream output_file("game_data.txt");
-//	output_file << 0;
-//	return 0;
-//}
-
 MultiplayerGameState::MultiplayerGameState(StateStack& stack, bool is_host)
 	: State(stack)
 	, mLobbyGui()
-	, m_host(is_host)
+	, mHost(is_host)
 	, mLobby(true)
 {
-	//mBackgroundSprite.setTexture(*TextureManager::sInstance->GetTexture(Textures::kTitleScreen));
+	mBackgroundSprite.setTexture(*TextureManager::sInstance->GetTexture(Textures::kTitleScreen));
 
 	mLobbyText.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
 	mLobbyText.setString("Lobby");
-	mLobbyText.setCharacterSize(35);
+	mLobbyText.setCharacterSize(40);
 	mLobbyText.setFillColor(sf::Color::White);
 	RoboMath::CentreOrigin(mLobbyText);
 	mLobbyText.setPosition(960, 200);
+
+
+	mTopNameText.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
+	mTopNameText.setString("Name");
+	mTopNameText.setCharacterSize(32);
+	mTopNameText.setFillColor(sf::Color::White);
+	mTopNameText.setPosition(740, 230);
+
+	mTopGamesWonText.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
+	mTopGamesWonText.setString("Games Won");
+	mTopGamesWonText.setCharacterSize(30);
+	mTopGamesWonText.setFillColor(sf::Color::White);
+	mTopGamesWonText.setPosition(1050, 230);
+
 
 	mWaitingForHostText.setFont(*FontManager::sInstance->GetFont(Fonts::kCarlito));
 	mWaitingForHostText.setString("Waiting for host to start the game");
@@ -44,7 +40,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, bool is_host)
 	RoboMath::CentreOrigin(mWaitingForHostText);
 	mWaitingForHostText.setPosition(960, 800);
 
-	if (m_host)
+	if (mHost)
 	{
 		system("start ..\\Debug\\PlaguedSurvivalServer.exe 50000");
 
@@ -83,6 +79,13 @@ void MultiplayerGameState::Draw()
 		renderWindow.draw(backgroundShape);
 		renderWindow.draw(mLobbyGui);
 		renderWindow.draw(mLobbyText);
+		renderWindow.draw(mTopNameText);
+		renderWindow.draw(mTopGamesWonText);
+
+		if (!mHost)
+		{
+			renderWindow.draw(mWaitingForHostText);
+		}
 
 		const FontPtr font = FontManager::sInstance->GetFont(Fonts::kCarlito);
 
@@ -97,13 +100,13 @@ void MultiplayerGameState::Draw()
 			{
 				const Vector3 color = entry->GetColor();
 
-				sf::Text textName = sf::Text(entry->GetPlayerName(), *font);
-				textName.setPosition(760, 220 + (30 * i));
+				sf::Text textName = sf::Text(entry->GetPlayerName(), *font, 25);
+				textName.setPosition(740, 280 + (25 * i));
 				textName.setFillColor(sf::Color(color.mX, color.mY, color.mZ));
 				renderWindow.draw(textName);
 
-				sf::Text textScore = sf::Text(std::to_string(entry->GetScore()), *font);
-				textScore.setPosition(960, 220 + (30 * i));
+				sf::Text textScore = sf::Text(std::to_string(entry->GetScore()), *font, 25);
+				textScore.setPosition(1100, 280 + (25 * i));
 				textScore.setFillColor(textName.getFillColor());
 				renderWindow.draw(textScore);
 				i++;

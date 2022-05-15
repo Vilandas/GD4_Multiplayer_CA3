@@ -8,6 +8,12 @@ namespace
 	const float kTimeBetweenInputPackets = 0.033f;
 }
 
+void NetworkManagerClient::Reset()
+{
+	Init(mServerAddress, mName);
+	m_network_id_to_game_object_map.clear();
+}
+
 NetworkManagerClient::NetworkManagerClient() :
 	mState(NCS_Uninitialized),
 	mDeliveryNotificationManager(true, false),

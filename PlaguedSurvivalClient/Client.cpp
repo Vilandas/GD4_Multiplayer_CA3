@@ -39,6 +39,21 @@ bool Client::StaticInit()
 	return true;
 }
 
+void Client::Reset()
+{
+	World::StaticInit();
+	WorldChunks::StaticInit();
+	ScoreBoardManager::StaticInit();
+
+	RenderManager::sInstance->Reset();
+	HUD::StaticInit();
+
+	NetworkManagerClient::sInstance->Reset();
+
+	StateStack::sInstance->ClearStates();
+	StateStack::sInstance->PushState(StateId::kMenu);
+}
+
 void Client::ExternalDoFrame()
 {
 	Engine::DoFrame();
@@ -51,6 +66,10 @@ Client::Client()
 
 	string destination = StringUtils::GetCommandLineArg(1);
 	string name = StringUtils::GetCommandLineArg(2);
+	if (name.size() > opt::NameLength)
+	{
+		name = name.substr(0, opt::NameLength);
+	}
 
 	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString(destination);
 
@@ -66,6 +85,12 @@ Client::Client()
 
 void Client::DoFrame()
 {
+	if (ShouldReset())
+	{
+		mShouldReset = false;
+		Reset();
+	}
+
 	InputManager::sInstance->Update();
 
 	StateStack::sInstance->Update(Timing::sInstance.GetDeltaTime());

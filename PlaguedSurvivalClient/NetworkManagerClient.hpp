@@ -26,6 +26,7 @@ public:
 
 	void SetGamesWon(uint32_t gamesWon) { mGamesWon = gamesWon; }
 	uint32_t GetGamesWon() const { return mGamesWon; }
+	void Reset();
 
 private:
 	NetworkManagerClient();
