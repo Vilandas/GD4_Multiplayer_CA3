@@ -20,7 +20,7 @@ ScoreBoardManager::ScoreBoardManager()
 	}
 }
 
-ScoreBoardManager::Entry::Entry(uint32_t inPlayerId, const string& inPlayerName, const Vector3& inColor) :
+ScoreBoardManager::Entry::Entry(opt::PlayerId inPlayerId, const string& inPlayerName, const Vector3& inColor) :
 	mColor(inColor),
 	mPlayerId(inPlayerId),
 	mPlayerName(inPlayerName),
@@ -40,7 +40,7 @@ void ScoreBoardManager::Entry::SetScore(int32_t inScore)
 }
 
 
-ScoreBoardManager::Entry* ScoreBoardManager::GetEntry(uint32_t inPlayerId)
+ScoreBoardManager::Entry* ScoreBoardManager::GetEntry(opt::PlayerId inPlayerId)
 {
 	for (Entry& entry : mEntries)
 	{
@@ -53,7 +53,7 @@ ScoreBoardManager::Entry* ScoreBoardManager::GetEntry(uint32_t inPlayerId)
 	return nullptr;
 }
 
-bool ScoreBoardManager::RemoveEntry(uint32_t inPlayerId)
+bool ScoreBoardManager::RemoveEntry(opt::PlayerId inPlayerId)
 {
 	for (auto eIt = mEntries.begin(), endIt = mEntries.end(); eIt != endIt; ++eIt)
 	{
@@ -67,7 +67,7 @@ bool ScoreBoardManager::RemoveEntry(uint32_t inPlayerId)
 	return false;
 }
 
-void ScoreBoardManager::AddEntry(uint32_t inPlayerId, const string& inPlayerName, uint32_t inGamesWon)
+void ScoreBoardManager::AddEntry(opt::PlayerId inPlayerId, const string& inPlayerName, uint32_t inGamesWon)
 {
 	//if this player id exists already, remove it first- it would be crazy to have two of the same id
 	RemoveEntry(inPlayerId);
@@ -76,7 +76,7 @@ void ScoreBoardManager::AddEntry(uint32_t inPlayerId, const string& inPlayerName
 	IncScore(inPlayerId, inGamesWon);
 }
 
-void ScoreBoardManager::IncScore(uint32_t inPlayerId, int inAmount)
+void ScoreBoardManager::IncScore(opt::PlayerId inPlayerId, int inAmount)
 {
 	Entry* entry = GetEntry(inPlayerId);
 	if (entry)
@@ -124,7 +124,7 @@ bool ScoreBoardManager::Entry::Write(OutputMemoryBitStream& inOutputStream) cons
 	bool didSucceed = true;
 
 	inOutputStream.Write(mColor);
-	inOutputStream.Write(mPlayerId);
+	inOutputStream.Write(mPlayerId, opt::PlayerIdBits);
 	inOutputStream.Write(mPlayerName);
 	inOutputStream.Write(mScore);
 
@@ -136,7 +136,7 @@ bool ScoreBoardManager::Entry::Read(InputMemoryBitStream& inInputStream)
 	bool didSucceed = true;
 
 	inInputStream.Read(mColor);
-	inInputStream.Read(mPlayerId);
+	inInputStream.Read(mPlayerId, opt::PlayerIdBits);
 
 	inInputStream.Read(mPlayerName);
 

@@ -5,7 +5,7 @@ namespace
 	const float kRespawnDelay = 3.f;
 }
 
-ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const string& inName, uint32_t inGamesWon, int inPlayerId) : 
+ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const string& inName, uint32_t inGamesWon, opt::PlayerId inPlayerId) :
 	mDeliveryNotificationManager(false, true),
 	mSocketAddress(inSocketAddress),
 	mName(inName),

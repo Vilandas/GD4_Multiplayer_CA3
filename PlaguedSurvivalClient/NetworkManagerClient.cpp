@@ -61,8 +61,8 @@ void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, co
 		break;
 
 	case kWinnerCC:
-		int winnerId;
-		inInputStream.Read(winnerId);
+		opt::PlayerId winnerId;
+		inInputStream.Read(winnerId, opt::PlayerIdBits);
 		ScoreBoardManager::sInstance->SetWinnerId(winnerId);
 		StateStack::sInstance->PushState(StateId::kGameOver);
 		break;
@@ -113,7 +113,7 @@ void NetworkManagerClient::SendStartGamePacket()
 	OutputMemoryBitStream packet;
 
 	packet.Write(kStartCC);
-	packet.Write(mPlayerId);
+	packet.Write(mPlayerId, opt::PlayerIdBits);
 
 	SendPacket(packet, mServerAddress);
 }
@@ -123,8 +123,8 @@ void NetworkManagerClient::HandleWelcomePacket(InputMemoryBitStream& inInputStre
 	if (mState == NCS_SayingHello)
 	{
 		//if we got a player id, we've been welcomed!
-		int playerId;
-		inInputStream.Read(playerId);
+		opt::PlayerId playerId;
+		inInputStream.Read(playerId, opt::PlayerIdBits);
 		mPlayerId = playerId;
 		mState = NCS_Welcomed;
 		LOG("'%s' was welcomed on client as player %d", mName.c_str(), mPlayerId);
@@ -168,7 +168,7 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
 void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputStream)
 {
 	//copy the mNetworkIdToGameObjectMap so that anything that doesn't get an updated can be destroyed...
-	IntToGameObjectMap	objectsToDestroy = m_network_id_to_game_object_map;
+	PlayedIdToGameObjectMap	objectsToDestroy = m_network_id_to_game_object_map;
 
 	int stateCount;
 	inInputStream.Read(stateCount);
@@ -211,7 +211,7 @@ void NetworkManagerClient::HandleScoreBoardState(InputMemoryBitStream& inInputSt
 	ScoreBoardManager::sInstance->Read(inInputStream);
 }
 
-void NetworkManagerClient::DestroyGameObjectsInMap(const IntToGameObjectMap& inObjectsToDestroy)
+void NetworkManagerClient::DestroyGameObjectsInMap(const PlayedIdToGameObjectMap& inObjectsToDestroy)
 {
 	for (auto& pair : inObjectsToDestroy)
 	{

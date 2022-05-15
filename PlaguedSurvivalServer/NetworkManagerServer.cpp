@@ -69,8 +69,8 @@ void NetworkManagerServer::ProcessPacket(const ClientProxyPtr& inClientProxy, In
 		break;
 
 	case kStartCC:
-		int playerId;
-		inInputStream.Read(playerId);
+		opt::PlayerId playerId;
+		inInputStream.Read(playerId, opt::PlayerIdBits);
 		if (playerId == 1)
 		{
 			OutputMemoryBitStream packet;
@@ -289,12 +289,12 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 	return nullptr;
 }
 
-void NetworkManagerServer::SendWinnerPacket(int inPlayerId)
+void NetworkManagerServer::SendWinnerPacket(opt::PlayerId inPlayerId)
 {
 	OutputMemoryBitStream packet;
 
 	packet.Write(kWinnerCC);
-	packet.Write(inPlayerId);
+	packet.Write(inPlayerId, opt::PlayerIdBits);
 
 	if (inPlayerId == 0)
 	{

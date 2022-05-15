@@ -90,7 +90,7 @@ void TileServer::SetCollisionActive()
 	NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), TRS_State);
 }
 
-uint32_t TileServer::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const //35 bits total
+uint32_t TileServer::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const //37 bits total
 {
 	uint32_t writtenState = 0;
 
@@ -128,7 +128,7 @@ uint32_t TileServer::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
 		inOutputStream.Write(false);
 	}
 
-	if (inDirtyState & TRS_State)
+	if (inDirtyState & TRS_State) // 2 bits
 	{
 		inOutputStream.Write(true);
 		inOutputStream.Write(mActiveCollision);

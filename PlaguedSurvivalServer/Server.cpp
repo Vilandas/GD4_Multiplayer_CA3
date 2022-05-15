@@ -195,7 +195,7 @@ void Server::CheckEmptyServer()
 
 void Server::HandleNewClient(const ClientProxyPtr& inClientProxy)
 {
-	int playerId = inClientProxy->GetPlayerId();
+	opt::PlayerId playerId = inClientProxy->GetPlayerId();
 
 	ScoreBoardManager::sInstance->AddEntry(playerId, inClientProxy->GetName(), inClientProxy->GetGamesWon());
 	SpawnCharacterForPlayer(playerId);
@@ -214,7 +214,7 @@ void Server::HandleLostClient(const ClientProxyPtr& inClientProxy)
 {
 	//kill client's cat
 	//remove client from scoreboard
-	int playerId = inClientProxy->GetPlayerId();
+	opt::PlayerId playerId = inClientProxy->GetPlayerId();
 
 	ScoreBoardManager::sInstance->RemoveEntry(playerId);
 	CharacterPtr character = GetCharacterForPlayer(playerId);

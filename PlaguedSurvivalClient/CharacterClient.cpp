@@ -125,8 +125,8 @@ void CharacterClient::Read(InputMemoryBitStream& inInputStream)
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{
-		uint32_t playerId;
-		inInputStream.Read(playerId);
+		opt::PlayerId playerId;
+		inInputStream.Read(playerId, opt::PlayerIdBits);
 
 		if (GetPlayerId() == 0 && playerId != 0)
 		{
@@ -199,8 +199,7 @@ void CharacterClient::Read(InputMemoryBitStream& inInputStream)
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{
-		Vector3 color;
-		inInputStream.Read(color);
+		Vector3 color = ReadWritePatterns::ReadColorRounded(inInputStream);
 		SetColor(color);
 		mArtist->SetColor(color);
 		readState |= CRS_Color;

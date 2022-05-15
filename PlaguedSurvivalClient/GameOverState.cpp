@@ -25,8 +25,9 @@ GameOverState::GameOverState(StateStack& stack)
 	{
 		std::ofstream saveData;
 		saveData.open("gameData.txt", std::fstream::out);
+		NetworkManagerClient::sInstance->SetGamesWon(NetworkManagerClient::sInstance->GetGamesWon() + 1);
 
-		saveData << NetworkManagerClient::sInstance->GetGamesWon() + 1;
+		saveData << NetworkManagerClient::sInstance->GetGamesWon();
 		saveData.close();
 	}
 

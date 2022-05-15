@@ -79,7 +79,7 @@ int World::GetAlivePlayerCount() const
 	return aliveCount;
 }
 
-int World::GetFirstAlivePlayerId() const
+opt::PlayerId World::GetFirstAlivePlayerId() const
 {
 	const vector<GameObjectPtr>& gameObjects = GetGameObjectsInLayer(Layers::kPlayers);
 

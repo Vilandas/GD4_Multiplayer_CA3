@@ -224,7 +224,7 @@ uint32_t Character::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirt
 	if (inDirtyState & CRS_PlayerId)
 	{
 		inOutputStream.Write(true);
-		inOutputStream.Write(GetPlayerId());
+		inOutputStream.Write(GetPlayerId(), opt::PlayerIdBits);
 
 		writtenState |= CRS_PlayerId;
 	}
@@ -265,7 +265,7 @@ uint32_t Character::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirt
 	if (inDirtyState & CRS_Color)
 	{
 		inOutputStream.Write(true);
-		inOutputStream.Write(GetColor());
+		ReadWritePatterns::WriteColorRounded(inOutputStream, GetColor());
 
 		writtenState |= CRS_Color;
 	}

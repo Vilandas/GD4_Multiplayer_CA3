@@ -20,7 +20,7 @@ public:
 
 	ClientProxyPtr GetClientProxy(int inPlayerId) const;
 	uint32_t GetClientProxyCount() const { return mPlayerIdToClientMap.size(); }
-	void SendWinnerPacket(int inPlayerId);
+	void SendWinnerPacket(opt::PlayerId inPlayerId);
 
 private:
 	NetworkManagerServer();
@@ -43,13 +43,13 @@ private:
 
 	int GetNewNetworkId();
 
-	typedef unordered_map<int, ClientProxyPtr> IntToClientMap;
+	typedef unordered_map<opt::PlayerId, ClientProxyPtr> PlayerIdToClientMap;
 	typedef unordered_map<SocketAddress, ClientProxyPtr> AddressToClientMap;
 
 	AddressToClientMap mAddressToClientMap;
-	IntToClientMap mPlayerIdToClientMap;
+	PlayerIdToClientMap mPlayerIdToClientMap;
 
-	int	mNewPlayerId;
+	opt::PlayerId mNewPlayerId;
 	int mNewNetworkId;
 
 	float mTimeOfLastSatePacket;

@@ -6,7 +6,7 @@ public:
 	void HandleDying() override;
 	void Update() override;
 
-	void TakeDamage(int inDamagingPlayerId);
+	void TakeDamage(opt::PlayerId inDamagingPlayerId);
 
 protected:
 	CharacterServer();

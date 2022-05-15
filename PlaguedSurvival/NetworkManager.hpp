@@ -1,4 +1,4 @@
-typedef unordered_map<int, GameObjectPtr> IntToGameObjectMap;
+typedef unordered_map<opt::PlayerId, GameObjectPtr> PlayedIdToGameObjectMap;
 
 class NetworkManager
 {
@@ -35,7 +35,7 @@ public:
 	void RemoveNetworkIdToGameObjectMap(const GameObjectPtr& in_game_object);
 
 protected:
-	IntToGameObjectMap m_network_id_to_game_object_map;
+	PlayedIdToGameObjectMap m_network_id_to_game_object_map;
 
 private:
 	class ReceivedPacket

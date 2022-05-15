@@ -19,7 +19,7 @@ public:
 
 	const WeightedTimedMovingAverage& GetAvgRoundTripTime()	const { return mAvgRoundTripTime; }
 	float GetRoundTripTime() const { return mAvgRoundTripTime.GetValue(); }
-	int	GetPlayerId() const { return mPlayerId; }
+	opt::PlayerId GetPlayerId() const { return mPlayerId; }
 	float GetLastMoveProcessedByServerTimestamp() const { return mLastMoveProcessedByServerTimestamp; }
 
 	void SendStartGamePacket();
@@ -45,7 +45,7 @@ private:
 	void UpdateSendingInputPacket();
 	void SendInputPacket();
 
-	void DestroyGameObjectsInMap(const IntToGameObjectMap& inObjectsToDestroy);
+	void DestroyGameObjectsInMap(const PlayedIdToGameObjectMap& inObjectsToDestroy);
 
 
 	DeliveryNotificationManager mDeliveryNotificationManager;
@@ -59,7 +59,7 @@ private:
 	float mTimeOfLastInputPacket;
 
 	string mName;
-	int	mPlayerId;
+	opt::PlayerId mPlayerId;
 	uint32_t mGamesWon;
 
 	float mLastMoveProcessedByServerTimestamp;

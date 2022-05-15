@@ -52,7 +52,7 @@ void CharacterServer::Update()
 	}
 }
 
-void CharacterServer::TakeDamage(int inDamagingPlayerId)
+void CharacterServer::TakeDamage(opt::PlayerId inDamagingPlayerId)
 {
 	SetDoesWantToDie(true);
 

@@ -1,6 +1,6 @@
 #include "RoboCatPCH.hpp"
 
-void ReadWritePatterns::WriteLocation(OutputMemoryBitStream& inOutputStream, const Vector3& location)
+void ReadWritePatterns::WriteLocation(OutputMemoryBitStream& inOutputStream, const Vector3& location) // 39 bits
 {
 	const int xPos = static_cast<int>(location.mX);
 	const int xDecimal = static_cast<int>((location.mX - xPos) * FLOAT_PRECISION);
@@ -33,7 +33,7 @@ Vector3 ReadWritePatterns::ReadLocation(InputMemoryBitStream& inInputStream)
 	};
 }
 
-void ReadWritePatterns::WriteLocationRounded(OutputMemoryBitStream& inOutputStream, const Vector3& location)
+void ReadWritePatterns::WriteLocationRounded(OutputMemoryBitStream& inOutputStream, const Vector3& location) //25 bits
 {
 	int xPos = static_cast<int>(location.mX);
 	int yPos = static_cast<int>(location.mY);
@@ -56,7 +56,25 @@ Vector3 ReadWritePatterns::ReadLocationRounded(InputMemoryBitStream& inInputStre
 	};
 }
 
-void ReadWritePatterns::WriteFloat(OutputMemoryBitStream& inOutputStream, float inValue, uint32_t bits) //9 + inBits
+void ReadWritePatterns::WriteColorRounded(OutputMemoryBitStream& inOutputStream, const Vector3& color) //24 bits
+{
+	WriteFloatRounded(inOutputStream, color.mX, 8);
+	WriteFloatRounded(inOutputStream, color.mY, 8);
+	WriteFloatRounded(inOutputStream, color.mZ, 8);
+}
+
+Vector3 ReadWritePatterns::ReadColorRounded(InputMemoryBitStream& inInputStream)
+{
+	Vector3 color = Vector3::Zero;
+
+	color.mX = ReadFloatRounded(inInputStream, 8);
+	color.mY = ReadFloatRounded(inInputStream, 8);
+	color.mZ = ReadFloatRounded(inInputStream, 8);
+
+	return color;
+}
+
+void ReadWritePatterns::WriteFloat(OutputMemoryBitStream& inOutputStream, float inValue, uint32_t bits) //8 + inBits
 {
 	const bool negative = inValue < 0;
 	float delta = negative
@@ -89,3 +107,34 @@ float ReadWritePatterns::ReadFloat(InputMemoryBitStream& inInputStream, uint32_t
 
 	return outValue;
 }
+
+void ReadWritePatterns::WriteFloatRounded(OutputMemoryBitStream& inOutputStream, float inValue, uint32_t inBits) //1 + inBits
+{
+	const bool negative = inValue < 0;
+	float delta = negative
+		? inValue * -1
+		: inValue;
+
+	const auto value = static_cast<uint32_t>(delta);
+
+	inOutputStream.Write(negative);
+	inOutputStream.Write(value, inBits);
+}
+
+float ReadWritePatterns::ReadFloatRounded(InputMemoryBitStream& inInputStream, uint32_t inBits)
+{
+	bool negative = false;
+	uint32_t value = 0;
+	inInputStream.Read(negative);
+	inInputStream.Read(value, inBits);
+
+	auto outValue = static_cast<float>(value);
+
+	if (negative)
+	{
+		outValue *= -1;
+	}
+
+	return outValue;
+}
+
